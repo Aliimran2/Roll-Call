@@ -9,6 +9,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHost
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.miassolutions.rollcall.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -31,11 +34,14 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
+        val navHostFragment: NavHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
 
-        navController = findNavController(R.id.nav_host_fragment)
+        binding.toolbar.setupWithNavController(navController)
 
-//        val navHostFragment: NavHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-//        navController = navHostFragment.navController
+
 
     }
+
+
 }

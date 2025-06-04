@@ -9,4 +9,9 @@
         android:name="com.miassolutions.rollcall.fragments.DashboardFragment"
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard" />
+    <fragment
+        android:id="@+id/addStudentFragment"
+        tools:layout="@layout/fragment_add_student"
+        android:name="com.miassolutions.rollcall.fragments.AddStudentFragment"
+        android:label="AddStudentFragment" />
 </navigation>

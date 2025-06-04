@@ -3,24 +3,21 @@ package com.miassolutions.rollcall.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.miassolutions.rollcall.R
-import com.miassolutions.rollcall.databinding.FragmentDashboardBinding
+import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
 
-class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
+class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
 
-    private var _binding : FragmentDashboardBinding? = null
+    private var _binding : FragmentAddStudentBinding? = null
     private val binding get() = _binding!!
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentDashboardBinding.bind(view)
-
-        binding.button.setOnClickListener{
-            findNavController().navigate(R.id.addStudentFragment)
-        }
+        _binding = FragmentAddStudentBinding.bind(view)
 
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
