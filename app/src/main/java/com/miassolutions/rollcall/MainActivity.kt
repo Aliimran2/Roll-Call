@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         binding.toolbar.setupWithNavController(navController)
+        binding.bottomNavView.setupWithNavController(navController)
 
 
 

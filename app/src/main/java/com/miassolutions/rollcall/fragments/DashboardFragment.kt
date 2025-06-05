@@ -3,7 +3,6 @@ package com.miassolutions.rollcall.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.appbar.MaterialToolbar
 import com.miassolutions.rollcall.MainActivity
 import com.miassolutions.rollcall.R
