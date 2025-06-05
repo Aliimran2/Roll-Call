@@ -7,22 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-
-        android:theme="@style/ThemeOverlay.Material3.Light"
-        app:popupTheme="@style/ThemeOverlay.Material3.Light"
+        android:layout_height="120dp"
+        android:background="@drawable/toolbar_background"
         android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.Material3.Dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.Material3.Light"
         app:title="Attendance App"
-
+        app:titleCentered="true"
         app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-         />
+
+        app:titleTextColor="@color/white" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"

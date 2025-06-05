@@ -7,11 +7,11 @@
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="com.miassolutions.rollcall.fragments.DashboardFragment"
-        android:label="fragment_dashboard"
+        android:label="Home"
         tools:layout="@layout/fragment_dashboard" />
     <fragment
         android:id="@+id/addStudentFragment"
-        tools:layout="@layout/fragment_add_student"
         android:name="com.miassolutions.rollcall.fragments.AddStudentFragment"
-        android:label="AddStudentFragment" />
+        android:label="Add New Student"
+        tools:layout="@layout/fragment_add_student" />
 </navigation>
