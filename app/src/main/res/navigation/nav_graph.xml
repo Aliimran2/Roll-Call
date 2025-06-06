@@ -6,13 +6,13 @@
     app:startDestination="@id/statsFragment">
     <fragment
         android:id="@+id/addStudentFragment"
-        android:name="com.miassolutions.rollcall.fragments.AddStudentFragment"
+        android:name="com.miassolutions.rollcall.ui.fragments.AddStudentFragment"
         android:label="Add New Student"
         tools:layout="@layout/fragment_add_student" />
     <fragment
         android:id="@+id/studentsFragment"
         tools:layout="@layout/fragment_students"
-        android:name="com.miassolutions.rollcall.fragments.StudentsFragment"
+        android:name="com.miassolutions.rollcall.ui.fragments.StudentsFragment"
         android:label="Students" >
         <action
             android:id="@+id/action_studentsFragment_to_addStudentFragment"
@@ -20,17 +20,17 @@
     </fragment>
     <fragment
         android:id="@+id/attendanceFragment"
-        android:name="com.miassolutions.rollcall.fragments.AttendanceFragment"
+        android:name="com.miassolutions.rollcall.ui.fragments.AttendanceFragment"
         android:label="Attendance"
         tools:layout="@layout/fragment_attendance" />
     <fragment
         android:id="@+id/statsFragment"
         tools:layout="@layout/fragment_stats"
-        android:name="com.miassolutions.rollcall.fragments.StatsFragment"
+        android:name="com.miassolutions.rollcall.ui.fragments.StatsFragment"
         android:label="Stats" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.miassolutions.rollcall.fragments.SettingsFragment"
+        android:name="com.miassolutions.rollcall.ui.fragments.SettingsFragment"
         tools:layout="@layout/fragment_settings"
         android:label="Settings" />
 </navigation>

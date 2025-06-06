@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_a"
-    tools:context=".fragments.AttendanceFragment">
+    tools:context=".ui.fragments.AttendanceFragment">
 
     <!-- Your Static Header Layout included here -->
     <include

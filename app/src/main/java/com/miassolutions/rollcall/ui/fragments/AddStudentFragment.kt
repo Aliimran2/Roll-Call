@@ -1,21 +1,20 @@
-package com.miassolutions.rollcall.fragments
+package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
-import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
 
-class StudentsFragment : Fragment(R.layout.fragment_students) {
+class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
 
-    private var _binding : FragmentStudentsBinding? = null
+    private var _binding : FragmentAddStudentBinding? = null
     private val binding get() = _binding!!
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentStudentsBinding.bind(view)
+        _binding = FragmentAddStudentBinding.bind(view)
 
     }
 

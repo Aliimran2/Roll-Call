@@ -1,10 +1,8 @@
-package com.miassolutions.rollcall.fragments
+package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.google.android.material.appbar.MaterialToolbar
-import com.miassolutions.rollcall.MainActivity
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
 
