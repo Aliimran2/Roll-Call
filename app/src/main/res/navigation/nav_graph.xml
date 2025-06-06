@@ -13,7 +13,7 @@
         android:id="@+id/studentsFragment"
         tools:layout="@layout/fragment_students"
         android:name="com.miassolutions.rollcall.fragments.StudentsFragment"
-        android:label="StudentsFragment" >
+        android:label="Students" >
         <action
             android:id="@+id/action_studentsFragment_to_addStudentFragment"
             app:destination="@id/addStudentFragment" />
@@ -27,5 +27,10 @@
         android:id="@+id/statsFragment"
         tools:layout="@layout/fragment_stats"
         android:name="com.miassolutions.rollcall.fragments.StatsFragment"
-        android:label="StatsFragment" />
+        android:label="Stats" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.miassolutions.rollcall.fragments.SettingsFragment"
+        tools:layout="@layout/fragment_settings"
+        android:label="Settings" />
 </navigation>
