@@ -8,6 +8,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.ActivityMainBinding
+import com.miassolutions.rollcall.ui.fragments.StudentsFragment.Companion.klassName
 
 class MainActivity : AppCompatActivity() {
 
@@ -66,7 +67,8 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.studentsFragment -> {
                     navController.navigate(R.id.studentsFragment)
-                    binding.toolbar.subtitle = null
+                    binding.toolbar.subtitle = klassName
+                    binding.toolbar.isSubtitleCentered = true
                     true
                 }
 

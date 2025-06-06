@@ -2,12 +2,25 @@ package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.miassolutions.rollcall.R
+import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
 import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
+import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
 
 class StudentsFragment : Fragment(R.layout.fragment_students) {
+
+
+
+     val students = List(30){
+        Student(id = it, rollNumber = it, studentName = "Student $it")
+    }
+
+    companion object {
+        val klassName = "8th B"
+    }
 
     private var _binding : FragmentStudentsBinding? = null
     private val binding get() = _binding!!
@@ -16,6 +29,17 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentStudentsBinding.bind(view)
+
+
+
+
+
+        val adapter = StudentListAdapter{studentId ->
+            Toast.makeText(requireContext(), "$studentId is clicked", Toast.LENGTH_SHORT).show()
+        }
+        adapter.submitList(students)
+
+        binding.rvStudents.adapter = adapter
 
     }
 
