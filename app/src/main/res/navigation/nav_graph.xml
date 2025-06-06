@@ -3,15 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/dashboardFragment">
-    <fragment
-        android:id="@+id/dashboardFragment"
-        android:name="com.miassolutions.rollcall.fragments.DashboardFragment"
-        android:label="Home"
-        tools:layout="@layout/fragment_dashboard" />
+    app:startDestination="@id/statsFragment">
     <fragment
         android:id="@+id/addStudentFragment"
         android:name="com.miassolutions.rollcall.fragments.AddStudentFragment"
         android:label="Add New Student"
         tools:layout="@layout/fragment_add_student" />
+    <fragment
+        android:id="@+id/studentsFragment"
+        tools:layout="@layout/fragment_students"
+        android:name="com.miassolutions.rollcall.fragments.StudentsFragment"
+        android:label="StudentsFragment" >
+        <action
+            android:id="@+id/action_studentsFragment_to_addStudentFragment"
+            app:destination="@id/addStudentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/attendanceFragment"
+        android:name="com.miassolutions.rollcall.fragments.AttendanceFragment"
+        android:label="Attendance"
+        tools:layout="@layout/fragment_attendance" />
+    <fragment
+        android:id="@+id/statsFragment"
+        tools:layout="@layout/fragment_stats"
+        android:name="com.miassolutions.rollcall.fragments.StatsFragment"
+        android:label="StatsFragment" />
 </navigation>
