@@ -26,15 +26,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
 
         setSupportActionBar(binding.toolbar)
+
 
 
 
@@ -55,22 +52,29 @@ class MainActivity : AppCompatActivity() {
             when(item.itemId){
                 R.id.statsFragment -> {
                     navController.navigate(R.id.statsFragment)
+                    binding.toolbar.subtitle = null
                     true
                 }
 
                 R.id.attendanceFragment -> {
                     navController.navigate(R.id.attendanceFragment)
+                    binding.toolbar.apply {
+                        subtitle = "06.06.2025"
+                        isSubtitleCentered = true
+                    }
                     true
                 }
 
                 R.id.studentsFragment -> {
                     navController.navigate(R.id.studentsFragment)
+                    binding.toolbar.subtitle = null
                     true
                 }
 
 
                 R.id.settingsFragment -> {
                     navController.navigate(R.id.settingsFragment)
+                    binding.toolbar.subtitle = null
                     true
                 }
                 else ->false

@@ -4,8 +4,31 @@
         <!-- Customize your light theme here. -->
          <item name="colorPrimary">@color/blue</item>
 
+<!--        <item name="itemTextAppearance">@style/RollTextAppearance</item>-->
+
 
     </style>
+
+    <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomNavigationView" parent="">
+        <item name="android:colorBackground">@color/green</item>
+        <item name="colorOnSurfaceVariant">@color/black</item>
+    </style>
+
+
+
+    <style name="BottomActiveIconStyle" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+
+        <item name="android:color">@color/green</item>
+
+
+    </style>
+
+
+
 
     <style name="Theme.RollCall" parent="Base.Theme.RollCall" />
 

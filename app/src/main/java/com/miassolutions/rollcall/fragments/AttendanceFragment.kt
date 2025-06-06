@@ -3,6 +3,8 @@ package com.miassolutions.rollcall.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.google.android.material.appbar.MaterialToolbar
+import com.miassolutions.rollcall.MainActivity
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
 
@@ -15,6 +17,11 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAttendanceBinding.bind(view)
+
+
+
+
+
 
 
 
