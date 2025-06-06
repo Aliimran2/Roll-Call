@@ -1,14 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/et_rollNo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".fragments.DashboardFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Add student Fragment" />
+        android:orientation="vertical">
 
-</FrameLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingVertical="28dp"
+            android:text="Student Form"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_reg_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Registration number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_roll_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Roll number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_father_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Father name" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_dob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date of birth" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Address" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginVertical="16dp"
+            android:text="Save" />
+
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
+
