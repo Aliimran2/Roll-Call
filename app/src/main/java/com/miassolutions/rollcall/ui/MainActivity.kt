@@ -48,39 +48,39 @@ class MainActivity : AppCompatActivity() {
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         binding.bottomNavView.setupWithNavController(navController)
 
-        binding.bottomNavView.setOnItemSelectedListener {item ->
-            when(item.itemId){
-                R.id.statsFragment -> {
-                    navController.navigate(R.id.statsFragment)
-                    binding.toolbar.subtitle = null
-                    true
-                }
-
-                R.id.attendanceFragment -> {
-                    navController.navigate(R.id.attendanceFragment)
-                    binding.toolbar.apply {
-                        subtitle = "06.06.2025"
-                        isSubtitleCentered = true
-                    }
-                    true
-                }
-
-                R.id.studentsFragment -> {
-                    navController.navigate(R.id.studentsFragment)
-                    binding.toolbar.subtitle = klassName
-                    binding.toolbar.isSubtitleCentered = true
-                    true
-                }
-
-
-                R.id.settingsFragment -> {
-                    navController.navigate(R.id.settingsFragment)
-                    binding.toolbar.subtitle = null
-                    true
-                }
-                else ->false
-            }
-        }
+//        binding.bottomNavView.setOnItemSelectedListener {item ->
+//            when(item.itemId){
+//                R.id.statsFragment -> {
+//                    navController.navigate(R.id.statsFragment)
+//                    binding.toolbar.subtitle = null
+//                    true
+//                }
+//
+//                R.id.attendanceFragment -> {
+//                    navController.navigate(R.id.attendanceFragment)
+//                    binding.toolbar.apply {
+//                        subtitle = "06.06.2025"
+//                        isSubtitleCentered = true
+//                    }
+//                    true
+//                }
+//
+//                R.id.studentsFragment -> {
+//                    navController.navigate(R.id.studentsFragment)
+//                    binding.toolbar.subtitle = klassName
+//                    binding.toolbar.isSubtitleCentered = true
+//                    true
+//                }
+//
+//
+//                R.id.settingsFragment -> {
+//                    navController.navigate(R.id.settingsFragment)
+//                    binding.toolbar.subtitle = null
+//                    true
+//                }
+//                else ->false
+//            }
+//        }
 
 
 

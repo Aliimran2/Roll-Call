@@ -41,7 +41,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
 
-                android:layout_weight="3"
+                android:layout_weight="4"
 
                 android:orientation="vertical"
                 android:layout_marginStart="8dp"
@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"
-                    android:text="Student name:"
+                    android:text="Name:"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -82,7 +82,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
 
-                android:layout_weight="4"
+                android:layout_weight="5"
                 android:orientation="vertical"
               >
 
