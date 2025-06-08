@@ -1,7 +1,9 @@
 package com.miassolutions.rollcall.data.entities
 
+import java.util.UUID
+
 data class Student(
-    val id: Int,
+    val id: String = UUID.randomUUID().toString(),
     val regNumber: Int = 0,
     val rollNumber: Int,
     val studentName: String,

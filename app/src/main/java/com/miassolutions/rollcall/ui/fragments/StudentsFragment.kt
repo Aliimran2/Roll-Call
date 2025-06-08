@@ -10,13 +10,12 @@ import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
 import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
+import com.miassolutions.rollcall.utils.StudentProvider
 
 class StudentsFragment : Fragment(R.layout.fragment_students) {
 
 
-    private val students = List(30) {
-        Student(id = it, rollNumber = it, studentName = "Student $it")
-    }
+
 
 
     private lateinit var adapter: StudentListAdapter
@@ -48,7 +47,9 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         adapter = StudentListAdapter { studentId ->
             Toast.makeText(requireContext(), "$studentId is clicked", Toast.LENGTH_SHORT).show()
         }
-        adapter.submitList(students)
+
+
+        adapter.submitList(StudentProvider.students.toList())
         binding.rvStudents.adapter = adapter
 
     }

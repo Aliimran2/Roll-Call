@@ -8,7 +8,7 @@ import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.databinding.ItemStudentBinding
 
 class StudentListAdapter(
-    private val onItemClick: (Int) -> Unit
+    private val onItemClick: (String) -> Unit
 ) : ListAdapter<Student, StudentListAdapter.StudentViewHolder>(StudentDiffUtil()) {
 
     inner class StudentViewHolder(private val binding: ItemStudentBinding) :
