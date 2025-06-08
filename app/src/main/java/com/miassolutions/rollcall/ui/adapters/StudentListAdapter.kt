@@ -8,6 +8,7 @@ import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.databinding.ItemStudentBinding
 
 class StudentListAdapter(
+    private val onPhoneClick: (String) -> Unit,
     private val onItemClick: (Student) -> Unit
 ) : ListAdapter<Student, StudentListAdapter.StudentViewHolder>(StudentDiffUtil()) {
 
@@ -19,7 +20,8 @@ class StudentListAdapter(
                 tvRegNo.text = item.regNumber.toString()
                 tvRollNo.text = item.rollNumber.toString()
 
-                root.setOnClickListener { onItemClick(item) }
+                ivPhone.setOnClickListener{onPhoneClick(item.phoneNumber)}
+                ivMore.setOnClickListener { onItemClick(item) }
 
             }
         }

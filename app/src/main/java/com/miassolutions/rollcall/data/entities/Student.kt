@@ -7,9 +7,9 @@ data class Student(
     val regNumber: Int = 0,
     val rollNumber: Int,
     val studentName: String,
-    val fatherName: String = "",
-    val dob: String = "",
-    val klass: String = "",
-    val phoneNumber: String = "",
-    val address: String = ""
+    val fatherName: String = "Adam",
+    val dob: String = "01/01/2000",
+    val klass: String = "8th B",
+    val phoneNumber: String = "03127430906",
+    val address: String = "241 JB"
 )

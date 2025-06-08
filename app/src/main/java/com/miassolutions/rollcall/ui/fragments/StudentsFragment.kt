@@ -1,5 +1,9 @@
 package com.miassolutions.rollcall.ui.fragments
 
+import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -16,6 +20,7 @@ import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
 import com.miassolutions.rollcall.utils.StudentProvider
 import androidx.core.view.isVisible
 import com.miassolutions.rollcall.utils.showToast
+import androidx.core.net.toUri
 
 class StudentsFragment : Fragment(R.layout.fragment_students) {
 
@@ -43,28 +48,49 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     }
 
 
+    private fun dialPhoneNumber(phoneNumber: String) {
+        val intent = Intent(Intent.ACTION_DIAL).apply {
+            data = "tel:$phoneNumber".toUri()
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(requireContext(), "No dialer app found", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun navToDetail(student: Student) {
+        val action = StudentsFragmentDirections.actionStudentsFragmentToStudentDetailFragment(
+            student.id,
+            student.studentName
+        )
+        findNavController().navigate(action)
+    }
+
+
     private fun setupRecyclerView() {
 
-        adapter = StudentListAdapter { student ->
-            val action = StudentsFragmentDirections.actionStudentsFragmentToStudentDetailFragment(student.id, student.studentName)
-            findNavController().navigate(action)
-
-        }
+        adapter = StudentListAdapter(
+            onPhoneClick = { phoneNumber -> dialPhoneNumber(phoneNumber) },
+            onItemClick = { student -> navToDetail(student) }
+        )
 
 
         adapter.submitList(StudentProvider.students.toList())
         binding.rvStudents.adapter = adapter
 
-        binding.rvStudents.addOnScrollListener(object : OnScrollListener(){
+        binding.rvStudents.addOnScrollListener(object : OnScrollListener() {
             val fab = binding.fabAddStudent
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (dy>0 && fab.isVisible){
-                Log.d("MiasSolutions", "onScrolled: dy : $dy")
+                if (dy > 0 && fab.isVisible) {
+                    Log.d("MiasSolutions", "onScrolled: dy : $dy")
                     fab.hide()
-                } else if(dy<0 && fab.visibility != View.VISIBLE) {
-                Log.d("MiasSolutions", "onScrolled: dy : $dy")
+                } else if (dy < 0 && fab.visibility != View.VISIBLE) {
+                    Log.d("MiasSolutions", "onScrolled: dy : $dy")
                     fab.show()
                 }
             }
