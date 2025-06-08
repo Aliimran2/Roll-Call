@@ -1,26 +1,28 @@
 package com.miassolutions.rollcall.ui.fragments
 
-import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.core.net.toUri
+import androidx.core.view.MenuProvider
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.Student
-import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
 import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
 import com.miassolutions.rollcall.utils.StudentProvider
-import androidx.core.view.isVisible
 import com.miassolutions.rollcall.utils.showToast
-import androidx.core.net.toUri
 
 class StudentsFragment : Fragment(R.layout.fragment_students) {
 
@@ -35,10 +37,32 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         _binding = FragmentStudentsBinding.bind(view)
 
 
+        setupMenuProvider()
         setupFabClickListener()
         setupRecyclerView()
 
 
+    }
+
+    private fun setupMenuProvider() {
+
+        val menuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.student_list_fragment, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_import_excel -> {
+                        showToast("Importing")
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun setupFabClickListener() {
