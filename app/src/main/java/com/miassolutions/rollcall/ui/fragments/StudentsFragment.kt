@@ -46,7 +46,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     private fun setupRecyclerView() {
 
         adapter = StudentListAdapter { student ->
-            val action = StudentsFragmentDirections.actionStudentsFragmentToEditStudentFragment(student.id, student.studentName)
+            val action = StudentsFragmentDirections.actionStudentsFragmentToStudentDetailFragment(student.id, student.studentName)
             findNavController().navigate(action)
 
         }

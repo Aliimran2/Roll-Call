@@ -18,8 +18,8 @@
             android:id="@+id/action_studentsFragment_to_addStudentFragment"
             app:destination="@id/addStudentFragment" />
         <action
-            android:id="@+id/action_studentsFragment_to_editStudentFragment"
-            app:destination="@id/editStudentFragment" />
+            android:id="@+id/action_studentsFragment_to_studentDetailFragment"
+            app:destination="@id/studentDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/attendanceFragment"
@@ -47,5 +47,20 @@
         <argument
             android:name="student_name"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/studentDetailFragment"
+        tools:layout="@layout/fragment_student_detail"
+        android:name="com.miassolutions.rollcall.ui.fragments.StudentDetailFragment"
+        android:label="{student_name} Detail" >
+        <action
+            android:id="@+id/action_studentDetailFragment_to_editStudentFragment"
+            app:destination="@id/editStudentFragment"
+            app:popUpTo="@id/studentsFragment"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <argument android:name="student_name" />
     </fragment>
 </navigation>
