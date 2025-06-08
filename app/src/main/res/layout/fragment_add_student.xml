@@ -20,7 +20,7 @@
             android:layout_height="120dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginVertical="8dp"
-            android:src="@drawable/profile_placeholder" />
+            android:src="@drawable/ic_person" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
