@@ -5,9 +5,4 @@
         android:angle="270"
         android:type="linear"/>
 
-    <corners android:bottomLeftRadius="16dp"
-        android:bottomRightRadius="16dp"
-        />
-
-
 </shape>
