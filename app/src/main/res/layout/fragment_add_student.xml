@@ -34,6 +34,8 @@
                 android:id="@+id/et_reg_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
+                android:imeOptions="actionNext"
                 android:hint="Registration number" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,6 +49,8 @@
                 android:id="@+id/et_roll_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
+                android:imeOptions="actionNext"
                 android:hint="Roll number" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -60,6 +64,8 @@
                 android:id="@+id/et_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPersonName|textCapWords"
+                android:imeOptions="actionNext"
                 android:hint="Name" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,6 +79,8 @@
                 android:id="@+id/et_father_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPersonName|textCapWords"
+                android:imeOptions="actionNext"
                 android:hint="Father name" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -86,6 +94,8 @@
                 android:id="@+id/et_dob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="date"
+                android:imeOptions="actionNext"
                 android:hint="Date of birth" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -100,6 +110,8 @@
                 android:id="@+id/et_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:imeOptions="actionNext"
                 android:hint="Phone number" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -113,6 +125,8 @@
                 android:id="@+id/et_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPostalAddress|textCapSentences"
+                android:imeOptions="actionDone"
                 android:hint="Address" />
         </com.google.android.material.textfield.TextInputLayout>
 
