@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
 import com.miassolutions.rollcall.databinding.FragmentEditStudentBinding
@@ -13,42 +14,55 @@ import com.miassolutions.rollcall.utils.showToast
 
 class EditStudentFragment : Fragment(R.layout.fragment_edit_student) {
 
-    private var _binding : FragmentEditStudentBinding? = null
+    private var _binding: FragmentEditStudentBinding? = null
     private val binding get() = _binding!!
+
+    private val args by navArgs<EditStudentFragmentArgs>()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentEditStudentBinding.bind(view)
 
+        val studentId = args.id
 
-        binding.saveBtn.setOnClickListener{
+        loadStudentData(studentId)
 
-        setupSaveBtn()
+        binding.editBtn.setOnClickListener {
+
+            updateStudent()
         }
 
     }
-    private fun setupSaveBtn(){
+
+    private fun loadStudentData(studentId : String) {
+        val student = StudentProvider.findStudent(studentId)
+        binding.etName.setText(student.studentName)
+        binding.etRollNumber.setText(student.rollNumber.toString())
+    }
+
+    private fun updateStudent() {
         val rollNumber = binding.etRollNumber.text.toString()
         val studentName = binding.etName.text.toString()
 
-       when{
-           rollNumber.isBlank() -> {
-               binding.etRollNumber.requestFocus()
-               binding.etRollNumber.error = "Enter roll number"
-           }
-           studentName.isBlank() -> {
-               binding.etName.requestFocus()
-               binding.etName.error = "Enter name of the student"
-           }
+        when {
+            rollNumber.isBlank() -> {
+                binding.etRollNumber.requestFocus()
+                binding.etRollNumber.error = "Enter roll number"
+            }
 
-           else -> {
-               val roll = rollNumber.toInt()
-               StudentProvider.addStudent(roll, studentName)
-               findNavController().navigateUp()
-               showToast("$studentName is added in db")
-           }
-       }
+            studentName.isBlank() -> {
+                binding.etName.requestFocus()
+                binding.etName.error = "Enter name of the student"
+            }
+
+            else -> {
+                val roll = rollNumber.toInt()
+                StudentProvider.updateStudent(args.id,roll, studentName)
+                findNavController().navigateUp()
+                showToast("$studentName is updated")
+            }
+        }
 
     }
 
@@ -57,7 +71,6 @@ class EditStudentFragment : Fragment(R.layout.fragment_edit_student) {
         super.onDestroyView()
         _binding = null
     }
-
 
 
 }

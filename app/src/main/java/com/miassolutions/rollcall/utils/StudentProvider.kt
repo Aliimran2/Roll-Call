@@ -18,6 +18,12 @@ object StudentProvider {
         }
     }
 
+    fun findStudent(id: String) : Student {
+        val studentIdx = students.indexOfFirst { it.id == id }
+        return students[studentIdx]
+    }
+
+
     fun updateStudent(id: String, rollNum: Int, studentName: String) {
         val index = students.indexOfFirst { it.id == id }
         val existingStudent = students[index]

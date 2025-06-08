@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_studentsFragment_to_addStudentFragment"
             app:destination="@id/addStudentFragment" />
+        <action
+            android:id="@+id/action_studentsFragment_to_editStudentFragment"
+            app:destination="@id/editStudentFragment" />
     </fragment>
     <fragment
         android:id="@+id/attendanceFragment"
@@ -33,4 +36,16 @@
         android:name="com.miassolutions.rollcall.ui.fragments.SettingsFragment"
         tools:layout="@layout/fragment_settings"
         android:label="Settings" />
+    <fragment
+        tools:layout="@layout/fragment_edit_student"
+        android:id="@+id/editStudentFragment"
+        android:name="com.miassolutions.rollcall.ui.fragments.EditStudentFragment"
+        android:label="Update {student_name}" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <argument
+            android:name="student_name"
+            app:argType="string" />
+    </fragment>
 </navigation>

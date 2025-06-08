@@ -15,12 +15,9 @@ import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
 import com.miassolutions.rollcall.utils.StudentProvider
 import androidx.core.view.isVisible
+import com.miassolutions.rollcall.utils.showToast
 
 class StudentsFragment : Fragment(R.layout.fragment_students) {
-
-
-
-
 
     private lateinit var adapter: StudentListAdapter
 
@@ -48,8 +45,10 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
     private fun setupRecyclerView() {
 
-        adapter = StudentListAdapter { studentId ->
-            Toast.makeText(requireContext(), "$studentId is clicked", Toast.LENGTH_SHORT).show()
+        adapter = StudentListAdapter { student ->
+            val action = StudentsFragmentDirections.actionStudentsFragmentToEditStudentFragment(student.id, student.studentName)
+            findNavController().navigate(action)
+
         }
 
 
