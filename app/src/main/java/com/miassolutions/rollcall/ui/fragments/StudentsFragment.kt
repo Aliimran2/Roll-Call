@@ -1,6 +1,7 @@
 package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -55,14 +56,16 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         adapter.submitList(StudentProvider.students.toList())
         binding.rvStudents.adapter = adapter
 
-        binding.rvStudents.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        binding.rvStudents.addOnScrollListener(object : OnScrollListener(){
             val fab = binding.fabAddStudent
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy>0 && fab.isVisible){
+                Log.d("MiasSolutions", "onScrolled: dy : $dy")
                     fab.hide()
                 } else if(dy<0 && fab.visibility != View.VISIBLE) {
+                Log.d("MiasSolutions", "onScrolled: dy : $dy")
                     fab.show()
                 }
             }
