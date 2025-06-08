@@ -5,12 +5,15 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
 import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
 import com.miassolutions.rollcall.utils.StudentProvider
+import androidx.core.view.isVisible
 
 class StudentsFragment : Fragment(R.layout.fragment_students) {
 
@@ -51,6 +54,19 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
         adapter.submitList(StudentProvider.students.toList())
         binding.rvStudents.adapter = adapter
+
+        binding.rvStudents.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            val fab = binding.fabAddStudent
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy>0 && fab.isVisible){
+                    fab.hide()
+                } else if(dy<0 && fab.visibility != View.VISIBLE) {
+                    fab.show()
+                }
+            }
+        })
 
     }
 

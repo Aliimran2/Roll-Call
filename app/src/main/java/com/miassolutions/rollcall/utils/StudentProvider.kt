@@ -17,5 +17,10 @@ object StudentProvider {
         addStudent(2, "Shan Mumtaz")
         addStudent(3, "Irfan Mumtaz")
         addStudent(4, "Arslan Mumtaz")
+        addStudent(4, "Arslan Mumtaz")
+        addStudent(4, "Arslan Mumtaz")
+        addStudent(4, "Arslan Mumtaz")
+        addStudent(4, "Arslan Mumtaz")
+        addStudent(4, "Arslan Mumtaz")
     }
 }
