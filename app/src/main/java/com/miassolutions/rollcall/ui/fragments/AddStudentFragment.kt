@@ -12,6 +12,11 @@ import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
+import com.miassolutions.rollcall.utils.DUPLICATE_REG
+
+import com.miassolutions.rollcall.utils.DUPLICATE_ROLL
+import com.miassolutions.rollcall.utils.StudentInsertResult
+import com.miassolutions.rollcall.utils.showLongToast
 import com.miassolutions.rollcall.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -34,8 +39,33 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.toastMessage.collect {
-                    showToast(it)
+                viewModel.toastMessage.collect { result: StudentInsertResult ->
+                    when (result) {
+                        is StudentInsertResult.Failure -> {
+                            when (result.reason) {
+                                DUPLICATE_REG -> {
+                                    binding.etRegNumber.requestFocus()
+                                    binding.etRegNumber.error = "Reg no already exists"
+                                }
+
+                                DUPLICATE_ROLL -> {
+                                    binding.etRollNumber.requestFocus()
+                                    binding.etRollNumber.error = "Roll no already exists"
+                                }
+
+                                else -> {
+                                    showLongToast("Failed : ${result.reason}")
+                                }
+
+                            }
+
+                        }
+
+                        is StudentInsertResult.Success -> {
+                            showToast("Student added!")
+                            findNavController().navigateUp()
+                        }
+                    }
                 }
 
             }
@@ -75,6 +105,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
                     binding.etName.requestFocus()
                     binding.etName.error = "Enter name of the student"
                 }
+
                 fatherName.isBlank() -> {
                     binding.etFatherName.requestFocus()
                     binding.etFatherName.error = "Enter name of the student"
@@ -95,8 +126,6 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
                     viewModel.insertStudent(student)
 
 
-                    findNavController().navigateUp()
-                    showToast("$studentName is added in db")
                 }
             }
         }

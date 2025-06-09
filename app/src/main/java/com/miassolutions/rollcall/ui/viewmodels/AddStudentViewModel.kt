@@ -22,28 +22,18 @@ class AddStudentViewModel @Inject constructor(private val repository: Repository
     val allStudents: StateFlow<List<Student>> = repository.allStudents
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
-    private val _toastMessage = MutableSharedFlow<String>()
+    private val _toastMessage = MutableSharedFlow<StudentInsertResult>()
     val toastMessage = _toastMessage.asSharedFlow()
 
 
     fun insertStudent(student: Student) {
         viewModelScope.launch {
+
             val result = repository.insertStudent(student)
+            withContext(Dispatchers.Main){
 
-            when (result) {
-                is StudentInsertResult.Duplicate -> {
-                    _toastMessage.emit("Duplicated")
-                }
-
-                is StudentInsertResult.Error -> {
-                    _toastMessage.emit("Something went wrong")
-                }
-
-                is StudentInsertResult.Success -> {
-                    _toastMessage.emit("Student added in db")
-                }
+            _toastMessage.emit(result)
             }
-
         }
     }
 }
