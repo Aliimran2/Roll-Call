@@ -54,7 +54,7 @@ object StudentProvider {
     fun getStudentListForToday() : List<StudentWithAttendance> {
         val today = LocalDate.now().toString()
         return students.map {
-            val status = getStudentAttendanceOnDate(it.id, today) ?: AttendanceStatus.ABSENT
+            val status = getStudentAttendanceOnDate(it.id, today) ?: AttendanceStatus.PRESENT
             StudentWithAttendance(
                 rollNum = it.rollNumber,
                 studentName = it.studentName,

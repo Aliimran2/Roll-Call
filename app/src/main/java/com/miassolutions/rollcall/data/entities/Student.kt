@@ -1,9 +1,20 @@
 package com.miassolutions.rollcall.data.entities
 
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 import java.util.UUID
 
+@Entity(
+    tableName = "student_table",
+    indices = [
+        Index(value = ["regNumber"], unique = true),
+        Index(value = ["rollNumber"], unique = true)
+    ]
+)
 data class Student(
-    val id: String = UUID.randomUUID().toString(),
+    @PrimaryKey
+    val studentId: String = UUID.randomUUID().toString(),
     val regNumber: Int = 0,
     val rollNumber: Int,
     val studentName: String,
