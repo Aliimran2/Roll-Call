@@ -10,4 +10,11 @@
         android:title="Import from Excel"
         app:showAsAction="collapseActionView"
         />
+
+    <item
+        android:id="@+id/action_export_sample"
+        android:icon="@drawable/ic_excel"
+        android:title="Export sample Excel"
+        app:showAsAction="collapseActionView"
+        />
 </tools:menu>

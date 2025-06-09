@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.miassolutions.rollcall"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -87,4 +87,12 @@ dependencies {
     //hilt
     implementation("com.google.dagger:hilt-android:2.51.1")
     ksp("com.google.dagger:hilt-android-compiler:2.51.1")
+
+    implementation ("org.apache.poi:poi:5.2.2")
+    implementation ("org.apache.poi:poi-ooxml:5.2.2")
+
+    implementation ("org.apache.xmlbeans:xmlbeans:5.1.1") // Match a recent stable version
+    implementation ("com.fasterxml:aalto-xml:1.3.2") // A fast, non-blocking XML processor
+    implementation ("javax.xml.stream:stax-api:1.0-2") // Standard Java XML Streaming API
+
 }

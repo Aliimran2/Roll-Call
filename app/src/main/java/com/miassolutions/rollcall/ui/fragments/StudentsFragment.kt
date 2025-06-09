@@ -2,6 +2,8 @@ package com.miassolutions.rollcall.ui.fragments
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -9,6 +11,9 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
@@ -21,6 +26,8 @@ import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
+import com.miassolutions.rollcall.utils.ImportFromExcel
+import com.miassolutions.rollcall.utils.SampleExcelGenerator
 import com.miassolutions.rollcall.utils.StudentProvider
 import com.miassolutions.rollcall.utils.showToast
 
@@ -31,16 +38,41 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     private var _binding: FragmentStudentsBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var filePickerLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentStudentsBinding.bind(view)
 
 
+        filePickerLauncher = registerForActivityResult(
+            ActivityResultContracts.OpenDocument()
+        ) { uri: Uri? ->
+            uri?.let {
+                handleExcelFile(it)
+            }
+        }
+
+
         setupMenuProvider()
         setupFabClickListener()
         setupRecyclerView()
 
+
+    }
+
+    private fun pickExcelFile() {
+        filePickerLauncher.launch(arrayOf("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+    }
+
+    private fun handleExcelFile(uri: Uri) {
+        val students = ImportFromExcel.readStudentsFromExcel(requireContext(), uri)
+
+        for (s in students){
+            StudentProvider.addStudent(s.rollNumber, s.studentName)
+            adapter.submitList(StudentProvider.students)
+            Log.d("MiasSolutions", "${s.studentName}")
+        }
 
     }
 
@@ -52,10 +84,16 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
                 menuInflater.inflate(R.menu.student_list_fragment, menu)
             }
 
+            @RequiresApi(Build.VERSION_CODES.Q)
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_import_excel -> {
-                        showToast("Importing")
+                        pickExcelFile()
+                        true
+                    }
+
+                    R.id.action_export_sample -> {
+                        SampleExcelGenerator.generateSampleExcelFile(requireContext())
                         true
                     }
 
