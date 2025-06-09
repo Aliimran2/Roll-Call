@@ -17,8 +17,8 @@ class StudentListAdapter(
         fun bind(item: Student) {
             binding.apply {
                 tvStudentName.text = item.studentName
-                tvRegNo.text = item.regNumber.toString()
-                tvRollNo.text = item.rollNumber.toString()
+                tvRegNum.text = "Reg No - ${item.regNumber}"
+                tvRollNum.text = "Roll No - ${item.rollNumber}"
 
                 ivPhone.setOnClickListener{onPhoneClick(item.phoneNumber)}
                 ivMore.setOnClickListener { onItemClick(item) }
