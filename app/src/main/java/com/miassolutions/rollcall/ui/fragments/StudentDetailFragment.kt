@@ -13,15 +13,16 @@ import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.data.repository.StudentFetchResult
 import com.miassolutions.rollcall.databinding.FragmentStudentDetailBinding
+import com.miassolutions.rollcall.databinding.StudentDetailLayoutBinding
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
 import com.miassolutions.rollcall.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class StudentDetailFragment : Fragment(R.layout.fragment_student_detail) {
+class StudentDetailFragment : Fragment(R.layout.student_detail_layout) {
 
-    private var _binding: FragmentStudentDetailBinding? = null
+    private var _binding: StudentDetailLayoutBinding? = null
     private val binding get() = _binding!!
 
     private val args by navArgs<StudentDetailFragmentArgs>()
@@ -30,7 +31,7 @@ class StudentDetailFragment : Fragment(R.layout.fragment_student_detail) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentStudentDetailBinding.bind(view)
+        _binding = StudentDetailLayoutBinding.bind(view)
 
         val studentId = args.id
 
@@ -77,13 +78,48 @@ class StudentDetailFragment : Fragment(R.layout.fragment_student_detail) {
                             val student = result.data
 
                             binding.apply {
-                                tvRegNo.text = student.regNumber.toString()
-                                tvRollNo.text = student.rollNumber.toString()
-                                tvStudentName.text = student.studentName
-                                tvFatherName.text = student.fatherName
-                                tvClass.text = student.klass
-                                tvDob.text = student.dob
-                                tvMobile.text = student.phoneNumber
+
+                                itemRegNumber.apply {
+                                    tvFieldLabel.text = "Reg No"
+                                    tvFieldValue.text = student.regNumber.toString()
+                                }
+
+                                itemRollNumber.apply {
+                                    tvFieldLabel.text = "Roll No"
+                                    tvFieldValue.text = student.rollNumber.toString()
+                                }
+
+
+                                itemStudentName.apply {
+                                    tvFieldLabel.text = "Student Name"
+                                    tvFieldValue.text = student.studentName
+                                }
+                                itemFatherName.apply {
+                                    tvFieldLabel.text = "Father Name"
+                                    tvFieldValue.text = student.fatherName
+                                }
+
+
+                                itemClass.apply {
+                                    tvFieldLabel.text = "Class"
+                                    tvFieldValue.text = student.klass
+                                }
+
+                                itemPhoneNumber.apply {
+                                    tvFieldLabel.text = "Phone No"
+                                    tvFieldValue.text = student.phoneNumber
+                                }
+
+                                itemDob.apply {
+                                    tvFieldLabel.text = "Date of Birth"
+                                    tvFieldValue.text = student.dob
+                                }
+
+                                itemAddress.apply {
+                                    tvFieldLabel.text = "Address"
+                                    tvFieldValue.text = student.address
+                                }
+
                             }
 
                         }

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:id="@+id/detailsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="?android:attr/dividerVertical"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+        <ImageView
+            android:id="@+id/iv_student"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="18dp"
+            android:background="@drawable/bg_rounded_blue_light"
+            android:src="@drawable/ic_person" />
+
+        <!-- Reusable item -->
+
+        <include
+            android:id="@+id/itemRegNumber"
+            layout="@layout/item_student_field" />
+
+        <include
+            android:id="@+id/itemRollNumber"
+            layout="@layout/item_student_field" />
+
+
+        <include
+            android:id="@+id/itemStudentName"
+            layout="@layout/item_student_field" />
+
+        <include
+            android:id="@+id/itemFatherName"
+            layout="@layout/item_student_field" />
+
+        <include
+            android:id="@+id/itemDob"
+            layout="@layout/item_student_field" />
+
+
+
+        <include
+            android:id="@+id/itemClass"
+            layout="@layout/item_student_field" />
+
+        <include
+            android:id="@+id/itemPhoneNumber"
+            layout="@layout/item_student_field" />
+
+        <include
+            android:id="@+id/itemAddress"
+            layout="@layout/item_student_field" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/deleteBtn"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DELETE"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/red" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/editNavBtn"
+                android:layout_marginStart="16dp"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="EDIT" />
+
+
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
