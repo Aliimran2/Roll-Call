@@ -25,6 +25,9 @@ interface StudentDao {
     @Query("SELECT * FROM student_table ORDER BY rollNumber ASC")
     fun getAllStudents(): Flow<List<Student>>
 
+    @Query("SELECT * FROM student_table WHERE rollNumber =:rollNumber OR regNumber =:regNumber LIMIT 1")
+    fun getStudentByRollAndRegNum(rollNumber: Int, regNumber: Int) : Student?
+
     @Query(
         """
         SELECT * FROM student_table
