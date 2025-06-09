@@ -31,7 +31,6 @@ import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.utils.ImportFromExcel
-import com.miassolutions.rollcall.utils.StudentProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -155,7 +154,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         )
 
 
-        adapter.submitList(StudentProvider.students.toList())
+
         binding.rvStudents.adapter = adapter
 
         binding.rvStudents.addOnScrollListener(object : OnScrollListener() {

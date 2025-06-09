@@ -2,14 +2,12 @@ package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.miassolutions.rollcall.R
-import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
 import com.miassolutions.rollcall.databinding.FragmentEditStudentBinding
-import com.miassolutions.rollcall.utils.StudentProvider
+
 import com.miassolutions.rollcall.utils.showToast
 
 class EditStudentFragment : Fragment(R.layout.fragment_edit_student) {
@@ -36,9 +34,7 @@ class EditStudentFragment : Fragment(R.layout.fragment_edit_student) {
     }
 
     private fun loadStudentData(studentId : String) {
-        val student = StudentProvider.findStudent(studentId)
-        binding.etName.setText(student.studentName)
-        binding.etRollNumber.setText(student.rollNumber.toString())
+
     }
 
     private fun updateStudent() {
@@ -58,7 +54,7 @@ class EditStudentFragment : Fragment(R.layout.fragment_edit_student) {
 
             else -> {
                 val roll = rollNumber.toInt()
-                StudentProvider.updateStudent(args.id,roll, studentName)
+
                 findNavController().navigateUp()
                 showToast("$studentName is updated")
             }

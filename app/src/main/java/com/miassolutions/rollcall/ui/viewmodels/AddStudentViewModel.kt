@@ -28,9 +28,7 @@ class AddStudentViewModel @Inject constructor(private val repository: Repository
 
     fun insertStudent(student: Student) {
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                repository.insertStudent(student)
-            }
+            val result = repository.insertStudent(student)
 
             when (result) {
                 is StudentInsertResult.Duplicate -> {

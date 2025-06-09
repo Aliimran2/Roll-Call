@@ -20,8 +20,11 @@ interface StudentDao {
     @Delete
     suspend fun deleteStudent(student: Student)
 
-//    @Query("SELECT * FROM student_table WHERE studentId = :studentId")
-//    fun deleteStudentById(studentId: String)
+    @Query("DELETE FROM student_table WHERE studentId = :studentId")
+    fun deleteStudentById(studentId: String)
+
+    @Query("SELECT * FROM student_table WHERE studentId = :studentId LIMIT 1")
+    suspend fun getStudentById(studentId: String) : Student?
 
     @Query("SELECT * FROM student_table ORDER BY rollNumber ASC")
     fun getAllStudents(): Flow<List<Student>>
