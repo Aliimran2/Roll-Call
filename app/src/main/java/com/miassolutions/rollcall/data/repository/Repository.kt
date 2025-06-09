@@ -51,4 +51,7 @@ class Repository @Inject constructor(private val studentDao: StudentDao) {
 
     }
 
+
+    suspend fun deleteStudentById(studentId: String) = studentDao.deleteStudentById(studentId)
+
 }

@@ -21,7 +21,7 @@ interface StudentDao {
     suspend fun deleteStudent(student: Student)
 
     @Query("DELETE FROM student_table WHERE studentId = :studentId")
-    fun deleteStudentById(studentId: String)
+    suspend fun deleteStudentById(studentId: String)
 
     @Query("SELECT * FROM student_table WHERE studentId = :studentId LIMIT 1")
     suspend fun getStudentById(studentId: String) : Student?

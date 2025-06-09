@@ -36,7 +36,7 @@ class StudentDetailFragment : Fragment(R.layout.student_detail_layout) {
         val studentId = args.id
 
         loadStudentData()
-//        actionButtonsListener(args.id, args.studentName)
+        actionButtonsListener(args.id, args.studentName)
         viewModel.fetchStudentById(studentId)
 
     }
@@ -44,7 +44,7 @@ class StudentDetailFragment : Fragment(R.layout.student_detail_layout) {
     private fun actionButtonsListener(studentId: String, studentName: String) {
         binding.apply {
             deleteBtn.setOnClickListener {
-                viewModel.fetchStudentById(studentId)
+                viewModel.deleteStudentById(studentId)
                 showToast("Deleted $studentName")
                 findNavController().navigateUp()
             }
