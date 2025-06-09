@@ -6,12 +6,14 @@ import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.data.repository.Repository
 import com.miassolutions.rollcall.utils.StudentInsertResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,16 +25,13 @@ class AddStudentViewModel @Inject constructor(private val repository: Repository
     private val _toastMessage = MutableSharedFlow<String>()
     val toastMessage = _toastMessage.asSharedFlow()
 
-    fun showingMessage(message: String) {
-        viewModelScope.launch {
-            _toastMessage.emit(message)
-
-        }
-    }
 
     fun insertStudent(student: Student) {
         viewModelScope.launch {
-            val result = repository.insertStudent(student)
+            val result = withContext(Dispatchers.IO) {
+                repository.insertStudent(student)
+            }
+
             when (result) {
                 is StudentInsertResult.Duplicate -> {
                     _toastMessage.emit("Duplicated")

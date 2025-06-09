@@ -1,5 +1,6 @@
 package com.miassolutions.rollcall.data.dao
 
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -7,20 +8,20 @@ import androidx.room.Query
 import androidx.room.Update
 import com.miassolutions.rollcall.data.entities.Student
 import kotlinx.coroutines.flow.Flow
-
+@Dao
 interface StudentDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertStudent(student: Student)
+    suspend fun insertStudent(student: Student)
 
     @Update
-    fun updateStudent(student: Student)
+    suspend fun updateStudent(student: Student)
 
     @Delete
-    fun deleteStudent(student: Student)
+    suspend fun deleteStudent(student: Student)
 
-    @Query("SELECT * FROM student_table WHERE studentId = :studentId")
-    fun deleteStudentById(studentId: String)
+//    @Query("SELECT * FROM student_table WHERE studentId = :studentId")
+//    fun deleteStudentById(studentId: String)
 
     @Query("SELECT * FROM student_table ORDER BY rollNumber ASC")
     fun getAllStudents(): Flow<List<Student>>

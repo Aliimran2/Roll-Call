@@ -18,6 +18,7 @@ import androidx.core.net.toUri
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +27,7 @@ import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
+import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.utils.ImportFromExcel
 import com.miassolutions.rollcall.utils.SampleExcelGenerator
 import com.miassolutions.rollcall.utils.StudentProvider
@@ -37,6 +39,8 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
     private var _binding: FragmentStudentsBinding? = null
     private val binding get() = _binding!!
+
+    private val addStudentViewModel by viewModels<AddStudentViewModel>()
 
     private lateinit var filePickerLauncher: ActivityResultLauncher<Array<String>>
 
@@ -69,7 +73,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         val students = ImportFromExcel.readStudentsFromExcel(requireContext(), uri)
 
         for (s in students){
-            StudentProvider.addStudent(s.rollNumber, s.studentName)
+            StudentProvider.addStudent(s.regNumber, s.rollNumber, s.studentName, s.fatherName)
             adapter.submitList(StudentProvider.students)
             Log.d("MiasSolutions", "${s.studentName}")
         }
@@ -125,7 +129,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
     private fun navToDetail(student: Student) {
         val action = StudentsFragmentDirections.actionStudentsFragmentToStudentDetailFragment(
-            student.id,
+            student.studentId,
             student.studentName
         )
         findNavController().navigate(action)

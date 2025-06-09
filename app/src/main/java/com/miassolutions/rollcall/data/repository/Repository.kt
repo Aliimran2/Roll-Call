@@ -12,13 +12,18 @@ class Repository @Inject constructor(private val studentDao: StudentDao) {
     val allStudents : Flow<List<Student>> = studentDao.getAllStudents()
 
     suspend fun insertStudent(student: Student) : StudentInsertResult {
-        val existing = studentDao.getStudentByRollAndRegNum(student.rollNumber, student.regNumber)
-        return if (existing == null){
-            studentDao.insertStudent(student)
-            StudentInsertResult.Success
-        } else {
-            StudentInsertResult.Duplicate
+        return try {
+            val existingStudent = studentDao.getStudentByRollAndRegNum(student.rollNumber, student.regNumber)
+            if (existingStudent == null){
+                studentDao.insertStudent(student)
+                StudentInsertResult.Success
+            } else {
+                StudentInsertResult.Duplicate
+            }
+        } catch (e : Exception){
+            StudentInsertResult.Error("${e.message}")
         }
+
     }
 
 }

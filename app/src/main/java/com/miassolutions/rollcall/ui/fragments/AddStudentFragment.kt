@@ -9,18 +9,28 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.miassolutions.rollcall.R
+import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
+import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.utils.ImportFromExcel
 import com.miassolutions.rollcall.utils.StudentProvider
 import com.miassolutions.rollcall.utils.showToast
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
 
-    private var _binding : FragmentAddStudentBinding? = null
-    private val binding get() = _binding!!
+    private val viewModel by viewModels<AddStudentViewModel>()
 
+    private var _binding: FragmentAddStudentBinding? = null
+    private val binding get() = _binding!!
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,37 +40,75 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
 
 
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.toastMessage.collect {
+                    showToast(it)
+                }
+
+            }
+
+        }
 
 
-        binding.saveBtn.setOnClickListener{
+        binding.saveBtn.setOnClickListener {
 
-        setupSaveBtn()
+            setupSaveBtn()
         }
 
     }
 
 
-    private fun setupSaveBtn(){
-        val rollNumber = binding.etRollNumber.text.toString()
-        val studentName = binding.etName.text.toString()
+    private fun setupSaveBtn() {
+        binding.apply {
 
-       when{
-           rollNumber.isBlank() -> {
-               binding.etRollNumber.requestFocus()
-               binding.etRollNumber.error = "Enter roll number"
-           }
-           studentName.isBlank() -> {
-               binding.etName.requestFocus()
-               binding.etName.error = "Enter name of the student"
-           }
+            val regNumber = etRegNumber.text.toString()
+            val rollNumber = etRollNumber.text.toString()
+            val studentName = etName.text.toString()
+            val fatherName = etFatherName.text.toString()
+            val phoneNumber = etPhoneNumber.text.toString()
 
-           else -> {
-               val roll = rollNumber.toInt()
-               StudentProvider.addStudent(roll, studentName)
-               findNavController().navigateUp()
-               showToast("$studentName is added in db")
-           }
-       }
+            when {
+                regNumber.isBlank() -> {
+                    binding.etRegNumber.requestFocus()
+                    binding.etRegNumber.error = "Enter reg. number"
+                }
+
+                rollNumber.isBlank() -> {
+                    binding.etRollNumber.requestFocus()
+                    binding.etRollNumber.error = "Enter roll number"
+                }
+
+                studentName.isBlank() -> {
+                    binding.etName.requestFocus()
+                    binding.etName.error = "Enter name of the student"
+                }
+                fatherName.isBlank() -> {
+                    binding.etFatherName.requestFocus()
+                    binding.etFatherName.error = "Enter name of the student"
+                }
+
+                else -> {
+                    val roll = rollNumber.toInt()
+                    val reg = regNumber.toInt()
+                    val student =
+                        Student(
+                            regNumber = reg,
+                            rollNumber = roll,
+                            studentName = studentName,
+                            fatherName = fatherName,
+                            phoneNumber = phoneNumber,
+                            klass = "8th B"
+                        )
+                    viewModel.insertStudent(student)
+
+
+                    findNavController().navigateUp()
+                    showToast("$studentName is added in db")
+                }
+            }
+        }
+
 
     }
 
@@ -69,7 +117,6 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         super.onDestroyView()
         _binding = null
     }
-
 
 
 }
