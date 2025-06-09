@@ -13,12 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@drawable/toolbar_background"
-
         android:paddingTop="32dp"
-
         android:theme="@style/ThemeOverlay.Material3.Dark"
         app:popupTheme="@style/ThemeOverlay.Material3.Light"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -30,6 +27,7 @@
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
+        android:background="@color/white_one"
         android:layout_height="0dp"
         app:defaultNavHost="true"
 
@@ -43,10 +41,9 @@
         android:id="@+id/bottom_nav_view"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@android:color/transparent"
+        android:background="@color/white_one"
         app:labelVisibilityMode="labeled"
         app:itemIconSize="18dp"
-
         app:itemActiveIndicatorStyle="@style/BottomActiveIconStyle"
         app:itemIconTint="@color/black"
         app:itemTextColor="@color/black"

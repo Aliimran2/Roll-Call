@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/bg_rounded_blue_light"
     android:layout_height="wrap_content"
-    android:padding="12dp">
+    android:layout_margin="12dp">
 
     <!-- Name -->
     <TextView
@@ -12,7 +14,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Ali Hussain"
+        android:text="Name"
+        android:textColor="@color/blue_two"
         android:textSize="12sp"
         android:textStyle="bold"
         android:fontFamily="@font/roboto_slab"
@@ -26,10 +29,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
-        android:background="@drawable/bg_roll"
         android:paddingHorizontal="8dp"
         android:paddingVertical="4dp"
-        android:text="01"
+        android:text="Roll No"
         android:textColor="@android:color/holo_blue_dark"
         android:textSize="12sp"
         android:textStyle="bold"
@@ -39,28 +41,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Toggle Button -->
-    <ToggleButton
+    <TextView
         android:id="@+id/toggleAttendance"
         android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:background="@drawable/bg_toggle_attendance"
-        android:textColor="@android:color/white"
-        android:textOff="@string/absent"
-        android:textOn="@string/present"
-        android:textSize="10sp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/status"
+        android:textColor="@color/blue_two"
+        android:textSize="12sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SmallSp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/divider"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_roll_num" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="white_one">#FAFAFA</color>
+    <color name="dark_gray">#FF000000</color>
+    <color name="gray">#DEDEDEDE</color>
+
+    <color name="green_present">#4CAF50</color>
+    <color name="green_light_border">#A5D6A7</color>
+    <color name="red_absent">#F44336</color>
+    <color name="gray_disabled">#B0B0B0</color>
 
     <color name="orange">#FF6D00</color>
     <color name="red">#D32F2F</color>

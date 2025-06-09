@@ -95,4 +95,6 @@ dependencies {
     implementation ("com.fasterxml:aalto-xml:1.3.2") // A fast, non-blocking XML processor
     implementation ("javax.xml.stream:stax-api:1.0-2") // Standard Java XML Streaming API
 
+    implementation ("com.github.angads25:toggle:1.1.0")
+
 }

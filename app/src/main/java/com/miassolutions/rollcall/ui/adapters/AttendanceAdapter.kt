@@ -18,7 +18,7 @@ class AttendanceAdapter :
                 tvRollNum.text = item.rollNum.toString()
                 tvStudentName.text = item.studentName
 
-                attendanceSwitch.isChecked = item.attendanceStatus.name == AttendanceStatus.PRESENT.name
+//                toggleAttendance.isChecked = item.attendanceStatus.name == AttendanceStatus.PRESENT.name
 
 
             }
