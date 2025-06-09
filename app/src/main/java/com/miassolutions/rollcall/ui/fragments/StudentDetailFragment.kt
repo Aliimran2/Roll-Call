@@ -38,7 +38,7 @@ class StudentDetailFragment : Fragment(R.layout.fragment_student_detail) {
         binding.apply {
             deleteBtn.setOnClickListener{
                 StudentProvider.deleteStudent(studentId)
-                showToast("Deleted")
+                showToast("Deleted $studentName")
                 findNavController().navigateUp()
             }
 

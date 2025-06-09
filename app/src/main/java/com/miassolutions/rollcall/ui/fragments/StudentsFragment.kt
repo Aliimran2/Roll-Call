@@ -20,6 +20,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
@@ -29,10 +31,11 @@ import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.utils.ImportFromExcel
-import com.miassolutions.rollcall.utils.SampleExcelGenerator
 import com.miassolutions.rollcall.utils.StudentProvider
-import com.miassolutions.rollcall.utils.showToast
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class StudentsFragment : Fragment(R.layout.fragment_students) {
 
     private lateinit var adapter: StudentListAdapter
@@ -57,7 +60,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
             }
         }
 
-
+        observeViewModel()
         setupMenuProvider()
         setupFabClickListener()
         setupRecyclerView()
@@ -72,12 +75,20 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     private fun handleExcelFile(uri: Uri) {
         val students = ImportFromExcel.readStudentsFromExcel(requireContext(), uri)
 
-        for (s in students){
-            StudentProvider.addStudent(s.regNumber, s.rollNumber, s.studentName, s.fatherName)
-            adapter.submitList(StudentProvider.students)
-            Log.d("MiasSolutions", "${s.studentName}")
+        for (student in students) {
+            addStudentViewModel.insertStudent(student)
         }
 
+    }
+
+    private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                addStudentViewModel.allStudents.collect {
+                    adapter.submitList(it)
+                }
+            }
+        }
     }
 
     private fun setupMenuProvider() {
@@ -96,8 +107,8 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
                         true
                     }
 
-                    R.id.action_export_sample -> {
-                        SampleExcelGenerator.generateSampleExcelFile(requireContext())
+                    R.id.action_export_excel -> {
+                        //todo()
                         true
                     }
 

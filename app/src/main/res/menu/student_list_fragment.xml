@@ -12,9 +12,9 @@
         />
 
     <item
-        android:id="@+id/action_export_sample"
+        android:id="@+id/action_export_excel"
         android:icon="@drawable/ic_excel"
-        android:title="Export sample Excel"
+        android:title="Export to Excel"
         app:showAsAction="collapseActionView"
         />
 </tools:menu>
