@@ -47,7 +47,9 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
 
     private fun setupRecyclerView() {
-        adapter = AttendanceAdapter()
+        adapter = AttendanceAdapter{student, newStatus ->
+            student.attendanceStatus = newStatus
+        }
         binding.rvAttendance.adapter = adapter
 
         viewModel.studentList.observe(viewLifecycleOwner) { students ->

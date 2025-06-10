@@ -8,7 +8,9 @@ import com.miassolutions.rollcall.data.entities.MarkAttendanceUiModel
 import com.miassolutions.rollcall.databinding.ItemAttendanceBinding
 import com.miassolutions.rollcall.utils.AttendanceStatus
 
-class AttendanceAdapter :
+class AttendanceAdapter(
+    private val onStatusChanged: (MarkAttendanceUiModel, AttendanceStatus) -> Unit
+) :
     ListAdapter<MarkAttendanceUiModel, AttendanceAdapter.AttendanceViewHolder>(AttendanceDiffUtil()) {
 
     inner class AttendanceViewHolder(private val binding: ItemAttendanceBinding) :
@@ -18,8 +20,14 @@ class AttendanceAdapter :
                 tvRollNum.text = item.rollNumber.toString()
                 tvStudentName.text = item.studentName
 
-                toggleAttendance.isChecked = item.attendanceStatus.name == AttendanceStatus.PRESENT.name
+                toggleAttendance.isChecked =
+                    item.attendanceStatus.name == AttendanceStatus.PRESENT.name
 
+                toggleAttendance.setOnCheckedChangeListener { _, isChecked ->
+                    val newState =
+                        if (isChecked) AttendanceStatus.PRESENT else AttendanceStatus.ABSENT
+                    onStatusChanged(item, newState)
+                }
 
             }
         }
