@@ -16,7 +16,12 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSettingsBinding.bind(view)
 
+        setupButtonClickListener()
 
+
+    }
+
+    private fun setupButtonClickListener() {
 
     }
 

@@ -17,6 +17,7 @@ import com.miassolutions.rollcall.data.repository.StudentFetchResult
 import com.miassolutions.rollcall.databinding.FragmentStudentDetailBinding
 import com.miassolutions.rollcall.databinding.StudentDetailLayoutBinding
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
+import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showLongToast
 import com.miassolutions.rollcall.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,10 +62,9 @@ class StudentDetailFragment : Fragment(R.layout.student_detail_layout) {
                 }
                 .setNegativeButton("Cancel", null)
                 .show()
-
-
-
             }
+
+
 
             editNavBtn.setOnClickListener {
                 val action =

@@ -6,13 +6,12 @@
     android:orientation="vertical">
 
 
-    <TextView
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_delete_all_students"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="18sp"
-        android:text="Settings\nLater will be implemented"/>
-
+        android:backgroundTint="@color/red_absent"
+        android:text="DELETE ALL STUDENTS" />
 
 
 </LinearLayout>
