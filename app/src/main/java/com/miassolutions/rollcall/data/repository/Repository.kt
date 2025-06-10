@@ -1,6 +1,7 @@
 package com.miassolutions.rollcall.data.repository
 
 import android.util.Log
+import com.miassolutions.rollcall.data.dao.AttendanceDao
 import com.miassolutions.rollcall.data.dao.StudentDao
 import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.utils.DUPLICATE_REG
@@ -20,7 +21,7 @@ sealed class StudentFetchResult<out T> {
 
 
 
-class Repository @Inject constructor(private val studentDao: StudentDao) {
+class Repository @Inject constructor(private val studentDao: StudentDao, private val attendanceDao: AttendanceDao) {
 
 
     val allStudents: Flow<List<Student>> = studentDao.getAllStudents()

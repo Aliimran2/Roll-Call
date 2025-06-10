@@ -1,9 +1,14 @@
 package com.miassolutions.rollcall.data.entities
 
+import androidx.room.Embedded
+import androidx.room.Relation
 import com.miassolutions.rollcall.utils.AttendanceStatus
 
 data class StudentWithAttendance(
-    val rollNum : Int,
-    val studentName : String,
-    var attendanceStatus: AttendanceStatus
+   @Embedded val student: Student,
+    @Relation(
+        parentColumn = "studentId",
+        entityColumn = "studentId"
+    )
+    val attendance: List<Attendance>
 )

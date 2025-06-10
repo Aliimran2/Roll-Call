@@ -3,6 +3,7 @@ package com.miassolutions.rollcall.di
 import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.miassolutions.rollcall.data.dao.AttendanceDao
 import com.miassolutions.rollcall.data.dao.StudentDao
 import com.miassolutions.rollcall.data.database.AppDatabase
 import dagger.Module
@@ -31,6 +32,12 @@ object DatabaseModule {
     @Singleton
     fun providesStudentDao(db: AppDatabase): StudentDao {
         return db.studentDao()
+    }
+
+    @Provides
+    @Singleton
+    fun providesAttendanceDao(db: AppDatabase): AttendanceDao {
+        return db.attendanceDao()
     }
 
 }
