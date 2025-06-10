@@ -60,6 +60,8 @@ class Repository @Inject constructor(private val studentDao: StudentDao) {
 
     }
 
+    suspend fun deleteAll(students : List<Student>) = studentDao.deleteAllStudent(students)
+
 
     suspend fun deleteStudentById(studentId: String) = studentDao.deleteStudentById(studentId)
 

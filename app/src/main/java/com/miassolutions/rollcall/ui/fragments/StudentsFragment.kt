@@ -85,7 +85,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 addStudentViewModel.allStudents.collectLatest {
-                    Log.d("MiasSolution", "$it")
+                    Log.d("MiasSolution_RoomList", "$it")
                     adapter.submitList(it)
                 }
             }
@@ -165,10 +165,8 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy > 0 && fab.isVisible) {
-                    Log.d("MiasSolutions", "onScrolled: dy : $dy")
                     fab.hide()
                 } else if (dy < 0 && fab.visibility != View.VISIBLE) {
-                    Log.d("MiasSolutions", "onScrolled: dy : $dy")
                     fab.show()
                 }
             }
