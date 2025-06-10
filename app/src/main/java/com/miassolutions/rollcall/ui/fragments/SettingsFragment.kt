@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentSettingsBinding
 import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
@@ -27,7 +29,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         setupButtonClickListener()
 
         collectLatestFlow {
-            viewModel.messageEvent.collect{
+            viewModel.messageEvent.collect {
                 showSnackbar(it)
             }
         }
@@ -37,8 +39,17 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private fun setupButtonClickListener() {
         binding.btnDeleteAllStudents.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Caution!!")
+                .setMessage("Are you sure? It will delete all students.")
+                .setPositiveButton("Yes, Delete") { dialog, _ ->
+                    viewModel.deleteAll()
+                    dialog.dismiss()
+                    findNavController().navigate(R.id.studentsFragment)
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
 
-            viewModel.deleteAll()
         }
     }
 
