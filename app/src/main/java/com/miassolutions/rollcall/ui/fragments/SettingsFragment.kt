@@ -45,7 +45,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 .setPositiveButton("Yes, Delete") { dialog, _ ->
                     viewModel.deleteAll()
                     dialog.dismiss()
-                    findNavController().navigate(R.id.studentsFragment)
+                    findNavController().navigateUp()
                 }
                 .setNegativeButton("Cancel", null)
                 .show()
