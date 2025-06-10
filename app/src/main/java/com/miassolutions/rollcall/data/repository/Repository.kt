@@ -1,5 +1,6 @@
 package com.miassolutions.rollcall.data.repository
 
+import android.util.Log
 import com.miassolutions.rollcall.data.dao.StudentDao
 import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.utils.DUPLICATE_REG
@@ -56,8 +57,18 @@ class Repository @Inject constructor(private val studentDao: StudentDao) {
                 }
             }
         }
+    }
 
-
+    suspend fun insertStudents(students : List<Student>) : Boolean {
+        return withContext(Dispatchers.IO){
+            try {
+                studentDao.insertAllStudent(students)
+                true
+            } catch (e:Exception){
+                Log.e("Repository", "Error inserting students", e)
+                false
+            }
+        }
     }
 
     suspend fun deleteAll(students : List<Student>) = studentDao.deleteAllStudent(students)

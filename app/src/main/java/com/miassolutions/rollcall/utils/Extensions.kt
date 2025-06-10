@@ -6,6 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -23,5 +24,15 @@ fun LifecycleOwner.collectLatestFlow(
 ) {
     lifecycleScope.launch {
         repeatOnLifecycle(lifecycleState) { block() }
+    }
+}
+
+fun Fragment.showSnackbar(
+    message: String,
+    duration: Int = Snackbar.LENGTH_SHORT
+) {
+
+    view?.let { hostView ->
+        Snackbar.make(hostView, message, duration).show()
     }
 }

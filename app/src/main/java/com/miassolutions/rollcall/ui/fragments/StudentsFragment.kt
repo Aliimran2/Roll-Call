@@ -25,12 +25,16 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.google.android.material.snackbar.Snackbar
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.utils.ImportFromExcel
+import com.miassolutions.rollcall.utils.collectLatestFlow
+import com.miassolutions.rollcall.utils.showSnackbar
+import com.miassolutions.rollcall.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -75,21 +79,40 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     private fun handleExcelFile(uri: Uri) {
         val students = ImportFromExcel.readStudentsFromExcel(requireContext(), uri)
 
-        for (student in students) {
-            addStudentViewModel.insertStudent(student)
+        if (students.isEmpty()) {
+            showToast("No valid students found in file.")
+        } else {
+            addStudentViewModel.importStudents(students)
         }
+
 
     }
 
     private fun observeViewModel() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                addStudentViewModel.allStudents.collectLatest {
-                    Log.d("MiasSolution_RoomList", "$it")
-                    adapter.submitList(it)
+        collectLatestFlow {
+            addStudentViewModel.allStudents.collectLatest {
+                Log.d("MiasSolution_RoomList", "$it")
+                adapter.submitList(it)
+            }
+        }
+
+        collectLatestFlow {
+            addStudentViewModel.importUIState.collectLatest { state ->
+                when (state) {
+                    is AddStudentViewModel.ImportUIState.Idle -> binding.progressBar.isVisible = false
+                    is AddStudentViewModel.ImportUIState.Importing -> binding.progressBar.isVisible =true
+                    is AddStudentViewModel.ImportUIState.Success -> {
+                        binding.progressBar.isVisible = false
+                        showSnackbar("Imported : ${state.successCount}, skipped : ${state.failureCount}")
+                    }
+                    is AddStudentViewModel.ImportUIState.Error -> {
+                        binding.progressBar.isVisible = false
+                        showSnackbar("${state.message}")
+                    }
                 }
             }
         }
+
     }
 
     private fun setupMenuProvider() {
@@ -173,6 +196,8 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         })
 
     }
+
+
 
 
     override fun onDestroyView() {

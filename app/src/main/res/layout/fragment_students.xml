@@ -25,4 +25,13 @@
         app:backgroundTint="@color/green"
         android:contentDescription="Add Student"
         android:layout_height="wrap_content"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        style="?android:attr/progressBarStyleLarge" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -7,10 +7,13 @@ import com.miassolutions.rollcall.data.repository.Repository
 import com.miassolutions.rollcall.utils.StudentInsertResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,10 +33,41 @@ class AddStudentViewModel @Inject constructor(private val repository: Repository
         viewModelScope.launch {
 
             val result = repository.insertStudent(student)
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
 
-            _toastMessage.emit(result)
+                _toastMessage.emit(result)
             }
         }
     }
+
+
+    private val _importUIState = MutableStateFlow<ImportUIState>(ImportUIState.Idle)
+    val importUIState = _importUIState.asStateFlow()
+
+    sealed class ImportUIState {
+        data object Idle : ImportUIState()
+        data object Importing : ImportUIState()
+        data class Success(val successCount: Int, val failureCount: Int) : ImportUIState()
+        data class Error(val message: String) : ImportUIState()
+    }
+
+    fun importStudents(students: List<Student>){
+        viewModelScope.launch {
+            _importUIState.value = ImportUIState.Importing
+            var successCount = 0
+            var failureCount = 0
+
+            students.forEach {student->
+                when(repository.insertStudent(student)){
+                    is StudentInsertResult.Failure -> failureCount++
+                    is StudentInsertResult.Success -> successCount++
+                }
+            }
+
+            _importUIState.value = ImportUIState.Success(successCount, failureCount)
+            delay(1000)
+            _importUIState.value = ImportUIState.Idle
+        }
+    }
+
 }
