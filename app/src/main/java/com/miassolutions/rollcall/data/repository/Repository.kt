@@ -3,6 +3,7 @@ package com.miassolutions.rollcall.data.repository
 import android.util.Log
 import com.miassolutions.rollcall.data.dao.AttendanceDao
 import com.miassolutions.rollcall.data.dao.StudentDao
+import com.miassolutions.rollcall.data.entities.Attendance
 import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.utils.DUPLICATE_REG
 import com.miassolutions.rollcall.utils.DUPLICATE_ROLL
@@ -76,5 +77,45 @@ class Repository @Inject constructor(private val studentDao: StudentDao, private
 
 
     suspend fun deleteStudentById(studentId: String) = studentDao.deleteStudentById(studentId)
+
+
+    //attendance operations
+
+
+    suspend fun insertAttendance(attendance: Attendance) {
+        attendanceDao.insertAttendance(attendance)
+    }
+
+    suspend fun insertAttendances(attendanceList: List<Attendance>) {
+        attendanceDao.insertAttendances(attendanceList)
+    }
+
+    fun getAttendanceForStudent(studentId: String): Flow<List<Attendance>> {
+        return attendanceDao.getAttendanceByStudent(studentId)
+    }
+
+    fun getAttendanceForDate(date: String): Flow<List<Attendance>> {
+        return attendanceDao.getAttendanceForDate(date)
+    }
+
+    fun getTotalMarkedStudentsCount(date: String): Flow<Int> {
+        return attendanceDao.getTotalMarkedStudentsCount(date)
+    }
+
+    fun getPresentStudentsCount(date: String): Flow<Int> {
+        return attendanceDao.getPresentStudentsCount(date)
+    }
+
+    fun getAbsentStudentsCount(date: String): Flow<Int> {
+        return attendanceDao.getAbsentStudentsCount(date)
+    }
+
+    suspend fun deleteAttendanceForStudent(studentId: String) {
+        attendanceDao.deleteAttendanceForStudent(studentId)
+    }
+
+    suspend fun deleteAllAttendance() {
+        attendanceDao.deleteAllAttendance()
+    }
 
 }

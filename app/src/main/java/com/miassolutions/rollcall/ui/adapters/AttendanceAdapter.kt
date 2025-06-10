@@ -4,18 +4,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.miassolutions.rollcall.data.entities.MarkAttendanceUiModel
 import com.miassolutions.rollcall.data.entities.StudentWithAttendance
 import com.miassolutions.rollcall.databinding.ItemAttendanceBinding
 import com.miassolutions.rollcall.utils.AttendanceStatus
 
 class AttendanceAdapter :
-    ListAdapter<StudentWithAttendance, AttendanceAdapter.AttendanceViewHolder>(AttendanceDiffUtil()) {
+    ListAdapter<MarkAttendanceUiModel, AttendanceAdapter.AttendanceViewHolder>(AttendanceDiffUtil()) {
 
     inner class AttendanceViewHolder(private val binding: ItemAttendanceBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: StudentWithAttendance) {
+        fun bind(item: MarkAttendanceUiModel) {
             binding.apply {
-                tvRollNum.text = item.rollNum.toString()
+                tvRollNum.text = item.rollNumber.toString()
                 tvStudentName.text = item.studentName
 
                 toggleAttendance.isChecked = item.attendanceStatus.name == AttendanceStatus.PRESENT.name

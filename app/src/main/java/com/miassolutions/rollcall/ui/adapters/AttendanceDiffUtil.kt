@@ -1,20 +1,21 @@
 package com.miassolutions.rollcall.ui.adapters
 
 import androidx.recyclerview.widget.DiffUtil
-import com.miassolutions.rollcall.data.entities.StudentWithAttendance
+import com.miassolutions.rollcall.data.entities.MarkAttendanceUiModel
 
-class AttendanceDiffUtil : DiffUtil.ItemCallback<StudentWithAttendance>() {
+class AttendanceDiffUtil : DiffUtil.ItemCallback<MarkAttendanceUiModel>() {
     override fun areItemsTheSame(
-        oldItem: StudentWithAttendance,
-        newItem: StudentWithAttendance
+        oldItem: MarkAttendanceUiModel,
+        newItem: MarkAttendanceUiModel
     ): Boolean {
-        return oldItem.rollNum == newItem.rollNum
+        return oldItem.studentId == newItem.studentId
     }
 
     override fun areContentsTheSame(
-        oldItem: StudentWithAttendance,
-        newItem: StudentWithAttendance
+        oldItem: MarkAttendanceUiModel,
+        newItem: MarkAttendanceUiModel
     ): Boolean {
         return oldItem == newItem
     }
+
 }
