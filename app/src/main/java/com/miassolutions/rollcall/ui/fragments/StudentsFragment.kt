@@ -32,6 +32,7 @@ import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.utils.ImportFromExcel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -83,7 +84,8 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                addStudentViewModel.allStudents.collect {
+                addStudentViewModel.allStudents.collectLatest {
+                    Log.d("MiasSolution", "$it")
                     adapter.submitList(it)
                 }
             }

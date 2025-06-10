@@ -2,6 +2,7 @@ package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -9,14 +10,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.data.repository.StudentFetchResult
 import com.miassolutions.rollcall.databinding.FragmentStudentDetailBinding
 import com.miassolutions.rollcall.databinding.StudentDetailLayoutBinding
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
+import com.miassolutions.rollcall.utils.showLongToast
 import com.miassolutions.rollcall.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -44,9 +48,22 @@ class StudentDetailFragment : Fragment(R.layout.student_detail_layout) {
     private fun actionButtonsListener(studentId: String, studentName: String) {
         binding.apply {
             deleteBtn.setOnClickListener {
-                viewModel.deleteStudentById(studentId)
-                showToast("Deleted $studentName")
+
+                AlertDialog.Builder(requireContext())
+
+                .setTitle("Delete $studentName!!")
+                .setMessage("Are you sure?")
+                .setPositiveButton("Yes, Delete") { dialog, _ ->
+                    viewModel.deleteStudentById(studentId)
+                    Snackbar.make(binding.root, "$studentName Deleted", Snackbar.LENGTH_LONG)
+                        .show()
                 findNavController().navigateUp()
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+
+
+
             }
 
             editNavBtn.setOnClickListener {
@@ -67,11 +84,10 @@ class StudentDetailFragment : Fragment(R.layout.student_detail_layout) {
                 viewModel.studentState.collect { result ->
                     when (result) {
                         is StudentFetchResult.Error -> {
-
+                            showLongToast(result.message)
                         }
 
-                        StudentFetchResult.Loading -> {
-
+                        StudentFetchResult.Loading -> {/*nothing to do*/
                         }
 
                         is StudentFetchResult.Success<Student> -> {

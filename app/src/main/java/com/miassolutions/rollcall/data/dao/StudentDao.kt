@@ -14,6 +14,9 @@ interface StudentDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertStudent(student: Student)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertAllStudent(students: List<Student>)
+
     @Update
     suspend fun updateStudent(student: Student)
 
