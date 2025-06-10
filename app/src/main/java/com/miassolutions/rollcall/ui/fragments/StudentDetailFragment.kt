@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.Student
@@ -50,7 +51,7 @@ class StudentDetailFragment : Fragment(R.layout.student_detail_layout) {
         binding.apply {
             deleteBtn.setOnClickListener {
 
-                AlertDialog.Builder(requireContext())
+                MaterialAlertDialogBuilder(requireContext())
 
                 .setTitle("Delete $studentName!!")
                 .setMessage("Are you sure?")

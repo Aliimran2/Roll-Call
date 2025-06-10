@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
+        android:id="@+id/studentsFragment"
+        android:icon="@drawable/ic_students"
+        android:title="Students" />
+
+    <item
         android:id="@+id/attendanceFragment"
         android:icon="@drawable/ic_hand"
         android:title="Attendance" />
@@ -12,10 +17,6 @@
         android:icon="@drawable/ic_stats"
         android:title="Stats" />
 
-    <item
-        android:id="@+id/studentsFragment"
-        android:icon="@drawable/ic_students"
-        android:title="Students" />
     <item
         android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_settings"

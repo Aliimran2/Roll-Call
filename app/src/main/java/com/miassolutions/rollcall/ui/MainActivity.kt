@@ -37,9 +37,9 @@ class MainActivity : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.statsFragment,
-                R.id.attendanceFragment,
                 R.id.studentsFragment,
+                R.id.attendanceFragment,
+                R.id.statsFragment,
                 R.id.settingsFragment
             )
         )
