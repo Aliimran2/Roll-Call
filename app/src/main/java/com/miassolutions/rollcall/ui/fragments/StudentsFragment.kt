@@ -45,39 +45,31 @@ import kotlinx.coroutines.withContext
 @AndroidEntryPoint
 class StudentsFragment : Fragment(R.layout.fragment_students) {
 
-    private lateinit var adapter: StudentListAdapter
-
     private var _binding: FragmentStudentsBinding? = null
     private val binding get() = _binding!!
 
     private val addStudentViewModel by viewModels<AddStudentViewModel>()
-
+    private lateinit var adapter: StudentListAdapter
     private lateinit var filePickerLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentStudentsBinding.bind(view)
 
-
-        filePickerLauncher = registerForActivityResult(
-            ActivityResultContracts.OpenDocument()
-        ) { uri: Uri? ->
-            uri?.let {
-                handleExcelFile(it)
-            }
-        }
-
-        observeViewModel()
-        setupMenuProvider()
-        setupFabClickListener()
         setupRecyclerView()
-
-
+        setupFabClickListener()
+        setupMenuProvider()
+        observeViewModel()
+        setupFilePicker()
     }
 
+    private fun setupFilePicker() {
+        filePickerLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+            uri?.let { handleExcelFile(it) }
+        }
+    }
 
     private fun pickExcelFile() {
-
         filePickerLauncher.launch(arrayOf("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
     }
 
@@ -94,68 +86,60 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
                 if (students.isEmpty()) {
                     showSnackbar("No valid students found in file.")
                 } else {
+                    Log.d("ImportDebug", "Read ${students.size} students from file")
                     addStudentViewModel.importStudents(students)
                 }
 
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.e("ImportError", "Error reading Excel: ${e.message}", e)
                 showSnackbar("Failed to import: ${e.localizedMessage ?: "Invalid Excel file."}")
             } finally {
                 (parentFragmentManager.findFragmentByTag(ImportProgressDialogFragment.TAG) as? DialogFragment)?.dismiss()
             }
         }
-
-
     }
 
     private fun observeViewModel() {
         collectLatestFlow {
             addStudentViewModel.allStudents.collectLatest {
-                Log.d("MiasSolution_RoomList", "$it")
                 adapter.submitList(it)
             }
         }
 
         collectLatestFlow {
             addStudentViewModel.importUIState.collectLatest { state ->
+                binding.progressBar.isVisible = state is AddStudentViewModel.ImportUIState.Importing
+
                 when (state) {
-                    is AddStudentViewModel.ImportUIState.Idle -> binding.progressBar.isVisible = false
-                    is AddStudentViewModel.ImportUIState.Importing -> binding.progressBar.isVisible =true
                     is AddStudentViewModel.ImportUIState.Success -> {
-                        binding.progressBar.isVisible = false
-                        showSnackbar("Imported : ${state.successCount}, skipped : ${state.failureCount}")
+                        showSnackbar("Imported: ${state.successCount}, Skipped: ${state.failureCount}")
                     }
                     is AddStudentViewModel.ImportUIState.Error -> {
-                        binding.progressBar.isVisible = false
-                        showSnackbar("${state.message}")
+                        showSnackbar(state.message)
                     }
+                    else -> Unit
                 }
             }
         }
-
     }
 
     private fun setupMenuProvider() {
-
-        val menuHost = requireActivity()
-        menuHost.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.student_list_fragment, menu)
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {
+                inflater.inflate(R.menu.student_list_fragment, menu)
             }
 
             @RequiresApi(Build.VERSION_CODES.Q)
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
+            override fun onMenuItemSelected(item: MenuItem): Boolean {
+                return when (item.itemId) {
                     R.id.action_import_excel -> {
                         pickExcelFile()
                         true
                     }
-
                     R.id.action_export_excel -> {
-                        //todo()
+                        // TODO: Implement export
                         true
                     }
-
                     else -> false
                 }
             }
@@ -168,7 +152,6 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         }
     }
 
-
     private fun dialPhoneNumber(phoneNumber: String) {
         val intent = Intent(Intent.ACTION_DIAL).apply {
             data = "tel:$phoneNumber".toUri()
@@ -178,47 +161,33 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         try {
             startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            Toast.makeText(requireContext(), "No dialer app found", Toast.LENGTH_SHORT).show()
+            showToast("No dialer app found")
         }
     }
 
     private fun navToDetail(student: Student) {
         val action = StudentsFragmentDirections.actionStudentsFragmentToStudentDetailFragment(
-            student.studentId,
-            student.studentName
+            student.studentId, student.studentName
         )
         findNavController().navigate(action)
     }
 
-
     private fun setupRecyclerView() {
-
         adapter = StudentListAdapter(
-            onPhoneClick = { phoneNumber -> dialPhoneNumber(phoneNumber) },
-            onItemClick = { student -> navToDetail(student) }
+            onPhoneClick = ::dialPhoneNumber,
+            onItemClick = ::navToDetail
         )
-
-
 
         binding.rvStudents.adapter = adapter
 
-        binding.rvStudents.addOnScrollListener(object : OnScrollListener() {
-            val fab = binding.fabAddStudent
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (dy > 0 && fab.isVisible) {
-                    fab.hide()
-                } else if (dy < 0 && fab.visibility != View.VISIBLE) {
-                    fab.show()
-                }
+        binding.rvStudents.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(rv, dx, dy)
+                if (dy > 0) binding.fabAddStudent.hide()
+                else if (dy < 0) binding.fabAddStudent.show()
             }
         })
-
     }
-
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()

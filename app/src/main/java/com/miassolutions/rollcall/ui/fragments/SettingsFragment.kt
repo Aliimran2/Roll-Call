@@ -8,6 +8,7 @@ import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentSettingsBinding
 import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
 import com.miassolutions.rollcall.utils.collectLatestFlow
+import com.miassolutions.rollcall.utils.showSnackbar
 import com.miassolutions.rollcall.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,11 +25,13 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         _binding = FragmentSettingsBinding.bind(view)
 
         setupButtonClickListener()
+
         collectLatestFlow {
-            viewModel.deleteAllMessage.collect {
-                showToast(it)
+            viewModel.messageEvent.collect{
+                showSnackbar(it)
             }
         }
+
 
     }
 

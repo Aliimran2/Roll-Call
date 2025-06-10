@@ -41,7 +41,7 @@ class Repository @Inject constructor(private val studentDao: StudentDao) {
     }
 
     suspend fun insertStudent(student: Student): StudentInsertResult {
-        val duplicateRegNum = studentDao.getStudentByRollNum(student.regNumber)
+        val duplicateRegNum = studentDao.getStudentByRegNum(student.regNumber)
         val duplicateRollNum = studentDao.getStudentByRollNum(student.rollNumber)
 
         return when {
@@ -71,7 +71,7 @@ class Repository @Inject constructor(private val studentDao: StudentDao) {
         }
     }
 
-    suspend fun deleteAll(students : List<Student>) = studentDao.deleteAllStudent(students)
+    suspend fun clearAllStudents() = studentDao.clearAllStudents()
 
 
     suspend fun deleteStudentById(studentId: String) = studentDao.deleteStudentById(studentId)
