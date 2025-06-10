@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -36,8 +37,10 @@ import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showSnackbar
 import com.miassolutions.rollcall.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class StudentsFragment : Fragment(R.layout.fragment_students) {
@@ -72,17 +75,34 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
     }
 
+
     private fun pickExcelFile() {
+
         filePickerLauncher.launch(arrayOf("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
     }
 
     private fun handleExcelFile(uri: Uri) {
-        val students = ImportFromExcel.readStudentsFromExcel(requireContext(), uri)
+        val dialog = ImportProgressDialogFragment()
+        dialog.show(parentFragmentManager, ImportProgressDialogFragment.TAG)
 
-        if (students.isEmpty()) {
-            showToast("No valid students found in file.")
-        } else {
-            addStudentViewModel.importStudents(students)
+        lifecycleScope.launch {
+            try {
+                val students = withContext(Dispatchers.IO) {
+                    ImportFromExcel.readStudentsFromExcel(requireContext(), uri)
+                }
+
+                if (students.isEmpty()) {
+                    showSnackbar("No valid students found in file.")
+                } else {
+                    addStudentViewModel.importStudents(students)
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                showSnackbar("Failed to import: ${e.localizedMessage ?: "Invalid Excel file."}")
+            } finally {
+                (parentFragmentManager.findFragmentByTag(ImportProgressDialogFragment.TAG) as? DialogFragment)?.dismiss()
+            }
         }
 
 

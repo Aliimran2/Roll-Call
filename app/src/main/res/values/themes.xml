@@ -21,12 +21,14 @@
 
 
     <style name="BottomActiveIconStyle" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-
         <item name="android:color">@color/green</item>
-
-
-
     </style>
+
+    <style name="TransparentDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
 
 
 
