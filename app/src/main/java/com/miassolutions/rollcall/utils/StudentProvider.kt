@@ -3,7 +3,6 @@ package com.miassolutions.rollcall.utils
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.miassolutions.rollcall.data.entities.Student
-import com.miassolutions.rollcall.data.entities.StudentWithAttendance
 import java.time.LocalDate
 
 
