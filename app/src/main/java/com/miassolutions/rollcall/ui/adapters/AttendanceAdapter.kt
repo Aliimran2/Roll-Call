@@ -20,12 +20,12 @@ class AttendanceAdapter(
                 tvRollNum.text = item.rollNumber.toString()
                 tvStudentName.text = item.studentName
 
-                toggleAttendance.isChecked =
-                    item.attendanceStatus.name == AttendanceStatus.PRESENT.name
+                toggleAttendance.setOnCheckedChangeListener(null) // clear old listener
+
+                toggleAttendance.isChecked = item.attendanceStatus == AttendanceStatus.PRESENT
 
                 toggleAttendance.setOnCheckedChangeListener { _, isChecked ->
-                    val newState =
-                        if (isChecked) AttendanceStatus.PRESENT else AttendanceStatus.ABSENT
+                    val newState = if (isChecked) AttendanceStatus.PRESENT else AttendanceStatus.ABSENT
                     onStatusChanged(item, newState)
                 }
 

@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.miassolutions.rollcall.data.entities.Attendance
+import com.miassolutions.rollcall.data.entities.MarkAttendanceUiModel
 import com.miassolutions.rollcall.data.repository.Repository
+import com.miassolutions.rollcall.utils.AttendanceStatus
 import com.miassolutions.rollcall.utils.getCurrentDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,6 +15,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,26 +32,36 @@ class AttendanceViewModel @Inject constructor(private val repository: Repository
         }
     }
 
+    private val _uiState = MutableStateFlow<List<MarkAttendanceUiModel>>(emptyList())
+    val uiState: StateFlow<List<MarkAttendanceUiModel>> = _uiState
+
+
+    fun setInitialAttendanceList(students: List<MarkAttendanceUiModel>) {
+        _uiState.value = students
+    }
+
+    // When toggle is changed in the adapter
+    fun updateAttendanceStatus(student: MarkAttendanceUiModel, newStatus: AttendanceStatus) {
+        _uiState.value = _uiState.value.map {
+            if (it.studentId == student.studentId) it.copy(attendanceStatus = newStatus) else it
+        }
+    }
+
+    // Helper functions
+    val totalCount: StateFlow<Int> = uiState.map { it.size }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+
+    val presentCount: StateFlow<Int> = uiState.map {
+        it.count { student -> student.attendanceStatus == AttendanceStatus.PRESENT }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+
+    val absentCount: StateFlow<Int> = uiState.map {
+        it.count { student -> student.attendanceStatus == AttendanceStatus.ABSENT }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+
+
     private val _selectedDate = MutableStateFlow(getCurrentDate())
 
-    // UI observable counts as StateFlow<Int>
-
-    val totalMarkedCount: StateFlow<Int> = _selectedDate.flatMapLatest { date ->
-        repository.getTotalMarkedStudentsCount(date)
-            .catch { emit(0) }
-    }.stateIn(viewModelScope, SharingStarted.Lazily, 0)
-
-    val presentCount: StateFlow<Int> = _selectedDate.flatMapLatest { date ->
-        repository.getPresentStudentsCount(date)
-            .catch { emit(0) }
-    }.stateIn(viewModelScope, SharingStarted.Lazily, 0)
-
-    val absentCount: StateFlow<Int> = _selectedDate.flatMapLatest { date ->
-        repository.getAbsentStudentsCount(date)
-            .catch { emit(0) }
-    }.stateIn(viewModelScope, SharingStarted.Lazily, 0)
-
-    // To update date (if needed)
     fun setDate(date: String) {
         _selectedDate.value = date
     }
