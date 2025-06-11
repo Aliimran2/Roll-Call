@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_add_att"
+        android:icon="@drawable/ic_add"
+        android:title="Add Att."
+        app:iconTint="@color/white_two"
+        app:showAsAction="withText|ifRoom" />
+
+    <item android:title="Sort">
+        <menu>
+            <item
+                android:id="@+id/sort_asc"
+                android:title="ASC" />
+
+            <item
+                android:id="@+id/sort_desc"
+                android:title="DESC" />
+
+        </menu>
+    </item>
+
+</menu>
