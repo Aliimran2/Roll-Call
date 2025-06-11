@@ -33,7 +33,11 @@
         android:id="@+id/statsFragment"
         tools:layout="@layout/fragment_stats"
         android:name="com.miassolutions.rollcall.ui.fragments.StatsFragment"
-        android:label="Stats" />
+        android:label="Stats" >
+        <action
+            android:id="@+id/action_statsFragment_to_attendanceFragment"
+            app:destination="@id/attendanceFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.miassolutions.rollcall.ui.fragments.SettingsFragment"
@@ -69,9 +73,6 @@
         <action
             android:id="@+id/action_dashboardFragment_to_studentsFragment"
             app:destination="@id/studentsFragment" />
-        <action
-            android:id="@+id/action_dashboardFragment_to_attendanceFragment"
-            app:destination="@id/attendanceFragment" />
         <action
             android:id="@+id/action_dashboardFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />

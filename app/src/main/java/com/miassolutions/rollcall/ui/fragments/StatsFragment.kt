@@ -8,6 +8,7 @@ import android.view.View
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.Stats
 import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
@@ -25,14 +26,14 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentStatsBinding.bind(view)
 
-        val statsList = List(30) {
-            Stats(it + 1, "20-06-25", it + 1, it + 1, it + 1, it.toDouble())
-        }
-
-        val adapter = StatsListAdapter()
-        adapter.submitList(statsList)
-
-        binding.rvStats.adapter = adapter
+//        val statsList = List(30) {
+//            Stats(it + 1, "20-06-25", it + 1, it + 1, it + 1, it.toDouble())
+//        }
+//
+//        val adapter = StatsListAdapter()
+//        adapter.submitList(statsList)
+//
+//        binding.rvStats.adapter = adapter
 
         menuProvider()
 
@@ -50,7 +51,8 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     return when (menuItem.itemId) {
                         R.id.action_add_att -> {
-                            showToast("adding...")
+                            val action = StatsFragmentDirections.actionStatsFragmentToAttendanceFragment()
+                            findNavController().navigate(action)
                             true
                         }
 

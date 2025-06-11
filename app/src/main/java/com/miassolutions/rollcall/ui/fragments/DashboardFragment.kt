@@ -53,7 +53,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         dashboardItems.apply {
             add(Dashboard(R.drawable.ic_hand, "Attendance"))
             add(Dashboard(R.drawable.ic_students, "Students"))
-            add(Dashboard(R.drawable.ic_stats, "History"))
+//            add(Dashboard(R.drawable.ic_stats, "History"))
             add(Dashboard(R.drawable.ic_settings, "Settings"))
 
         }
@@ -86,7 +86,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                     when (clickedItem.title) {
                         "Attendance" -> {
                             val action =
-                                DashboardFragmentDirections.actionDashboardFragmentToAttendanceFragment()
+                                DashboardFragmentDirections.actionDashboardFragmentToStatsFragment()
                             findNavController().navigate(action)
                         }
 
@@ -97,9 +97,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                         }
 
                         "History" -> {
-                            val action =
-                                DashboardFragmentDirections.actionDashboardFragmentToStatsFragment()
-                            findNavController().navigate(action)
+
                         }
 
                         "Settings" -> {
