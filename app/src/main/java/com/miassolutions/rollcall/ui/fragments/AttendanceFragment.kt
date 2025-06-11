@@ -2,6 +2,7 @@ package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.miassolutions.rollcall.R
@@ -35,13 +36,31 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
         collectLatestFlow {
             launch {
-                viewModel.totalCount.collectLatest { binding.tvTotal.text = it.toString() }
+                viewModel.totalCount.collectLatest {
+                    binding.totalCard.tvCount.text = it.toString()
+                }
             }
             launch {
-                viewModel.presentCount.collectLatest { binding.tvPresent.text = it.toString() }
+                viewModel.presentCount.collectLatest {
+                    binding.presentCard.tvCount.text = it.toString()
+                    binding.presentCard.tvCount.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.green_present
+                        )
+                    )
+                }
             }
             launch {
-                viewModel.absentCount.collectLatest { binding.tvAbsent.text = it.toString() }
+                viewModel.absentCount.collectLatest {
+                    binding.absentCard.tvCount.text = it.toString()
+                    binding.absentCard.tvCount.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.red_absent
+                        )
+                    )
+                }
             }
             launch {
                 viewModel.uiState.collectLatest { adapter.submitList(it) }
@@ -51,7 +70,11 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         binding.btnSave.setOnClickListener {
             val date = getCurrentDate()
             val attendanceEntity = viewModel.uiState.value.map {
-                Attendance(studentId = it.studentId, date = date, attendanceStatus = it.attendanceStatus)
+                Attendance(
+                    studentId = it.studentId,
+                    date = date,
+                    attendanceStatus = it.attendanceStatus
+                )
             }
             viewModel.saveAttendance(attendanceEntity)
             showSnackbar("Attendance Saved")

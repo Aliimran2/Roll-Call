@@ -1,139 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.fragments.AttendanceFragment">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/materialCardView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/white"
-        android:elevation="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/materialCardView3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:gravity="center_horizontal">
 
-        <RelativeLayout
-            android:layout_width="78dp"
-            android:layout_height="73dp"
-            android:orientation="vertical">
+        <include
+            android:id="@+id/total_card"
+            layout="@layout/item_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp" />
 
-            <TextView
-                android:id="@+id/tv_total"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:textSize="32sp"
-                android:textStyle="bold" />
+        <include
+            android:id="@+id/present_card"
+            layout="@layout/item_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_toEndOf="@id/total_card" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+        <include
+            android:id="@+id/absent_card"
+            layout="@layout/item_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/present_card" />
 
-                android:layout_marginTop="2dp"
-                android:gravity="center"
-                android:text="Total"
-                android:textSize="10sp" />
+    </RelativeLayout>
 
 
-        </RelativeLayout>
+    <!--    <com.google.android.material.card.MaterialCardView-->
+    <!--        android:id="@+id/materialCardView2"-->
+    <!--        android:layout_width="80dp"-->
+    <!--        android:layout_height="80dp"-->
+    <!--        android:layout_marginEnd="16dp"-->
+    <!--        android:backgroundTint="@color/white"-->
+    <!--        android:elevation="8dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/materialCardView"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.5"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/materialCardView3"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/materialCardView">-->
 
-    </com.google.android.material.card.MaterialCardView>
+    <!--        <RelativeLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:orientation="vertical">-->
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/materialCardView2"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/white"
-        android:elevation="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/materialCardView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/materialCardView3"
-        app:layout_constraintTop_toTopOf="@+id/materialCardView">
+    <!--            <TextView-->
+    <!--                android:id="@+id/tv_absent"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_centerInParent="true"-->
+    <!--                android:layout_marginTop="8dp"-->
+    <!--                android:gravity="center"-->
+    <!--                android:textColor="@color/red"-->
+    <!--                android:textSize="32sp"-->
+    <!--                android:textStyle="bold" />-->
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_absent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:textColor="@color/red"
-                android:textSize="32sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:gravity="center"
-                android:text="Absent"
-                android:textSize="10sp" />
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginTop="2dp"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="Absent"-->
+    <!--                android:textSize="10sp" />-->
 
 
-        </RelativeLayout>
+    <!--        </RelativeLayout>-->
 
-    </com.google.android.material.card.MaterialCardView>
+    <!--    </com.google.android.material.card.MaterialCardView>-->
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/materialCardView3"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-
-
-        android:backgroundTint="@color/white"
-        android:elevation="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/materialCardView2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/materialCardView"
-        app:layout_constraintTop_toTopOf="@+id/materialCardView">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_present"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-
-                android:textColor="@color/green"
-                android:textSize="32sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:gravity="center"
-                android:text="Present"
-                android:textSize="10sp" />
+    <!--    <com.google.android.material.card.MaterialCardView-->
+    <!--        android:id="@+id/materialCardView3"-->
+    <!--        android:layout_width="80dp"-->
+    <!--        android:layout_height="80dp"-->
 
 
-        </RelativeLayout>
+    <!--        android:backgroundTint="@color/white"-->
+    <!--        android:elevation="8dp"-->
+    <!--        app:layout_constraintEnd_toStartOf="@+id/materialCardView2"-->
+    <!--        app:layout_constraintHorizontal_bias="0.5"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/materialCardView"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/materialCardView">-->
 
-    </com.google.android.material.card.MaterialCardView>
+    <!--        <RelativeLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:orientation="vertical">-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/tv_present"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_centerInParent="true"-->
+    <!--                android:layout_marginTop="8dp"-->
+    <!--                android:gravity="center"-->
+
+    <!--                android:textColor="@color/green"-->
+    <!--                android:textSize="32sp"-->
+    <!--                android:textStyle="bold" />-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginTop="2dp"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="Present"-->
+    <!--                android:textSize="10sp" />-->
+
+
+    <!--        </RelativeLayout>-->
+
+    <!--    </com.google.android.material.card.MaterialCardView>-->
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -141,11 +129,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        tools:background="@color/purple_one"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.62"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/materialCardView">
+        tools:background="@color/purple_one">
         <!-- Name -->
         <TextView
             android:id="@+id/tv_student_name"
@@ -199,8 +186,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_attendance"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -215,9 +202,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
