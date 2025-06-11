@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    app:cardBackgroundColor="@color/white_two"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="8dp"
     android:layout_marginVertical="2dp"
-    app:cardBackgroundColor="@color/white"
+
 
     app:cardCornerRadius="8dp">
 
@@ -19,7 +20,8 @@
             android:id="@+id/iv_student"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            app:cardBackgroundColor="#FBFBFD"
+
+            app:cardBackgroundColor="@color/black"
             app:cardCornerRadius="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,8 +32,9 @@
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:contentDescription="student image"
-                android:src="@drawable/ic_person"
-                app:tint="@color/blue_one" />
+
+                android:scaleType="centerCrop"
+                android:src="@drawable/mias_profile_pic" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -79,7 +82,7 @@
             android:fontFamily="@font/roboto_slab"
             android:paddingHorizontal="4dp"
             android:text="Roll No - 01"
-            android:textColor="@color/blue_two"
+            android:textColor="@color/purple_one"
             android:textSize="10sp"
             app:circularflow_radiusInDP="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_student"
@@ -95,7 +98,7 @@
             android:fontFamily="@font/roboto_slab"
             android:paddingHorizontal="4dp"
             android:text="Reg No - 01"
-            android:textColor="@color/blue_two"
+            android:textColor="@color/purple_one"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_roll_num"
             app:layout_constraintStart_toEndOf="@+id/tv_roll_num"
