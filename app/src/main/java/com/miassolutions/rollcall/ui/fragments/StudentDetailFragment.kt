@@ -68,12 +68,7 @@ class StudentDetailFragment : Fragment(R.layout.student_detail_layout) {
 
 
             editNavBtn.setOnClickListener {
-                val action =
-                    StudentDetailFragmentDirections.actionStudentDetailFragmentToEditStudentFragment(
-                        studentId,
-                        studentName
-                    )
-                findNavController().navigate(action)
+
             }
         }
     }

@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_studentsFragment_to_studentDetailFragment"
             app:destination="@id/studentDetailFragment" />
+        <action
+            android:id="@+id/action_studentsFragment_to_editStudentFragment"
+            app:destination="@id/editStudentFragment" />
     </fragment>
     <fragment
         android:id="@+id/attendanceFragment"
@@ -53,11 +56,6 @@
         tools:layout="@layout/fragment_student_detail"
         android:name="com.miassolutions.rollcall.ui.fragments.StudentDetailFragment"
         android:label="{student_name} Detail" >
-        <action
-            android:id="@+id/action_studentDetailFragment_to_editStudentFragment"
-            app:destination="@id/editStudentFragment"
-            app:popUpTo="@id/studentsFragment"
-            app:popUpToInclusive="false" />
         <argument
             android:name="id"
             app:argType="string" />
@@ -67,5 +65,18 @@
         android:id="@+id/dashboardFragment"
         tools:layout="@layout/fragment_dashboard"
         android:name="com.miassolutions.rollcall.ui.fragments.DashboardFragment"
-        android:label="Dashboard" />
+        android:label="Dashboard" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_studentsFragment"
+            app:destination="@id/studentsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_attendanceFragment"
+            app:destination="@id/attendanceFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_statsFragment"
+            app:destination="@id/statsFragment" />
+    </fragment>
 </navigation>

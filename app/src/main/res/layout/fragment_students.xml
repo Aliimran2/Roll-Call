@@ -22,7 +22,8 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
-        app:backgroundTint="@color/green"
+        app:tint="@color/white_two"
+        app:backgroundTint="@color/purple_one"
         android:contentDescription="Add Student"
         android:layout_height="wrap_content"/>
 

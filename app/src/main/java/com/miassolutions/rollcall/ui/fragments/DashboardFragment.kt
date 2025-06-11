@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.graphics.toColor
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.miassolutions.rollcall.R
@@ -38,12 +39,15 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private fun setupDashboardItems() {
 
+        topCardItems.clear()
+        dashboardItems.clear()
+
         topCardItems.apply {
             add(TopCard("11 June 2025", "Date"))
             add(TopCard("12:08 PM", "Time"))
-            // Add more TopCard items if needed for horizontal scrolling
-            add(TopCard("Weather", "Sunny"))
-            add(TopCard("Location", "Lahore"))
+//            // Add more TopCard items if needed for horizontal scrolling
+//            add(TopCard("Weather", "Sunny"))
+//            add(TopCard("Location", "Lahore"))
         }
 
         dashboardItems.apply {
@@ -80,10 +84,29 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             when (clickedItem) {
                 is Dashboard -> {
                     when (clickedItem.title) {
-                        "Attendance" -> showToast("Attendance is clicked")
-                        "Students" -> showToast("Students is clicked")
-                        "History" -> showToast("History is clicked")
-                        "Settings" -> showToast("Settings is clicked")
+                        "Attendance" -> {
+                            val action =
+                                DashboardFragmentDirections.actionDashboardFragmentToAttendanceFragment()
+                            findNavController().navigate(action)
+                        }
+
+                        "Students" -> {
+                            val action =
+                                DashboardFragmentDirections.actionDashboardFragmentToStudentsFragment()
+                            findNavController().navigate(action)
+                        }
+
+                        "History" -> {
+                            val action =
+                                DashboardFragmentDirections.actionDashboardFragmentToStatsFragment()
+                            findNavController().navigate(action)
+                        }
+
+                        "Settings" -> {
+                            val action =
+                                DashboardFragmentDirections.actionDashboardFragmentToSettingsFragment()
+                            findNavController().navigate(action)
+                        }
                     }
 
                     // Add navigation logic here, e.g.:
