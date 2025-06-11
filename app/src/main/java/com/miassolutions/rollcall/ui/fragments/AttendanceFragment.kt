@@ -1,10 +1,13 @@
 package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.navigateUp
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.Attendance
 import com.miassolutions.rollcall.data.entities.MarkAttendanceUiModel
@@ -67,26 +70,28 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             }
         }
 
-        binding.etDate.setOnClickListener{
+        binding.etDate.setOnClickListener {
             showDatePickerDialog()
         }
 
         binding.saveBtn.setOnClickListener {
-            val date = getCurrentDate()
-            val attendanceEntity = viewModel.uiState.value.map {
-                Attendance(
-                    studentId = it.studentId,
-                    date = date,
-                    attendanceStatus = it.attendanceStatus
-                )
+            val date = binding.etDate.text.toString()
+            viewModel.setDate(date)
+
+            viewModel.saveAttendance { success ->
+                if (success) {
+                    showSnackbar("Attendance saved for $date")
+                    findNavController().navigateUp()
+                } else {
+                    showSnackbar("Attendance already exists for $date")
+                }
             }
-            viewModel.saveAttendance(attendanceEntity)
-            showSnackbar("Attendance Saved")
+
         }
     }
 
     private fun showDatePickerDialog() {
-        val datePicker = DatePickerFragment {selectedDate ->
+        val datePicker = DatePickerFragment { selectedDate ->
             binding.etDate.setText(selectedDate)
 
         }

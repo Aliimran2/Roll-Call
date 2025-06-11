@@ -20,9 +20,10 @@ sealed class StudentFetchResult<out T> {
 }
 
 
-
-
-class Repository @Inject constructor(private val studentDao: StudentDao, private val attendanceDao: AttendanceDao) {
+class Repository @Inject constructor(
+    private val studentDao: StudentDao,
+    private val attendanceDao: AttendanceDao
+) {
 
 
     val allStudents: Flow<List<Student>> = studentDao.getAllStudents()
@@ -47,26 +48,26 @@ class Repository @Inject constructor(private val studentDao: StudentDao, private
         val duplicateRollNum = studentDao.getStudentByRollNum(student.rollNumber)
 
         return when {
-                duplicateRegNum != null -> StudentInsertResult.Failure(DUPLICATE_REG)
+            duplicateRegNum != null -> StudentInsertResult.Failure(DUPLICATE_REG)
             duplicateRollNum != null -> StudentInsertResult.Failure(DUPLICATE_ROLL)
 
             else -> {
                 try {
                     studentDao.insertStudent(student)
                     StudentInsertResult.Success
-                } catch (e : Exception){
+                } catch (e: Exception) {
                     StudentInsertResult.Failure(e.localizedMessage ?: "Unknown error")
                 }
             }
         }
     }
 
-    suspend fun insertStudents(students : List<Student>) : Boolean {
-        return withContext(Dispatchers.IO){
+    suspend fun insertStudents(students: List<Student>): Boolean {
+        return withContext(Dispatchers.IO) {
             try {
                 studentDao.insertAllStudent(students)
                 true
-            } catch (e:Exception){
+            } catch (e: Exception) {
                 Log.e("Repository", "Error inserting students", e)
                 false
             }
@@ -88,6 +89,10 @@ class Repository @Inject constructor(private val studentDao: StudentDao, private
 
     suspend fun insertAttendances(attendanceList: List<Attendance>) {
         attendanceDao.insertAttendances(attendanceList)
+    }
+
+    suspend fun isAttendanceTaken(date: String): Boolean {
+        return attendanceDao.getAttendanceCountForDate(date) > 0
     }
 
     fun getAttendanceForStudent(studentId: String): Flow<List<Attendance>> {

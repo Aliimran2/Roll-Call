@@ -24,9 +24,27 @@ class AttendanceViewModel @Inject constructor(private val repository: Repository
 
     val studentList = repository.allStudents.asLiveData()
 
-    fun saveAttendance(list: List<Attendance>) {
+    fun saveAttendance(onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
-            repository.insertAttendances(list)
+            val date = _selectedDate.value
+            val alreadyExists = repository.isAttendanceTaken(date)
+
+            if (alreadyExists) {
+                onResult(false)
+            } else {
+
+                val attendanceList = _uiState.value.map {
+                    Attendance(
+                        studentId = it.studentId,
+                        date = date,
+                        attendanceStatus = it.attendanceStatus
+                    )
+                }
+                repository.insertAttendances(attendanceList)
+                onResult(true)
+            }
+
+
         }
     }
 

@@ -17,6 +17,9 @@ interface AttendanceDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAttendances(attendanceList: List<Attendance>)
 
+    @Query("SELECT COUNT(*) FROM attendance_table WHERE date = :date")
+    suspend fun getAttendanceCountForDate(date: String):Int
+
     @Query("SELECT * FROM attendance_table WHERE studentId = :studentId ORDER BY date DESC")
     fun getAttendanceByStudent(studentId: String): Flow<List<Attendance>>
 
