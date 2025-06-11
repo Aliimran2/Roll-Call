@@ -3,6 +3,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white_one">#FAFAFA</color>
+    <color name="white_two">#F4FBFB</color>
+    <color name="purple_one">#6C5ADD</color>
+    <color name="purple_two">#412EA4</color>
+
+
+
     <color name="dark_gray">#FF000000</color>
     <color name="gray">#DEDEDEDE</color>
 

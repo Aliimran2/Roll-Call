@@ -1,37 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="24dp"
+    android:layout_margin="12dp"
     app:cardBackgroundColor="@color/purple_one"
-    app:cardCornerRadius="12dp">
+    app:cardCornerRadius="12dp"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="18dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="8dp">
 
-        <ImageView
-            android:id="@+id/iv_card"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            app:tint="@color/white_two"
-            android:src="@drawable/ic_person" />
+
+        android:orientation="vertical"
+        android:padding="12dp">
 
         <TextView
-            android:id="@+id/tv_card"
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_slab"
+            android:textSize="18sp"
+            android:textColor="@color/white_one"
+            android:textStyle="bold"
+            tools:text="11-06-2025" />
+
+        <TextView
+            android:id="@+id/tv_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="@color/white_two"
+
+            android:textColor="@color/white_one"
             android:textSize="12dp"
             android:textStyle="bold"
-            tools:text="Profile" />
+            tools:text="Date" />
 
 
     </LinearLayout>

@@ -67,5 +67,5 @@
         android:id="@+id/dashboardFragment"
         tools:layout="@layout/fragment_dashboard"
         android:name="com.miassolutions.rollcall.ui.fragments.DashboardFragment"
-        android:label="DashboardFragment" />
+        android:label="Dashboard" />
 </navigation>
