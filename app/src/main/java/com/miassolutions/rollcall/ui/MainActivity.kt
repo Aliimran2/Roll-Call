@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var navController: NavController
-    private lateinit var appBarConfiguration: AppBarConfiguration
+//    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,20 +35,20 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.studentsFragment,
-                R.id.attendanceFragment,
-                R.id.statsFragment,
-                R.id.settingsFragment
-            )
-        )
+//        appBarConfiguration = AppBarConfiguration(
+//            setOf(
+//                R.id.studentsFragment,
+//                R.id.attendanceFragment,
+//                R.id.statsFragment,
+//                R.id.settingsFragment
+//            )
+//        )
 
 
 
 
-        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
-        binding.bottomNavView.setupWithNavController(navController)
+        binding.toolbar.setupWithNavController(navController)
+//        binding.bottomNavView.setupWithNavController(navController)
 
 //        binding.bottomNavView.setOnItemSelectedListener {item ->
 //            when(item.itemId){

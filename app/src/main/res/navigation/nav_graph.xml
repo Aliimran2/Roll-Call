@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/studentsFragment">
+    app:startDestination="@id/dashboardFragment">
     <fragment
         android:id="@+id/addStudentFragment"
         android:name="com.miassolutions.rollcall.ui.fragments.AddStudentFragment"
@@ -63,4 +63,9 @@
             app:argType="string" />
         <argument android:name="student_name" />
     </fragment>
+    <fragment
+        android:id="@+id/dashboardFragment"
+        tools:layout="@layout/fragment_dashboard"
+        android:name="com.miassolutions.rollcall.ui.fragments.DashboardFragment"
+        android:label="DashboardFragment" />
 </navigation>
