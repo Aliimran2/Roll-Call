@@ -95,6 +95,10 @@ class Repository @Inject constructor(
         return attendanceDao.getAttendanceCountForDate(date) > 0
     }
 
+    suspend fun getAttendanceGroupedByDate(): Map<String, List<Attendance>> {
+        return attendanceDao.getAllAttendances().groupBy { it.date }
+    }
+
     fun getAttendanceForStudent(studentId: String): Flow<List<Attendance>> {
         return attendanceDao.getAttendanceByStudent(studentId)
     }

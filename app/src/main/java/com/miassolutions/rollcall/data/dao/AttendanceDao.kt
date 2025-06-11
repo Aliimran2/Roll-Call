@@ -26,6 +26,9 @@ interface AttendanceDao {
     @Query("SELECT * FROM attendance_table WHERE date = :date")
     fun getAttendanceForDate(date: String): Flow<List<Attendance>>
 
+    @Query("SELECT * FROM attendance_table")
+    suspend fun getAllAttendances(): List<Attendance>
+
     @Query("DELETE FROM attendance_table WHERE studentId = :studentId")
     suspend fun deleteAttendanceForStudent(studentId: String)
 

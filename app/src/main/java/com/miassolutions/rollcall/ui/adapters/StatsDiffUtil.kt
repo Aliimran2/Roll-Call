@@ -5,7 +5,7 @@ import com.miassolutions.rollcall.data.entities.Stats
 
 class StatsDiffUtil : DiffUtil.ItemCallback<Stats>() {
     override fun areItemsTheSame(oldItem: Stats, newItem: Stats): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.date == newItem.date
     }
 
     override fun areContentsTheSame(oldItem: Stats, newItem: Stats): Boolean {

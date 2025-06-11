@@ -1,3 +1,12 @@
 package com.miassolutions.rollcall.data.entities
 
-data class Stats(val id : Int, val date : String, val present : Int, val absent : Int, val total : Int, val percentage : Double)
+data class Stats(
+
+    val date: String,
+    val presentCount: Int,
+    val totalCount: Int,
+
+    ) {
+    val percent: Int
+        get() = if (totalCount == 0) 0 else (presentCount * 100) / totalCount
+}
