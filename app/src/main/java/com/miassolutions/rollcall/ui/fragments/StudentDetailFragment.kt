@@ -53,23 +53,18 @@ class StudentDetailFragment : Fragment(R.layout.student_detail_layout) {
 
                 MaterialAlertDialogBuilder(requireContext())
 
-                .setTitle("Delete $studentName!!")
-                .setMessage("Are you sure?")
-                .setPositiveButton("Yes, Delete") { dialog, _ ->
-                    viewModel.deleteStudentById(studentId)
-                    Snackbar.make(binding.root, "$studentName Deleted", Snackbar.LENGTH_LONG)
-                        .show()
-                findNavController().navigateUp()
-                }
-                .setNegativeButton("Cancel", null)
-                .show()
+                    .setTitle("Delete $studentName!!")
+                    .setMessage("Are you sure?")
+                    .setPositiveButton("Yes, Delete") { dialog, _ ->
+                        viewModel.deleteStudentById(studentId)
+                        Snackbar.make(binding.root, "$studentName Deleted", Snackbar.LENGTH_LONG)
+                            .show()
+                        findNavController().navigateUp()
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
             }
 
-
-
-            editNavBtn.setOnClickListener {
-
-            }
         }
     }
 

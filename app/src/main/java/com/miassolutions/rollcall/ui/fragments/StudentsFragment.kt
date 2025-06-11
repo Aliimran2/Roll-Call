@@ -26,12 +26,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
+import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
 import com.miassolutions.rollcall.utils.ImportFromExcel
 import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showSnackbar
@@ -49,6 +51,8 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     private val binding get() = _binding!!
 
     private val addStudentViewModel by viewModels<AddStudentViewModel>()
+    private val studentDetailViewModel by viewModels<StudentDetailViewModel>()
+
     private lateinit var adapter: StudentListAdapter
     private lateinit var filePickerLauncher: ActivityResultLauncher<Array<String>>
 
@@ -199,8 +203,21 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     }
 
     private fun deleteClickListener(studentId: String) {
-        showToast(studentId)
+        MaterialAlertDialogBuilder(requireContext())
+
+            .setTitle("Confirm Deletion!!")
+            .setMessage("Are you sure?")
+            .setPositiveButton("Yes, Delete") { dialog, _ ->
+                studentDetailViewModel.deleteStudentById(studentId)
+                Snackbar.make(binding.root, "Deleted", Snackbar.LENGTH_LONG)
+                    .show()
+                dialog.dismiss()
+
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
+
 
     private fun navToEdit(student: Student) {
         val action = StudentsFragmentDirections.actionStudentsFragmentToEditStudentFragment(
