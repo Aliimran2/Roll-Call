@@ -8,8 +8,12 @@ import com.miassolutions.rollcall.data.entities.Student
 import com.miassolutions.rollcall.databinding.ItemStudentBinding
 
 class StudentListAdapter(
-    private val onPhoneClick: (String) -> Unit,
-    private val onItemClick: (Student) -> Unit
+
+    private val onProfileClick: (Student) -> Unit,
+    private val onReportClick: (String) -> Unit,
+    private val onEditClick: (Student) -> Unit,
+    private val onDeleteClick: (String) -> Unit,
+    private val onPhoneClick: (String) -> Unit
 ) : ListAdapter<Student, StudentListAdapter.StudentViewHolder>(StudentDiffUtil()) {
 
     inner class StudentViewHolder(private val binding: ItemStudentBinding) :
@@ -20,12 +24,17 @@ class StudentListAdapter(
                 tvRegNum.text = "Reg No - ${item.regNumber}"
                 tvRollNum.text = "Roll No - ${item.rollNumber}"
 
-                ivPhone.setOnClickListener{onPhoneClick(item.phoneNumber)}
+                ivProfile.setOnClickListener { onProfileClick(item) }
+                ivReport.setOnClickListener { onReportClick(item.studentId) }
+                ivEdit.setOnClickListener { onEditClick(item) }
+                ivDelete.setOnClickListener { onDeleteClick(item.studentId) }
+                ivPhone.setOnClickListener { onPhoneClick(item.phoneNumber) }
 
 
             }
         }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
         return StudentViewHolder(

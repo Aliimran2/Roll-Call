@@ -64,9 +64,10 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     }
 
     private fun setupFilePicker() {
-        filePickerLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
-            uri?.let { handleExcelFile(it) }
-        }
+        filePickerLauncher =
+            registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+                uri?.let { handleExcelFile(it) }
+            }
     }
 
     private fun pickExcelFile() {
@@ -114,9 +115,11 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
                     is AddStudentViewModel.ImportUIState.Success -> {
                         showSnackbar("Imported: ${state.successCount}, Skipped: ${state.failureCount}")
                     }
+
                     is AddStudentViewModel.ImportUIState.Error -> {
                         showSnackbar(state.message)
                     }
+
                     else -> Unit
                 }
             }
@@ -136,10 +139,12 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
                         pickExcelFile()
                         true
                     }
+
                     R.id.action_export_excel -> {
                         // TODO: Implement export
                         true
                     }
+
                     else -> false
                 }
             }
@@ -172,21 +177,42 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         findNavController().navigate(action)
     }
 
+
     private fun setupRecyclerView() {
         adapter = StudentListAdapter(
             onPhoneClick = ::dialPhoneNumber,
-            onItemClick = ::navToDetail
+            onProfileClick = ::navToDetail,
+            onReportClick = ::reportClickListener,
+            onEditClick = ::navToEdit,
+            onDeleteClick = ::deleteClickListener
         )
 
         binding.rvStudents.adapter = adapter
 
-        binding.rvStudents.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.rvStudents.addOnScrollListener(object : OnScrollListener() {
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(rv, dx, dy)
                 if (dy > 0) binding.fabAddStudent.hide()
                 else if (dy < 0) binding.fabAddStudent.show()
             }
         })
+    }
+
+    private fun deleteClickListener(studentId: String) {
+        showToast(studentId)
+    }
+
+    private fun navToEdit(student: Student) {
+        val action = StudentsFragmentDirections.actionStudentsFragmentToEditStudentFragment(
+            student.studentId,
+            student.studentName
+        )
+
+        findNavController().navigate(action)
+    }
+
+    private fun reportClickListener(studentId: String) {
+        showToast("Showing report for $studentId")
     }
 
     override fun onDestroyView() {
