@@ -14,9 +14,11 @@ class StatsListAdapter : ListAdapter<Stats, StatsListAdapter.StatsViewHolder>(St
         fun bind(item: Stats) {
             binding.apply {
                 tvDate.text = item.date
-                tvPresent.text = item.present.toString()
-                tvAbsent.text = item.absent.toString()
-                tvPercent.text = item.percentage.toString()
+                tvPresent.text = "${item.present}/${item.total}"
+
+                val percentage = item.present / item.total * 100
+
+                tvPercent.text = "$percentage%"
             }
 
         }

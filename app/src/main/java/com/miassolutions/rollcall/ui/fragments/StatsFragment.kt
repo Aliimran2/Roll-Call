@@ -20,7 +20,7 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
         _binding = FragmentStatsBinding.bind(view)
 
         val statsList = List(30){
-            Stats(it, "20-06-25", it, it, it, it.toDouble())
+            Stats(it+1, "20-06-25", it+1, it+1, it+1, it.toDouble())
         }
 
         val adapter = StatsListAdapter()
