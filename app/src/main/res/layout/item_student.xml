@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    app:cardBackgroundColor="@color/white_two"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="8dp"
     android:layout_marginVertical="2dp"
+    app:cardBackgroundColor="@color/white_two"
 
 
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -47,6 +47,8 @@
             android:contentDescription="student image"
             android:padding="8dp"
             android:src="@drawable/ic_phone"
+            app:tint="@color/purple_two"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,35 +59,24 @@
             android:layout_marginStart="16dp"
             android:fontFamily="@font/roboto_slab"
             android:text="Ali Hussain"
-
+            android:textAllCaps="true"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/iv_student"
-            app:layout_constraintTop_toTopOf="@+id/iv_student" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-
-        <ImageView
-            android:id="@+id/iv_more"
-            android:layout_width="40dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="4dp"
-            android:src="@drawable/ic_more"
-            app:layout_constraintEnd_toEndOf="@+id/iv_phone"
-            app:layout_constraintTop_toBottomOf="@+id/iv_phone" />
 
         <TextView
             android:id="@+id/tv_roll_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_rounded_blue_light"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/roboto_slab"
             android:paddingHorizontal="4dp"
             android:text="Roll No - 01"
-            android:textColor="@color/purple_one"
+            android:textColor="@color/purple_two"
             android:textSize="10sp"
             app:circularflow_radiusInDP="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_student"
             app:layout_constraintStart_toStartOf="@+id/tv_student_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_student_name" />
 
@@ -93,16 +84,69 @@
             android:id="@+id/tv_reg_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:background="@drawable/bg_rounded_blue_light"
+            android:layout_marginStart="4dp"
             android:fontFamily="@font/roboto_slab"
             android:paddingHorizontal="4dp"
             android:text="Reg No - 01"
-            android:textColor="@color/purple_one"
+            android:textColor="@color/purple_two"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_roll_num"
             app:layout_constraintStart_toEndOf="@+id/tv_roll_num"
-            app:layout_constraintTop_toTopOf="@+id/tv_roll_num" />
+            app:layout_constraintTop_toTopOf="@+id/tv_roll_num"
+            tools:ignore="SmallSp" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+
+            android:clickable="true"
+            app:tint="@color/purple_two"
+            android:tintMode="multiply"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_roll_num"
+            app:layout_constraintTop_toBottomOf="@+id/tv_roll_num"
+            app:srcCompat="@drawable/ic_person_outline" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:clickable="true"
+            android:tintMode="multiply"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintTop_toTopOf="@+id/imageView2"
+            app:srcCompat="@drawable/ic_bars"
+            app:tint="@color/purple_two" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:clickable="true"
+            android:tintMode="multiply"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintTop_toTopOf="@+id/imageView3"
+            app:srcCompat="@drawable/ic_edit_person"
+            app:tint="@color/purple_two" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:clickable="true"
+            android:tintMode="multiply"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+            app:layout_constraintStart_toEndOf="@+id/imageView5"
+            app:layout_constraintTop_toTopOf="@+id/imageView5"
+            app:srcCompat="@drawable/ic_delete"
+            app:tint="@color/purple_two" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

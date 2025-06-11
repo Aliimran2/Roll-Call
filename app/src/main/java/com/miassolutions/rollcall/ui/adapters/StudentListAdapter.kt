@@ -21,7 +21,7 @@ class StudentListAdapter(
                 tvRollNum.text = "Roll No - ${item.rollNumber}"
 
                 ivPhone.setOnClickListener{onPhoneClick(item.phoneNumber)}
-                ivMore.setOnClickListener { onItemClick(item) }
+
 
             }
         }
