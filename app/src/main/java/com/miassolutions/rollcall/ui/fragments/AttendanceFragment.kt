@@ -67,7 +67,11 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             }
         }
 
-        binding.btnSave.setOnClickListener {
+        binding.etDate.setOnClickListener{
+            showDatePickerDialog()
+        }
+
+        binding.saveBtn.setOnClickListener {
             val date = getCurrentDate()
             val attendanceEntity = viewModel.uiState.value.map {
                 Attendance(
@@ -79,6 +83,14 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             viewModel.saveAttendance(attendanceEntity)
             showSnackbar("Attendance Saved")
         }
+    }
+
+    private fun showDatePickerDialog() {
+        val datePicker = DatePickerFragment {selectedDate ->
+            binding.etDate.setText(selectedDate)
+
+        }
+        datePicker.show(parentFragmentManager, null)
     }
 
     private fun setupRecyclerView() {
