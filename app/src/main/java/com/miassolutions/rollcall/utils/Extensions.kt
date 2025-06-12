@@ -42,10 +42,9 @@ fun Fragment.showSnackbar(
 }
 
 
-fun getCurrentDate(): String {
+fun getCurrentDateAndTime(): Long {
     val calendar = Calendar.getInstance()
-    return calendar.time.time.toFormattedDate()
-
+    return calendar.time.time
 
 }
 

@@ -11,8 +11,10 @@ import com.miassolutions.rollcall.ui.adapters.DashboardAdapter
 import com.miassolutions.rollcall.ui.model.CommonListItem
 import com.miassolutions.rollcall.ui.model.Dashboard
 import com.miassolutions.rollcall.ui.model.TopCard
+import com.miassolutions.rollcall.utils.getCurrentDateAndTime
 import com.miassolutions.rollcall.utils.showLongToast
 import com.miassolutions.rollcall.utils.showToast
+import com.miassolutions.rollcall.utils.toFormattedDate
 
 
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
@@ -41,8 +43,10 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         dashboardItems.clear()
 
         topCardItems.apply {
-            add(TopCard("11 June 2025", "Date"))
-            add(TopCard("12:08 PM", "Time"))
+
+
+            add(TopCard(getCurrentDateAndTime().toFormattedDate("EEEE\n dd/MM/yyyy"), "Date"))
+            add(TopCard(getCurrentDateAndTime().toFormattedDate("hh:mm:ss"), "Time"))
 //            // Add more TopCard items if needed for horizontal scrolling
 //            add(TopCard("Weather", "Sunny"))
 //            add(TopCard("Location", "Lahore"))
