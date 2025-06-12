@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -41,14 +42,13 @@ fun Fragment.showSnackbar(
 }
 
 
-//fun getCurrentDate(): String {
-//    return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-//}
+fun getCurrentDate(): String {
+    val calendar = Calendar.getInstance()
+    return calendar.time.time.toFormattedDate()
 
-fun formattedDate(date: Long): String {
-    return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)
 
 }
+
 
 fun Long.toFormattedDate(
     pattern: String = "dd/MM/yyyy",

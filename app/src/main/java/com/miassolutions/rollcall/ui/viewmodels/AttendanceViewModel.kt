@@ -7,6 +7,7 @@ import com.miassolutions.rollcall.data.entities.AttendanceEntity
 import com.miassolutions.rollcall.data.repository.Repository
 import com.miassolutions.rollcall.ui.model.AttendanceUIModel
 import com.miassolutions.rollcall.utils.AttendanceStatus
+import com.miassolutions.rollcall.utils.getCurrentDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -27,7 +28,7 @@ class AttendanceViewModel @Inject constructor(private val repository: Repository
 
     // A MutableStateFlow to hold the currently selected date for attendance.
     // It's initialized with the current date using a utility function.
-    private val _selectedDate = MutableStateFlow("")
+    private val _selectedDate = MutableStateFlow(getCurrentDate())
 
     // A MutableStateFlow to hold the list of AttendanceUIModel objects.
     // This list represents the attendance status of students for the selected date.

@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.widget.DatePicker
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import com.miassolutions.rollcall.utils.formattedDate
+
 import com.miassolutions.rollcall.utils.toFormattedDate
 
 class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {

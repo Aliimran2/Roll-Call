@@ -32,7 +32,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         _binding = FragmentAttendanceBinding.bind(view)
 
 
-        setupTodayDate()
+
         setupDateChangeListener()
         setupRecyclerView()
         collectFlows()
@@ -40,11 +40,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
     }
 
-    private fun setupTodayDate() {
-        val todayDate = getCurrentDate()
-        binding.etDatePicker.setText(todayDate)
-        viewModel.setDate(todayDate)
-    }
+
 
 
     private fun setupDateChangeListener() {
@@ -88,9 +84,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     }
 
 
-    private fun getCurrentDate(): String {
-        return System.currentTimeMillis().toFormattedDate()
-    }
+
 
     private fun collectFlows() {
         collectLatestFlow {
