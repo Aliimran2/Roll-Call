@@ -34,29 +34,31 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         collectFlows()
         clickListener()
 
-
-
     }
 
     private fun clickListener() {
-        binding.etDate.setOnClickListener {
-            showDatePickerDialog()
-        }
-
-        binding.saveBtn.setOnClickListener {
-            val date = binding.etDate.text.toString()
-            viewModel.setDate(date)
-
-            viewModel.saveAttendance { success ->
-                if (success) {
-                    showSnackbar("Attendance saved for $date")
-                    findNavController().navigateUp()
-                } else {
-                    showSnackbar("Attendance already exists for $date")
-                }
+        binding.apply {
+            etDate.setOnClickListener {
+                val action = AttendanceFragmentDirections.actionAttendanceFragmentToDatePickerFragment()
+                findNavController().navigate(action)
             }
 
+            saveBtn.setOnClickListener {
+                val date = binding.etDate.text.toString()
+                viewModel.setDate(date)
+
+                viewModel.saveAttendance { success ->
+                    if (success) {
+                        showSnackbar("Attendance saved for $date")
+                        findNavController().navigateUp()
+                    } else {
+                        showSnackbar("Attendance already exists for $date")
+                    }
+                }
+            }
         }
+
+
     }
 
     private fun collectFlows() {
@@ -95,11 +97,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     }
 
     private fun showDatePickerDialog() {
-        val datePicker = DatePickerFragment { selectedDate ->
-            binding.etDate.setText(selectedDate)
 
-        }
-        datePicker.show(parentFragmentManager, null)
     }
 
     private fun setupRecyclerView() {

@@ -28,7 +28,11 @@
         android:id="@+id/attendanceFragment"
         android:name="com.miassolutions.rollcall.ui.fragments.AttendanceFragment"
         android:label="Attendance"
-        tools:layout="@layout/fragment_attendance" />
+        tools:layout="@layout/fragment_attendance" >
+        <action
+            android:id="@+id/action_attendanceFragment_to_datePickerFragment"
+            app:destination="@id/datePickerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/statsFragment"
         tools:layout="@layout/fragment_stats"
@@ -80,4 +84,8 @@
             android:id="@+id/action_dashboardFragment_to_statsFragment"
             app:destination="@id/statsFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/datePickerFragment"
+        android:name="com.miassolutions.rollcall.ui.fragments.DatePickerFragment"
+        android:label="DatePickerFragment" />
 </navigation>
