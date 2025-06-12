@@ -11,6 +11,7 @@ import com.miassolutions.rollcall.ui.adapters.DashboardAdapter
 import com.miassolutions.rollcall.ui.model.CommonListItem
 import com.miassolutions.rollcall.ui.model.Dashboard
 import com.miassolutions.rollcall.ui.model.TopCard
+import com.miassolutions.rollcall.utils.showLongToast
 import com.miassolutions.rollcall.utils.showToast
 
 
@@ -93,8 +94,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                             findNavController().navigate(action)
                         }
 
-                        "History" -> {
-
+                        "My Profile" -> {
+                            showLongToast("Implement bottom fragment for input profile")
                         }
 
                         "Settings" -> {
