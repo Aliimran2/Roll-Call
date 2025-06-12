@@ -3,18 +3,17 @@ package com.miassolutions.rollcall.ui.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.miassolutions.rollcall.R
-import com.miassolutions.rollcall.ui.model.AttendanceUIModel
 import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
 import com.miassolutions.rollcall.ui.adapters.AttendanceAdapter
+import com.miassolutions.rollcall.ui.model.AttendanceUIModel
 import com.miassolutions.rollcall.ui.viewmodels.AttendanceViewModel
 import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showSnackbar
+import com.miassolutions.rollcall.utils.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -32,12 +31,21 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAttendanceBinding.bind(view)
 
+
+        setupTodayDate()
         setupDateChangeListener()
         setupRecyclerView()
         collectFlows()
         clickListener()
 
     }
+
+    private fun setupTodayDate() {
+        val todayDate = getCurrentDate()
+        binding.etDatePicker.setText(todayDate)
+        viewModel.setDate(todayDate)
+    }
+
 
     private fun setupDateChangeListener() {
         parentFragmentManager.setFragmentResultListener(
@@ -59,8 +67,12 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
             saveBtn.setOnClickListener {
                 val date = binding.etDatePicker.text.toString()
-                viewModel.setDate(date)
+                if (date.isEmpty()) {
+                    showSnackbar("Select date first")
+                    return@setOnClickListener
+                }
 
+                viewModel.setDate(date)
                 viewModel.saveAttendance { success ->
                     if (success) {
                         showSnackbar("Attendance saved for $date")
@@ -73,6 +85,11 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         }
 
 
+    }
+
+
+    private fun getCurrentDate(): String {
+        return System.currentTimeMillis().toFormattedDate()
     }
 
     private fun collectFlows() {
