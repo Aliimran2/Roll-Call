@@ -12,7 +12,6 @@ import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
 import com.miassolutions.rollcall.utils.Constants
 import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showSnackbar
-import com.miassolutions.rollcall.utils.showToast
 import com.miassolutions.rollcall.utils.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -42,15 +41,23 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             findNavController().navigate(action)
         }
 
-        binding.btnResetSessionDate.setOnClickListener{
-            viewModel.resetDate()
-            showSnackbar("Session date reset")
+        binding.btnResetSessionDate.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Confirm!")
+                .setMessage("Are you sure to reset date")
+                .setPositiveButton("Yes, Sure") { _, _ ->
+                    viewModel.resetDate()
+                    showSnackbar("Session date reset")
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+
         }
 
         binding.btnSaveMinDate.setOnClickListener {
             selectedMinDate?.let {
                 viewModel.saveMinDate(it)
-            showSnackbar("Session date set to ${it.toFormattedDate()}")
+                showSnackbar("Session date set to ${it.toFormattedDate()}")
             }
         }
 
