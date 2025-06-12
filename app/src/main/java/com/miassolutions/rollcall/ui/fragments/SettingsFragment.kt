@@ -42,9 +42,15 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             findNavController().navigate(action)
         }
 
+        binding.btnResetSessionDate.setOnClickListener{
+            viewModel.resetDate()
+            showSnackbar("Session date reset")
+        }
+
         binding.btnSaveMinDate.setOnClickListener {
             selectedMinDate?.let {
                 viewModel.saveMinDate(it)
+            showSnackbar("Session date set to ${it.toFormattedDate()}")
             }
         }
 

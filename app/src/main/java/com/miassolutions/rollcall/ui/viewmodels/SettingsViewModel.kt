@@ -32,6 +32,12 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun resetDate(){
+        viewModelScope.launch {
+            prefs.saveMinDate(0L)
+        }
+    }
+
 
 
 
