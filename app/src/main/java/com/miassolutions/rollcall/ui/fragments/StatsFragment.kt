@@ -11,8 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.miassolutions.rollcall.R
-import com.miassolutions.rollcall.data.entities.Stats
-import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
 import com.miassolutions.rollcall.databinding.FragmentStatsBinding
 import com.miassolutions.rollcall.ui.adapters.StatsListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.StatsViewModel

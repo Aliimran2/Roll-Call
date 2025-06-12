@@ -3,8 +3,8 @@ package com.miassolutions.rollcall.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.miassolutions.rollcall.data.entities.Attendance
-import com.miassolutions.rollcall.data.entities.MarkAttendanceUiModel
+import com.miassolutions.rollcall.data.entities.AttendanceEntity
+import com.miassolutions.rollcall.ui.model.MarkAttendanceUiModel
 import com.miassolutions.rollcall.data.repository.Repository
 import com.miassolutions.rollcall.utils.AttendanceStatus
 import com.miassolutions.rollcall.utils.getCurrentDate
@@ -33,14 +33,14 @@ class AttendanceViewModel @Inject constructor(private val repository: Repository
                 onResult(false)
             } else {
 
-                val attendanceList = _uiState.value.map {
-                    Attendance(
+                val attendanceEntityList = _uiState.value.map {
+                    AttendanceEntity(
                         studentId = it.studentId,
                         date = date,
                         attendanceStatus = it.attendanceStatus
                     )
                 }
-                repository.insertAttendances(attendanceList)
+                repository.insertAttendances(attendanceEntityList)
                 onResult(true)
             }
 

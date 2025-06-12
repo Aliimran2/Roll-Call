@@ -2,18 +2,15 @@ package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.graphics.toColor
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentDashboardBinding
 
 import com.miassolutions.rollcall.ui.adapters.DashboardAdapter
-import com.miassolutions.rollcall.ui.dataclasses.CommonListItem
-import com.miassolutions.rollcall.ui.dataclasses.Dashboard
-import com.miassolutions.rollcall.ui.dataclasses.TopCard
+import com.miassolutions.rollcall.ui.model.CommonListItem
+import com.miassolutions.rollcall.ui.model.Dashboard
+import com.miassolutions.rollcall.ui.model.TopCard
 import com.miassolutions.rollcall.utils.showToast
 
 

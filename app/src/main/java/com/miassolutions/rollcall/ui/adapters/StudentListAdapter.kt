@@ -4,21 +4,21 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.miassolutions.rollcall.data.entities.Student
+import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.ItemStudentBinding
 
 class StudentListAdapter(
 
-    private val onProfileClick: (Student) -> Unit,
+    private val onProfileClick: (StudentEntity) -> Unit,
     private val onReportClick: (String) -> Unit,
-    private val onEditClick: (Student) -> Unit,
+    private val onEditClick: (StudentEntity) -> Unit,
     private val onDeleteClick: (String) -> Unit,
     private val onPhoneClick: (String) -> Unit
-) : ListAdapter<Student, StudentListAdapter.StudentViewHolder>(StudentDiffUtil()) {
+) : ListAdapter<StudentEntity, StudentListAdapter.StudentViewHolder>(StudentDiffUtil()) {
 
     inner class StudentViewHolder(private val binding: ItemStudentBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Student) {
+        fun bind(item: StudentEntity) {
             binding.apply {
                 tvStudentName.text = item.studentName
                 tvRegNum.text = "Reg No - ${item.regNumber}"

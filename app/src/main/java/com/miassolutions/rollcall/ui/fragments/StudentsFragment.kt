@@ -10,7 +10,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -22,14 +21,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.miassolutions.rollcall.R
-import com.miassolutions.rollcall.data.entities.Student
+import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
@@ -174,9 +172,9 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         }
     }
 
-    private fun navToDetail(student: Student) {
+    private fun navToDetail(studentEntity: StudentEntity) {
         val action = StudentsFragmentDirections.actionStudentsFragmentToStudentDetailFragment(
-            student.studentId, student.studentName
+            studentEntity.studentId, studentEntity.studentName
         )
         findNavController().navigate(action)
     }
@@ -219,10 +217,10 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     }
 
 
-    private fun navToEdit(student: Student) {
+    private fun navToEdit(studentEntity: StudentEntity) {
         val action = StudentsFragmentDirections.actionStudentsFragmentToEditStudentFragment(
-            student.studentId,
-            student.studentName
+            studentEntity.studentId,
+            studentEntity.studentName
         )
 
         findNavController().navigate(action)

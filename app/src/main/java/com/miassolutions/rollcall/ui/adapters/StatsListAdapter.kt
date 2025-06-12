@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.miassolutions.rollcall.data.entities.Stats
+import com.miassolutions.rollcall.ui.model.StatsUiModel
 import com.miassolutions.rollcall.databinding.ItemStatsBinding
 
-class StatsListAdapter : ListAdapter<Stats, StatsListAdapter.StatsViewHolder>(StatsDiffUtil()) {
+class StatsListAdapter : ListAdapter<StatsUiModel, StatsListAdapter.StatsViewHolder>(StatsDiffUtil()) {
 
     class StatsViewHolder(private val binding: ItemStatsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Stats) {
+        fun bind(item: StatsUiModel) {
             binding.apply {
                 tvDate.text = item.date
                 tvPresent.text = "${item.presentCount}/${item.totalCount}"

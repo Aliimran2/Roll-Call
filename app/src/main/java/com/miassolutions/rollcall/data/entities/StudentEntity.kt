@@ -12,7 +12,7 @@ import java.util.UUID
         Index(value = ["rollNumber"], unique = true)
     ]
 )
-data class Student(
+data class StudentEntity(
     @PrimaryKey
     val studentId: String = UUID.randomUUID().toString(),
     val regNumber: Int,

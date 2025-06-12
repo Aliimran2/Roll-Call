@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.miassolutions.rollcall.R
-import com.miassolutions.rollcall.data.entities.Student
+import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.utils.DUPLICATE_REG
@@ -114,8 +114,8 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
                 else -> {
                     val roll = rollNumber.toInt()
                     val reg = regNumber.toInt()
-                    val student =
-                        Student(
+                    val studentEntity =
+                        StudentEntity(
                             regNumber = reg,
                             rollNumber = roll,
                             studentName = studentName,
@@ -123,7 +123,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
                             phoneNumber = phoneNumber,
                             klass = "8th B"
                         )
-                    viewModel.insertStudent(student)
+                    viewModel.insertStudent(studentEntity)
 
 
                 }

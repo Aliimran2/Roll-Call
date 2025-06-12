@@ -2,7 +2,6 @@ package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -13,16 +12,12 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.miassolutions.rollcall.R
-import com.miassolutions.rollcall.data.entities.Student
+import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.data.repository.StudentFetchResult
-import com.miassolutions.rollcall.databinding.FragmentStudentDetailBinding
 import com.miassolutions.rollcall.databinding.StudentDetailLayoutBinding
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
-import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showLongToast
-import com.miassolutions.rollcall.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -72,7 +67,7 @@ class StudentDetailFragment : Fragment(R.layout.student_detail_layout) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.studentState.collect { result ->
+                viewModel.studentEntityState.collect { result ->
                     when (result) {
                         is StudentFetchResult.Error -> {
                             showLongToast(result.message)
@@ -81,7 +76,7 @@ class StudentDetailFragment : Fragment(R.layout.student_detail_layout) {
                         StudentFetchResult.Loading -> {/*nothing to do*/
                         }
 
-                        is StudentFetchResult.Success<Student> -> {
+                        is StudentFetchResult.Success<StudentEntity> -> {
                             val student = result.data
 
                             binding.apply {

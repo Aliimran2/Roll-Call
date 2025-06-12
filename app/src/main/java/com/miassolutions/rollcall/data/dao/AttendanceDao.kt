@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.miassolutions.rollcall.data.entities.Attendance
+import com.miassolutions.rollcall.data.entities.AttendanceEntity
 import com.miassolutions.rollcall.utils.AttendanceStatus
 import kotlinx.coroutines.flow.Flow
 
@@ -12,22 +12,22 @@ import kotlinx.coroutines.flow.Flow
 interface AttendanceDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAttendance(attendance: Attendance)
+    suspend fun insertAttendance(attendanceEntity: AttendanceEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAttendances(attendanceList: List<Attendance>)
+    suspend fun insertAttendances(attendanceEntityList: List<AttendanceEntity>)
 
     @Query("SELECT COUNT(*) FROM attendance_table WHERE date = :date")
     suspend fun getAttendanceCountForDate(date: String):Int
 
     @Query("SELECT * FROM attendance_table WHERE studentId = :studentId ORDER BY date DESC")
-    fun getAttendanceByStudent(studentId: String): Flow<List<Attendance>>
+    fun getAttendanceByStudent(studentId: String): Flow<List<AttendanceEntity>>
 
     @Query("SELECT * FROM attendance_table WHERE date = :date")
-    fun getAttendanceForDate(date: String): Flow<List<Attendance>>
+    fun getAttendanceForDate(date: String): Flow<List<AttendanceEntity>>
 
     @Query("SELECT * FROM attendance_table")
-    suspend fun getAllAttendances(): List<Attendance>
+    suspend fun getAllAttendances(): List<AttendanceEntity>
 
     @Query("DELETE FROM attendance_table WHERE studentId = :studentId")
     suspend fun deleteAttendanceForStudent(studentId: String)

@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.data.entities
+package com.miassolutions.rollcall.ui.model
 
 import com.miassolutions.rollcall.utils.AttendanceStatus
 

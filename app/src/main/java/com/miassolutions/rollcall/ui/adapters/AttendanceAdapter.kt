@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.miassolutions.rollcall.data.entities.MarkAttendanceUiModel
+import com.miassolutions.rollcall.ui.model.MarkAttendanceUiModel
 import com.miassolutions.rollcall.databinding.ItemAttendanceBinding
 import com.miassolutions.rollcall.utils.AttendanceStatus
 

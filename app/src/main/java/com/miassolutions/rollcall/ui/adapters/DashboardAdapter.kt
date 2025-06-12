@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.miassolutions.rollcall.databinding.ItemCardBinding
 import com.miassolutions.rollcall.databinding.ItemTopCardBinding
-import com.miassolutions.rollcall.ui.dataclasses.CommonListItem
-import com.miassolutions.rollcall.ui.dataclasses.Dashboard
-import com.miassolutions.rollcall.ui.dataclasses.TopCard
+import com.miassolutions.rollcall.ui.model.CommonListItem
+import com.miassolutions.rollcall.ui.model.Dashboard
+import com.miassolutions.rollcall.ui.model.TopCard
 import java.lang.IllegalStateException
 
 

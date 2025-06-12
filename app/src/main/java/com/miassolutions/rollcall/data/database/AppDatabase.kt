@@ -6,10 +6,10 @@ import androidx.room.TypeConverters
 import com.miassolutions.rollcall.data.converters.AttendanceStatusConverter
 import com.miassolutions.rollcall.data.dao.AttendanceDao
 import com.miassolutions.rollcall.data.dao.StudentDao
-import com.miassolutions.rollcall.data.entities.Attendance
-import com.miassolutions.rollcall.data.entities.Student
+import com.miassolutions.rollcall.data.entities.AttendanceEntity
+import com.miassolutions.rollcall.data.entities.StudentEntity
 
-@Database(entities = [Student::class, Attendance::class], version = 1, exportSchema = false)
+@Database(entities = [StudentEntity::class, AttendanceEntity::class], version = 1, exportSchema = false)
 @TypeConverters(AttendanceStatusConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 

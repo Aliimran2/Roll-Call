@@ -2,7 +2,7 @@ package com.miassolutions.rollcall.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.miassolutions.rollcall.data.entities.Student
+import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.data.repository.Repository
 import com.miassolutions.rollcall.utils.StudentInsertResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,17 +22,17 @@ import javax.inject.Inject
 @HiltViewModel
 class AddStudentViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    val allStudents: StateFlow<List<Student>> = repository.allStudents
+    val allStudents: StateFlow<List<StudentEntity>> = repository.allStudents
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     private val _toastMessage = MutableSharedFlow<StudentInsertResult>()
     val toastMessage = _toastMessage.asSharedFlow()
 
 
-    fun insertStudent(student: Student) {
+    fun insertStudent(studentEntity: StudentEntity) {
         viewModelScope.launch {
 
-            val result = repository.insertStudent(student)
+            val result = repository.insertStudent(studentEntity)
             withContext(Dispatchers.Main) {
 
                 _toastMessage.emit(result)
@@ -51,13 +51,13 @@ class AddStudentViewModel @Inject constructor(private val repository: Repository
         data class Error(val message: String) : ImportUIState()
     }
 
-    fun importStudents(students: List<Student>){
+    fun importStudents(studentEntities: List<StudentEntity>){
         viewModelScope.launch {
             _importUIState.value = ImportUIState.Importing
             var successCount = 0
             var failureCount = 0
 
-            students.forEach {student->
+            studentEntities.forEach { student->
                 when(repository.insertStudent(student)){
                     is StudentInsertResult.Failure -> failureCount++
                     is StudentInsertResult.Success -> successCount++

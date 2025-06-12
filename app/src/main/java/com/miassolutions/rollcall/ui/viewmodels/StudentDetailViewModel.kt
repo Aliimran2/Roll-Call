@@ -2,7 +2,7 @@ package com.miassolutions.rollcall.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.miassolutions.rollcall.data.entities.Student
+import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.data.repository.Repository
 import com.miassolutions.rollcall.data.repository.StudentFetchResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,9 +16,9 @@ import javax.inject.Inject
 @HiltViewModel
 class StudentDetailViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    private val _studentState =
-        MutableStateFlow<StudentFetchResult<Student>>(StudentFetchResult.Loading)
-    val studentState: StateFlow<StudentFetchResult<Student>> = _studentState
+    private val _studentEntityState =
+        MutableStateFlow<StudentFetchResult<StudentEntity>>(StudentFetchResult.Loading)
+    val studentEntityState: StateFlow<StudentFetchResult<StudentEntity>> = _studentEntityState
 
     private val _deleteMessage = MutableSharedFlow<String>()
     val deleteMessage = _deleteMessage.asSharedFlow()
@@ -27,8 +27,8 @@ class StudentDetailViewModel @Inject constructor(private val repository: Reposit
     fun fetchStudentById(studentId: String) {
         viewModelScope.launch {
 
-            _studentState.value = StudentFetchResult.Loading
-            _studentState.value = repository.getStudentById(studentId)
+            _studentEntityState.value = StudentFetchResult.Loading
+            _studentEntityState.value = repository.getStudentById(studentId)
                 _deleteMessage.emit("Deleted")
 
 

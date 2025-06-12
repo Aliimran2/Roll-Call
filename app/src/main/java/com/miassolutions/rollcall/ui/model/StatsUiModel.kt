@@ -1,6 +1,6 @@
-package com.miassolutions.rollcall.data.entities
+package com.miassolutions.rollcall.ui.model
 
-data class Stats(
+data class StatsUiModel(
 
     val date: String,
     val presentCount: Int,

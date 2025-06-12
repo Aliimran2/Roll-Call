@@ -3,8 +3,8 @@ package com.miassolutions.rollcall.data.repository
 import android.util.Log
 import com.miassolutions.rollcall.data.dao.AttendanceDao
 import com.miassolutions.rollcall.data.dao.StudentDao
-import com.miassolutions.rollcall.data.entities.Attendance
-import com.miassolutions.rollcall.data.entities.Student
+import com.miassolutions.rollcall.data.entities.AttendanceEntity
+import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.utils.DUPLICATE_REG
 import com.miassolutions.rollcall.utils.DUPLICATE_ROLL
 import com.miassolutions.rollcall.utils.StudentInsertResult
@@ -26,9 +26,9 @@ class Repository @Inject constructor(
 ) {
 
 
-    val allStudents: Flow<List<Student>> = studentDao.getAllStudents()
+    val allStudents: Flow<List<StudentEntity>> = studentDao.getAllStudents()
 
-    suspend fun getStudentById(studentId: String): StudentFetchResult<Student> {
+    suspend fun getStudentById(studentId: String): StudentFetchResult<StudentEntity> {
         return try {
             val student = studentDao.getStudentById(studentId)
             if (student != null) {
@@ -43,9 +43,9 @@ class Repository @Inject constructor(
 
     }
 
-    suspend fun insertStudent(student: Student): StudentInsertResult {
-        val duplicateRegNum = studentDao.getStudentByRegNum(student.regNumber)
-        val duplicateRollNum = studentDao.getStudentByRollNum(student.rollNumber)
+    suspend fun insertStudent(studentEntity: StudentEntity): StudentInsertResult {
+        val duplicateRegNum = studentDao.getStudentByRegNum(studentEntity.regNumber)
+        val duplicateRollNum = studentDao.getStudentByRollNum(studentEntity.rollNumber)
 
         return when {
             duplicateRegNum != null -> StudentInsertResult.Failure(DUPLICATE_REG)
@@ -53,7 +53,7 @@ class Repository @Inject constructor(
 
             else -> {
                 try {
-                    studentDao.insertStudent(student)
+                    studentDao.insertStudent(studentEntity)
                     StudentInsertResult.Success
                 } catch (e: Exception) {
                     StudentInsertResult.Failure(e.localizedMessage ?: "Unknown error")
@@ -62,10 +62,10 @@ class Repository @Inject constructor(
         }
     }
 
-    suspend fun insertStudents(students: List<Student>): Boolean {
+    suspend fun insertStudents(studentEntities: List<StudentEntity>): Boolean {
         return withContext(Dispatchers.IO) {
             try {
-                studentDao.insertAllStudent(students)
+                studentDao.insertAllStudent(studentEntities)
                 true
             } catch (e: Exception) {
                 Log.e("Repository", "Error inserting students", e)
@@ -83,27 +83,27 @@ class Repository @Inject constructor(
     //attendance operations
 
 
-    suspend fun insertAttendance(attendance: Attendance) {
-        attendanceDao.insertAttendance(attendance)
+    suspend fun insertAttendance(attendanceEntity: AttendanceEntity) {
+        attendanceDao.insertAttendance(attendanceEntity)
     }
 
-    suspend fun insertAttendances(attendanceList: List<Attendance>) {
-        attendanceDao.insertAttendances(attendanceList)
+    suspend fun insertAttendances(attendanceEntityList: List<AttendanceEntity>) {
+        attendanceDao.insertAttendances(attendanceEntityList)
     }
 
     suspend fun isAttendanceTaken(date: String): Boolean {
         return attendanceDao.getAttendanceCountForDate(date) > 0
     }
 
-    suspend fun getAttendanceGroupedByDate(): Map<String, List<Attendance>> {
+    suspend fun getAttendanceGroupedByDate(): Map<String, List<AttendanceEntity>> {
         return attendanceDao.getAllAttendances().groupBy { it.date }
     }
 
-    fun getAttendanceForStudent(studentId: String): Flow<List<Attendance>> {
+    fun getAttendanceForStudent(studentId: String): Flow<List<AttendanceEntity>> {
         return attendanceDao.getAttendanceByStudent(studentId)
     }
 
-    fun getAttendanceForDate(date: String): Flow<List<Attendance>> {
+    fun getAttendanceForDate(date: String): Flow<List<AttendanceEntity>> {
         return attendanceDao.getAttendanceForDate(date)
     }
 

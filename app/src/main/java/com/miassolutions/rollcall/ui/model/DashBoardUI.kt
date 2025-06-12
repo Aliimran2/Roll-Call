@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.dataclasses
+package com.miassolutions.rollcall.ui.model
 
 interface CommonListItem
 

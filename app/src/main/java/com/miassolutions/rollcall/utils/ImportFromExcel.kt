@@ -2,17 +2,15 @@ package com.miassolutions.rollcall.utils
 
 import android.content.Context
 import android.net.Uri
-import com.miassolutions.rollcall.data.entities.Student
+import com.miassolutions.rollcall.data.entities.StudentEntity
 import org.apache.poi.ss.usermodel.CellType
-import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.WorkbookFactory
-import java.io.InputStream
 
 object ImportFromExcel {
 
 
-    fun readStudentsFromExcel(context: Context, uri: Uri): List<Student> {
-        val students = mutableListOf<Student>()
+    fun readStudentsFromExcel(context: Context, uri: Uri): List<StudentEntity> {
+        val studentEntities = mutableListOf<StudentEntity>()
 
         try {
             context.contentResolver.openInputStream(uri)?.use { stream ->
@@ -40,8 +38,8 @@ object ImportFromExcel {
                         val phoneNumber = row.getCell(6)?.toString()?.trim() ?: ""
                         val address = row.getCell(7)?.toString()?.trim() ?: ""
 
-                        students.add(
-                            Student(
+                        studentEntities.add(
+                            StudentEntity(
                                 regNumber = regNumber,
                                 rollNumber = rollNumber,
                                 studentName = studentName,
@@ -65,7 +63,7 @@ object ImportFromExcel {
             return emptyList() // gracefully return empty if file is bad
         }
 
-        return students
+        return studentEntities
     }
 
 

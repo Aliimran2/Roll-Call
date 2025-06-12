@@ -1,7 +1,7 @@
 package com.miassolutions.rollcall.ui.adapters
 
 import androidx.recyclerview.widget.DiffUtil
-import com.miassolutions.rollcall.data.entities.MarkAttendanceUiModel
+import com.miassolutions.rollcall.ui.model.MarkAttendanceUiModel
 
 class AttendanceDiffUtil : DiffUtil.ItemCallback<MarkAttendanceUiModel>() {
     override fun areItemsTheSame(

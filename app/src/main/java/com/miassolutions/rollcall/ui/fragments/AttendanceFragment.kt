@@ -1,16 +1,13 @@
 package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.navigateUp
 import com.miassolutions.rollcall.R
-import com.miassolutions.rollcall.data.entities.Attendance
-import com.miassolutions.rollcall.data.entities.MarkAttendanceUiModel
+import com.miassolutions.rollcall.ui.model.MarkAttendanceUiModel
 import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
 import com.miassolutions.rollcall.ui.adapters.AttendanceAdapter
 import com.miassolutions.rollcall.ui.viewmodels.AttendanceViewModel
