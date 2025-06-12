@@ -44,3 +44,15 @@ fun Fragment.showSnackbar(
 fun getCurrentDate(): String {
     return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 }
+
+fun formattedDate(date: Long): String {
+    return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)
+
+}
+
+fun Long.toFormattedDate(
+    pattern: String = "dd/MM/yyyy",
+    locale: Locale = Locale.getDefault()
+): String {
+    return SimpleDateFormat(pattern, locale).format(Date(this))
+}

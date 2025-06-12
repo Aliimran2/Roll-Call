@@ -3,6 +3,8 @@ package com.miassolutions.rollcall.ui.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -30,21 +32,33 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAttendanceBinding.bind(view)
 
+        setupDateChangeListener()
         setupRecyclerView()
         collectFlows()
         clickListener()
 
     }
 
+    private fun setupDateChangeListener() {
+        parentFragmentManager.setFragmentResultListener(
+            DatePickerFragment.DATE_REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val selectedDate = bundle.getString(DatePickerFragment.SELECTED_DATE)
+            binding.etDatePicker.setText(selectedDate)
+        }
+    }
+
     private fun clickListener() {
         binding.apply {
-            etDate.setOnClickListener {
-                val action = AttendanceFragmentDirections.actionAttendanceFragmentToDatePickerFragment()
+            etDatePicker.setOnClickListener {
+                val action =
+                    AttendanceFragmentDirections.actionAttendanceFragmentToDatePickerFragment()
                 findNavController().navigate(action)
             }
 
             saveBtn.setOnClickListener {
-                val date = binding.etDate.text.toString()
+                val date = binding.etDatePicker.text.toString()
                 viewModel.setDate(date)
 
                 viewModel.saveAttendance { success ->
@@ -94,10 +108,6 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                 viewModel.attendanceUI.collectLatest { adapter.submitList(it) }
             }
         }
-    }
-
-    private fun showDatePickerDialog() {
-
     }
 
     private fun setupRecyclerView() {

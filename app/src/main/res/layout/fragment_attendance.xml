@@ -38,37 +38,57 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_marginTop="12dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/et_date"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/save_btn"
+            style="@style/Widget.Material3.Button.IconButton.Outlined"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/date_title"
+            android:background="@drawable/rounded_edit_text_background"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+
+
             android:backgroundTint="@color/white_two"
-            android:clickable="true"
-            android:focusable="false"
-            android:cursorVisible="false"
-            android:text="11/06/25"
+            android:text="Save Att"
             android:textColor="@color/white_two"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_save"
+            app:iconGravity="start"
+            app:iconPadding="8dp"
+            app:iconSize="18dp"
+            app:iconTint="@color/white_two"
              />
 
-        <TextView
-            android:id="@+id/date_title"
+        <EditText
+            android:id="@+id/et_date_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="Date : "
+            android:drawableTint="@color/white_two"
+            android:clickable="true"
+            android:drawableEnd="@drawable/ic_date_picker"
+            android:drawablePadding="8dp"
+            android:focusable="false"
+            android:layout_marginStart="8dp"
+            android:focusableInTouchMode="false"
+            android:hint="Select Date"
+            android:inputType="date"
+            android:padding="12dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/rounded_edit_text_background"
             android:textColor="@color/white_two"
+            android:textColorHint="@android:color/darker_gray"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            app:layout_constraintEnd_toStartOf="@+id/save_btn"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </RelativeLayout>
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
@@ -145,16 +165,6 @@
             app:layout_constraintTop_toBottomOf="@id/constraintLayout2"
             tools:itemCount="30"
             tools:listitem="@layout/item_attendance" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/save_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="16dp"
-            android:src="@drawable/ic_hand"
-            app:backgroundTint="@color/purple_one"
-            app:tint="@color/white_two" />
 
     </FrameLayout>
 
