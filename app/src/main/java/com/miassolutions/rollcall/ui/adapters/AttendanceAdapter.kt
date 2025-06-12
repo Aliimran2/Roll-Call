@@ -6,17 +6,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.miassolutions.rollcall.databinding.ItemAttendanceBinding
-import com.miassolutions.rollcall.ui.model.MarkAttendanceUiModel
+import com.miassolutions.rollcall.ui.model.AttendanceUIModel
 import com.miassolutions.rollcall.utils.AttendanceStatus
 
 class AttendanceAdapter(
-    private val onStatusChanged: (MarkAttendanceUiModel, AttendanceStatus) -> Unit
+    private val onStatusChanged: (AttendanceUIModel, AttendanceStatus) -> Unit
 ) :
-    ListAdapter<MarkAttendanceUiModel, AttendanceAdapter.AttendanceViewHolder>(AttendanceDiffUtil()) {
+    ListAdapter<AttendanceUIModel, AttendanceAdapter.AttendanceViewHolder>(AttendanceDiffUtil()) {
 
     inner class AttendanceViewHolder(private val binding: ItemAttendanceBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: MarkAttendanceUiModel) {
+        fun bind(item: AttendanceUIModel) {
             binding.apply {
                 tvRollNum.text = item.rollNumber.toString()
                 tvStudentName.text = item.studentName
@@ -50,17 +50,17 @@ class AttendanceAdapter(
 }
 
 
-class AttendanceDiffUtil : DiffUtil.ItemCallback<MarkAttendanceUiModel>() {
+class AttendanceDiffUtil : DiffUtil.ItemCallback<AttendanceUIModel>() {
     override fun areItemsTheSame(
-        oldItem: MarkAttendanceUiModel,
-        newItem: MarkAttendanceUiModel
+        oldItem: AttendanceUIModel,
+        newItem: AttendanceUIModel
     ): Boolean {
         return oldItem.studentId == newItem.studentId
     }
 
     override fun areContentsTheSame(
-        oldItem: MarkAttendanceUiModel,
-        newItem: MarkAttendanceUiModel
+        oldItem: AttendanceUIModel,
+        newItem: AttendanceUIModel
     ): Boolean {
         return oldItem == newItem
     }

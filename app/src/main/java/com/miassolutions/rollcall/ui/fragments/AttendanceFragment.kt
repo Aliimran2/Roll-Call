@@ -7,12 +7,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.miassolutions.rollcall.R
-import com.miassolutions.rollcall.ui.model.MarkAttendanceUiModel
+import com.miassolutions.rollcall.ui.model.AttendanceUIModel
 import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
 import com.miassolutions.rollcall.ui.adapters.AttendanceAdapter
 import com.miassolutions.rollcall.ui.viewmodels.AttendanceViewModel
 import com.miassolutions.rollcall.utils.collectLatestFlow
-import com.miassolutions.rollcall.utils.getCurrentDate
 import com.miassolutions.rollcall.utils.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -32,7 +31,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         _binding = FragmentAttendanceBinding.bind(view)
 
         setupRecyclerView()
-        viewModel.setDate(getCurrentDate())
+
 
         collectLatestFlow {
             launch {
@@ -63,7 +62,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                 }
             }
             launch {
-                viewModel.uiState.collectLatest { adapter.submitList(it) }
+                viewModel.attendanceUI.collectLatest { adapter.submitList(it) }
             }
         }
 
@@ -103,7 +102,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
         viewModel.studentList.observe(viewLifecycleOwner) { students ->
             val initialList = students.map {
-                MarkAttendanceUiModel(
+                AttendanceUIModel(
                     studentId = it.studentId,
                     studentName = it.studentName,
                     rollNumber = it.rollNumber
