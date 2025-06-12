@@ -17,13 +17,7 @@
         tools:listitem="@layout/item_top_card" />
 
 
-    <ImageView
-        android:layout_below="@id/rv_top_card"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
 
-
-        android:src="@drawable/attendance_image"/>
 
 
     <androidx.recyclerview.widget.RecyclerView

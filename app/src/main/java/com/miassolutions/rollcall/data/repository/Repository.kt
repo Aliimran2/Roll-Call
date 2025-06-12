@@ -25,7 +25,6 @@ class Repository @Inject constructor(
     private val attendanceDao: AttendanceDao
 ) {
 
-
     val allStudents: Flow<List<StudentEntity>> = studentDao.getAllStudents()
 
     suspend fun getStudentById(studentId: String): StudentFetchResult<StudentEntity> {
@@ -75,7 +74,6 @@ class Repository @Inject constructor(
     }
 
     suspend fun clearAllStudents() = studentDao.clearAllStudents()
-
 
     suspend fun deleteStudentById(studentId: String) = studentDao.deleteStudentById(studentId)
 

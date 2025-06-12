@@ -2,6 +2,7 @@ package com.miassolutions.rollcall.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.miassolutions.rollcall.data.entities.StudentEntity
@@ -48,5 +49,16 @@ class StudentListAdapter(
 
     override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+}
+
+
+class StudentDiffUtil : DiffUtil.ItemCallback<StudentEntity>() {
+    override fun areItemsTheSame(oldItem: StudentEntity, newItem: StudentEntity): Boolean {
+        return oldItem.studentId == newItem.studentId
+    }
+
+    override fun areContentsTheSame(oldItem: StudentEntity, newItem: StudentEntity): Boolean {
+        return oldItem == newItem
     }
 }

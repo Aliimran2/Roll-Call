@@ -2,10 +2,11 @@ package com.miassolutions.rollcall.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.miassolutions.rollcall.ui.model.StatsUiModel
 import com.miassolutions.rollcall.databinding.ItemStatsBinding
+import com.miassolutions.rollcall.ui.model.StatsUiModel
 
 class StatsListAdapter : ListAdapter<StatsUiModel, StatsListAdapter.StatsViewHolder>(StatsDiffUtil()) {
 
@@ -34,5 +35,16 @@ class StatsListAdapter : ListAdapter<StatsUiModel, StatsListAdapter.StatsViewHol
 
     override fun onBindViewHolder(holder: StatsViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+}
+
+
+class StatsDiffUtil : DiffUtil.ItemCallback<StatsUiModel>() {
+    override fun areItemsTheSame(oldItem: StatsUiModel, newItem: StatsUiModel): Boolean {
+        return oldItem.date == newItem.date
+    }
+
+    override fun areContentsTheSame(oldItem: StatsUiModel, newItem: StatsUiModel): Boolean {
+        return oldItem == newItem
     }
 }

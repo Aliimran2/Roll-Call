@@ -2,7 +2,6 @@ package com.miassolutions.rollcall.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.miassolutions.rollcall.data.dao.AttendanceDao
 import com.miassolutions.rollcall.data.dao.StudentDao
 import com.miassolutions.rollcall.data.database.AppDatabase

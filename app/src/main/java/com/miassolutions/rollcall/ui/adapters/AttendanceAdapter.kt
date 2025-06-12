@@ -2,10 +2,11 @@ package com.miassolutions.rollcall.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.miassolutions.rollcall.ui.model.MarkAttendanceUiModel
 import com.miassolutions.rollcall.databinding.ItemAttendanceBinding
+import com.miassolutions.rollcall.ui.model.MarkAttendanceUiModel
 import com.miassolutions.rollcall.utils.AttendanceStatus
 
 class AttendanceAdapter(
@@ -46,4 +47,22 @@ class AttendanceAdapter(
     override fun onBindViewHolder(holder: AttendanceViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
+}
+
+
+class AttendanceDiffUtil : DiffUtil.ItemCallback<MarkAttendanceUiModel>() {
+    override fun areItemsTheSame(
+        oldItem: MarkAttendanceUiModel,
+        newItem: MarkAttendanceUiModel
+    ): Boolean {
+        return oldItem.studentId == newItem.studentId
+    }
+
+    override fun areContentsTheSame(
+        oldItem: MarkAttendanceUiModel,
+        newItem: MarkAttendanceUiModel
+    ): Boolean {
+        return oldItem == newItem
+    }
+
 }
