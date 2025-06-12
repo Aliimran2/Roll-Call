@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.widget.DatePicker
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-
-import com.miassolutions.rollcall.utils.toFormattedDate
+import com.miassolutions.rollcall.utils.Constants.DATE_REQUEST_KEY
+import com.miassolutions.rollcall.utils.Constants.SELECTED_DATE
 
 class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
@@ -32,14 +32,10 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
             set(year, month, dayOfMonth)
         }
 
-        val date = selectedDate.time.time.toFormattedDate()
-
+        val date = selectedDate.time.time
         parentFragmentManager.setFragmentResult(DATE_REQUEST_KEY, bundleOf(SELECTED_DATE to date))
     }
 
-    companion object {
-        const val DATE_REQUEST_KEY = "date_request_key"
-        const val SELECTED_DATE = "selected_date"
-    }
+
 
 }

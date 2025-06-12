@@ -9,10 +9,14 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentSettingsBinding
 import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
+import com.miassolutions.rollcall.utils.Constants
 import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showSnackbar
 import com.miassolutions.rollcall.utils.showToast
+import com.miassolutions.rollcall.utils.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
@@ -21,20 +25,60 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<SettingsViewModel>()
+    private var selectedMinDate: Long? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSettingsBinding.bind(view)
 
         setupButtonClickListener()
+        collectFlow()
+        setupDateChangeListener()
 
-        collectLatestFlow {
-            viewModel.messageEvent.collect {
-                showSnackbar(it)
+
+
+        binding.etMinDatePicker.setOnClickListener {
+            val action = SettingsFragmentDirections.actionSettingsFragmentToDatePickerFragment()
+            findNavController().navigate(action)
+        }
+
+        binding.btnSaveMinDate.setOnClickListener {
+            selectedMinDate?.let {
+                viewModel.saveMinDate(it)
             }
         }
 
 
+    }
+
+    private fun setupDateChangeListener() {
+        parentFragmentManager.setFragmentResultListener(
+            Constants.DATE_REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val selectedDate = bundle.getLong(Constants.SELECTED_DATE)
+            binding.etMinDatePicker.setText(selectedDate.toFormattedDate())
+            selectedMinDate = selectedDate
+
+        }
+    }
+
+    private fun collectFlow() {
+        collectLatestFlow {
+
+            launch {
+                viewModel.minDate.collectLatest {
+                    binding.etMinDatePicker.setText(it?.toFormattedDate())
+                }
+            }
+            launch {
+                viewModel.messageEvent.collect {
+                    showSnackbar(it)
+                }
+            }
+
+
+        }
     }
 
     private fun setupButtonClickListener() {

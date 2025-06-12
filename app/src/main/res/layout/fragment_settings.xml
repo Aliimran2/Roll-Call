@@ -1,17 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:background="@color/purple_one">
+
+
+    <TextView
+        android:id="@+id/tv_info"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Select Min Date"
+        android:textColor="@color/white_two"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_conversion_absoluteHeight="19dp"
+        tools:layout_conversion_absoluteWidth="105dp" />
+
+    <EditText
+        android:id="@+id/et_min_date_picker"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:autofillHints="creditCardExpirationDate"
+        android:background="@drawable/rounded_edit_text_background"
+        android:clickable="true"
+        android:drawableEnd="@drawable/ic_date_picker"
+        android:drawablePadding="8dp"
+        android:drawableTint="@color/white_two"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:hint="Select Min Date"
+        android:inputType="date"
+        android:padding="12dp"
+        android:textColor="@color/white_two"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/btn_save_min_date"
+        app:layout_constraintStart_toStartOf="@+id/tv_info"
+        app:layout_constraintTop_toBottomOf="@+id/tv_info"
+        tools:layout_conversion_absoluteHeight="48dp"
+        tools:layout_conversion_absoluteWidth="278dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_save_min_date"
+        style="@style/Widget.Material3.Button.IconButton.Outlined"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:cornerRadius="8dp"
+        app:icon="@drawable/ic_save"
+        app:iconTint="@color/white_two"
+        app:layout_constraintBottom_toBottomOf="@+id/et_min_date_picker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_min_date_picker"
+        tools:layout_conversion_absoluteHeight="48dp"
+        tools:layout_conversion_absoluteWidth="115dp" />
 
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_delete_all_students"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/red_absent"
-        android:text="DELETE ALL STUDENTS" />
+        android:text="DELETE ALL STUDENTS"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_conversion_absoluteHeight="48dp"
+        tools:layout_conversion_absoluteWidth="216dp" />
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

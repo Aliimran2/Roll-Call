@@ -9,8 +9,8 @@ import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
-import com.miassolutions.rollcall.utils.DUPLICATE_REG
-import com.miassolutions.rollcall.utils.DUPLICATE_ROLL
+import com.miassolutions.rollcall.utils.Constants.DUPLICATE_REG_NUMBER
+import com.miassolutions.rollcall.utils.Constants.DUPLICATE_ROLL_NUMBER
 import com.miassolutions.rollcall.utils.StudentInsertResult
 import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showLongToast
@@ -47,12 +47,12 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
                 when (result) {
                     is StudentInsertResult.Failure -> {
                         when (result.reason) {
-                            DUPLICATE_REG -> {
+                            DUPLICATE_REG_NUMBER -> {
                                 binding.etRegNumber.requestFocus()
                                 binding.etRegNumber.error = "Reg no already exists"
                             }
 
-                            DUPLICATE_ROLL -> {
+                            DUPLICATE_ROLL_NUMBER -> {
                                 binding.etRollNumber.requestFocus()
                                 binding.etRollNumber.error = "Roll no already exists"
                             }

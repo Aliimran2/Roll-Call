@@ -11,6 +11,8 @@ import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
 import com.miassolutions.rollcall.ui.adapters.AttendanceAdapter
 import com.miassolutions.rollcall.ui.model.AttendanceUIModel
 import com.miassolutions.rollcall.ui.viewmodels.AttendanceViewModel
+import com.miassolutions.rollcall.utils.Constants
+import com.miassolutions.rollcall.utils.Constants.DATE_REQUEST_KEY
 import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showSnackbar
 import com.miassolutions.rollcall.utils.toFormattedDate
@@ -41,15 +43,13 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     }
 
 
-
-
     private fun setupDateChangeListener() {
         parentFragmentManager.setFragmentResultListener(
-            DatePickerFragment.DATE_REQUEST_KEY,
+            DATE_REQUEST_KEY,
             viewLifecycleOwner
         ) { _, bundle ->
-            val selectedDate = bundle.getString(DatePickerFragment.SELECTED_DATE)
-            binding.etDatePicker.setText(selectedDate)
+            val selectedDate = bundle.getLong(Constants.SELECTED_DATE)
+            binding.etDatePicker.setText(selectedDate.toFormattedDate())
         }
     }
 
@@ -82,8 +82,6 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
 
     }
-
-
 
 
     private fun collectFlows() {

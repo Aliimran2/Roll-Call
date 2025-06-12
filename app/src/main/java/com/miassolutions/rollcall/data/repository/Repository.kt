@@ -5,8 +5,8 @@ import com.miassolutions.rollcall.data.dao.AttendanceDao
 import com.miassolutions.rollcall.data.dao.StudentDao
 import com.miassolutions.rollcall.data.entities.AttendanceEntity
 import com.miassolutions.rollcall.data.entities.StudentEntity
-import com.miassolutions.rollcall.utils.DUPLICATE_REG
-import com.miassolutions.rollcall.utils.DUPLICATE_ROLL
+import com.miassolutions.rollcall.utils.Constants.DUPLICATE_REG_NUMBER
+import com.miassolutions.rollcall.utils.Constants.DUPLICATE_ROLL_NUMBER
 import com.miassolutions.rollcall.utils.StudentInsertResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -47,8 +47,8 @@ class Repository @Inject constructor(
         val duplicateRollNum = studentDao.getStudentByRollNum(studentEntity.rollNumber)
 
         return when {
-            duplicateRegNum != null -> StudentInsertResult.Failure(DUPLICATE_REG)
-            duplicateRollNum != null -> StudentInsertResult.Failure(DUPLICATE_ROLL)
+            duplicateRegNum != null -> StudentInsertResult.Failure(DUPLICATE_REG_NUMBER)
+            duplicateRollNum != null -> StudentInsertResult.Failure(DUPLICATE_ROLL_NUMBER)
 
             else -> {
                 try {

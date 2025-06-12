@@ -46,7 +46,11 @@
         android:id="@+id/settingsFragment"
         android:name="com.miassolutions.rollcall.ui.fragments.SettingsFragment"
         tools:layout="@layout/fragment_settings"
-        android:label="Settings" />
+        android:label="Settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_datePickerFragment"
+            app:destination="@id/datePickerFragment" />
+    </fragment>
     <fragment
         tools:layout="@layout/fragment_edit_student"
         android:id="@+id/editStudentFragment"
