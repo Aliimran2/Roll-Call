@@ -87,9 +87,17 @@
         <action
             android:id="@+id/action_dashboardFragment_to_statsFragment"
             app:destination="@id/statsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
     </fragment>
     <dialog
         android:id="@+id/datePickerFragment"
         android:name="com.miassolutions.rollcall.ui.fragments.DatePickerFragment"
         android:label="DatePickerFragment" />
+    <dialog
+        android:id="@+id/userProfileFragment"
+        tools:layout="@layout/fragment_user_profile"
+        android:name="com.miassolutions.rollcall.ui.fragments.UserProfileFragment"
+        android:label="UserProfileFragment" />
 </navigation>

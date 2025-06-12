@@ -17,17 +17,15 @@
         tools:listitem="@layout/item_top_card" />
 
 
-
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_dashboard"
-                android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-app:spanCount="2"
+        android:layout_marginBottom="56dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
         tools:itemCount="3"
         tools:listitem="@layout/item_card" />
 

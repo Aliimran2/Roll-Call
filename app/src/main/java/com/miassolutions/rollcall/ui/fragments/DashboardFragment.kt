@@ -41,15 +41,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
         topCardItems.clear()
         dashboardItems.clear()
-
         topCardItems.apply {
-
-
             add(TopCard(getCurrentDateAndTime().toFormattedDate("EEEE\n dd/MM/yyyy"), "Date"))
             add(TopCard(getCurrentDateAndTime().toFormattedDate("hh:mm:ss"), "Time"))
-//            // Add more TopCard items if needed for horizontal scrolling
-//            add(TopCard("Weather", "Sunny"))
-//            add(TopCard("Location", "Lahore"))
         }
 
         dashboardItems.apply {
@@ -66,14 +60,12 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private fun setupRecyclerView() {
 
         topCardAdapter = DashboardAdapter(topCardItems) { clickedItem ->
-            // This lambda will ONLY be triggered by clickable items.
-            // Since TopCardViewHolder is set to null click listener, this won't be called for TopCards.
-            // If you change TopCardViewHolder to be clickable, this will handle it.
+
             if (clickedItem is TopCard) {
                 showToast("Top Card clicked: ${clickedItem.title} (still unexpected if non-clickable)")
             }
         }
-        binding.rvTopCard.apply { // Reference the new ID
+        binding.rvTopCard.apply {
 
             adapter = topCardAdapter
             // You might want to add some item decoration for spacing in horizontal lists
@@ -99,7 +91,11 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                         }
 
                         "My Profile" -> {
-                            showLongToast("Implement bottom fragment for input profile")
+
+                            val action = DashboardFragmentDirections.actionDashboardFragmentToUserProfileFragment()
+                            findNavController().navigate(action)
+
+
                         }
 
                         "Settings" -> {

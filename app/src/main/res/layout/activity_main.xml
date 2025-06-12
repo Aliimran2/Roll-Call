@@ -19,9 +19,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.Material3.Light"
-        app:subtitle="Ali Imran"
         app:subtitleTextColor="@color/white_one"
         app:title="Attendance App"
+        tools:subtitle="Ali Imran"
+        app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Body1"
         app:titleTextAppearance="@style/TextAppearance.Material3.ActionBar.Title"
         app:titleTextColor="@color/white_two" />
 

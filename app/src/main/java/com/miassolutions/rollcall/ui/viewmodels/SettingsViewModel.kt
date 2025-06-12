@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val repository: Repository,
-    private val prefs : UserPrefsManager
+    private val prefs: UserPrefsManager
 ) : ViewModel() {
 
 
@@ -23,20 +23,28 @@ class SettingsViewModel @Inject constructor(
     val messageEvent: SharedFlow<String> = _messageEvent
 
     val minDate = prefs.minDate.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+    val userName =
+        prefs.userName.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
-    fun saveMinDate(timestamp : Long){
+    fun saveMinDate(timestamp: Long) {
         viewModelScope.launch {
             prefs.saveMinDate(timestamp)
         }
     }
 
-    fun resetDate(){
+    fun resetDate() {
         viewModelScope.launch {
             prefs.saveMinDate(0L)
+            prefs.saveUserName("Set user name") //todo
         }
     }
 
 
+    fun saveUserName(userName: String) {
+        viewModelScope.launch {
+            prefs.saveUserName(userName)
+        }
+    }
 
 
     fun deleteAll() {
