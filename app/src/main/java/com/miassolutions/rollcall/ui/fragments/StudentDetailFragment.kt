@@ -11,16 +11,18 @@ import androidx.navigation.fragment.navArgs
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.data.repository.StudentFetchResult
+import com.miassolutions.rollcall.databinding.FragmentStudentProfileBinding
 import com.miassolutions.rollcall.databinding.StudentDetailLayoutBinding
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
+import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showLongToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class StudentDetailFragment : Fragment(R.layout.student_detail_layout) {
+class StudentDetailFragment : Fragment(R.layout.fragment_student_profile) {
 
-    private var _binding: StudentDetailLayoutBinding? = null
+    private var _binding: FragmentStudentProfileBinding? = null
     private val binding get() = _binding!!
 
     private val args by navArgs<StudentDetailFragmentArgs>()
@@ -29,7 +31,7 @@ class StudentDetailFragment : Fragment(R.layout.student_detail_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = StudentDetailLayoutBinding.bind(view)
+        _binding = FragmentStudentProfileBinding.bind(view)
 
         val studentId = args.id
 
@@ -39,95 +41,47 @@ class StudentDetailFragment : Fragment(R.layout.student_detail_layout) {
 
     }
 
-//    private fun actionButtonsListener(studentId: String, studentName: String) {
-//        binding.apply {
-//            deleteBtn.setOnClickListener {
-//
-//                MaterialAlertDialogBuilder(requireContext())
-//
-//                    .setTitle("Delete $studentName!!")
-//                    .setMessage("Are you sure?")
-//                    .setPositiveButton("Yes, Delete") { dialog, _ ->
-//                        viewModel.deleteStudentById(studentId)
-//                        Snackbar.make(binding.root, "$studentName Deleted", Snackbar.LENGTH_LONG)
-//                            .show()
-//                        findNavController().navigateUp()
-//                    }
-//                    .setNegativeButton("Cancel", null)
-//                    .show()
-//            }
-//
-//        }
-//    }
 
     private fun loadStudentData() {
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.studentEntityState.collect { result ->
-                    when (result) {
-                        is StudentFetchResult.Error -> {
-                            showLongToast(result.message)
-                        }
-
-                        StudentFetchResult.Loading -> {/*nothing to do*/
-                        }
-
-                        is StudentFetchResult.Success<StudentEntity> -> {
-                            val student = result.data
-
-                            binding.apply {
-
-                                itemRegNumber.apply {
-                                    tvFieldLabel.text = "Reg No"
-                                    tvFieldValue.text = student.regNumber.toString()
-                                }
-
-                                itemRollNumber.apply {
-                                    tvFieldLabel.text = "Roll No"
-                                    tvFieldValue.text = student.rollNumber.toString()
-                                }
-
-
-                                itemStudentName.apply {
-                                    tvFieldLabel.text = "Student Name"
-                                    tvFieldValue.text = student.studentName
-                                }
-                                itemFatherName.apply {
-                                    tvFieldLabel.text = "Father Name"
-                                    tvFieldValue.text = student.fatherName
-                                }
-
-
-                                itemClass.apply {
-                                    tvFieldLabel.text = "Class"
-                                    tvFieldValue.text = student.klass
-                                }
-
-                                itemPhoneNumber.apply {
-                                    tvFieldLabel.text = "Phone No"
-                                    tvFieldValue.text = student.phoneNumber
-                                }
-
-                                itemDob.apply {
-                                    tvFieldLabel.text = "Date of Birth"
-                                    tvFieldValue.text = student.dob
-                                }
-
-                                itemAddress.apply {
-                                    tvFieldLabel.text = "Address"
-                                    tvFieldValue.text = student.address
-                                }
-
-                            }
-
-                        }
+        collectLatestFlow {
+            viewModel.studentEntityState.collect { result ->
+                when (result) {
+                    is StudentFetchResult.Error -> {
+                        showLongToast(result.message)
                     }
 
+                    StudentFetchResult.Loading -> {/*nothing to do*/
+                    }
+
+                    is StudentFetchResult.Success<StudentEntity> -> {
+                        val student = result.data
+
+                        binding.apply {
+                            primaryProfile.apply {
+                                tvStudentName.text = student.studentName.uppercase()
+                                tvRegNumber.text = "REG NO : ${student.regNumber}"
+                                tvRollNumber.text = "ROLL NO : ${student.rollNumber}"
+                                tvDob.text = "DOB : ${student.dob}"
+                                tvDoa.text = "DOA : ${student.dob}" //todo
+                                tvBForm.text = "B-FORM : 33201-0000000-0"
+                            }
+
+                            secondaryProfile.apply {
+                                tvFatherName.text = "FATHER NAME : ${student.fatherName.uppercase()}"
+                                tvPhoneNumber.text = "PHONE NO : ${student.phoneNumber}"
+                                tvAddress.text = "ADDRESS : ${student.address.uppercase()}"
+                            }
+
+
+                        }
+
+                    }
                 }
 
-
             }
+
+
         }
 
 
