@@ -60,11 +60,11 @@ class StudentDetailFragment : Fragment(R.layout.fragment_student_profile) {
                         binding.apply {
                             primaryProfile.apply {
                                 tvStudentName.text = student.studentName.uppercase()
-                                tvRegNumber.text = "REG NO : ${student.regNumber}"
-                                tvRollNumber.text = "ROLL NO : ${student.rollNumber}"
-                                tvDob.text = "DOB : ${student.dob}"
-                                tvDoa.text = "DOA : ${student.dob}" //todo
-                                tvBForm.text = "B-FORM : 33201-0000000-0"
+                                tvRegNum.text = "${student.regNumber}"
+                                tvRollNum.text = "${student.rollNumber}"
+                                tvDob.text = "${student.dob}"
+                                tvDoa.text = "${student.dob}" //todo
+                                tvBForm.text = "00000-0000000-0"
                             }
 
                             secondaryProfile.apply {
