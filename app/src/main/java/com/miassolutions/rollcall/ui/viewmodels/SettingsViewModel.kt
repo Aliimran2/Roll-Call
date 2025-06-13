@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.miassolutions.rollcall.data.datastore.UserPrefsManager
 import com.miassolutions.rollcall.data.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -24,8 +25,9 @@ class SettingsViewModel @Inject constructor(
     val messageEvent: SharedFlow<String> = _messageEvent
 
     val minDate = prefs.minDate.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
-    val userName =
-        prefs.userName.asLiveData()
+    val userName = prefs.userName.asLiveData()
+    val instituteName = prefs.instituteName.asLiveData()
+
 
     fun saveMinDate(timestamp: Long) {
         viewModelScope.launch {
@@ -33,17 +35,29 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    private fun saveUserName(userName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            prefs.saveUserName(userName)
+        }
+    }
+
+    private fun saveInstituteName(instName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            prefs.saveInstituteName(instName)
+
+        }
+    }
+
+    fun saveUserProfile(userName: String, instituteName: String) {
+
+        saveUserName(userName)
+        saveInstituteName(instituteName)
+    }
+
     fun resetDate() {
         viewModelScope.launch {
             prefs.saveMinDate(0L)
             prefs.saveUserName("Set user name") //todo
-        }
-    }
-
-
-    fun saveUserName(userName: String) {
-        viewModelScope.launch {
-            prefs.saveUserName(userName)
         }
     }
 

@@ -9,7 +9,6 @@ import com.miassolutions.rollcall.utils.Constants
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,29 +20,42 @@ class UserPrefsManager @Inject constructor(@ApplicationContext private val conte
 
     private val dataStore = context.dataStore
 
-    private val minDateKey = longPreferencesKey(Constants.MIN_DATE_KEY)
-    private val userNameKey = stringPreferencesKey(Constants.USER_NAME_KEY)
+    companion object {
+        private val MIN_DATE_KEY = longPreferencesKey("min_date_key")
+        private val USER_NAME_KEY = stringPreferencesKey("user_name_key")
+        private val INSTITUTE_NAME_KEY = stringPreferencesKey("institute_name_key")
+    }
 
     //Save minDate
     suspend fun saveMinDate(minDate: Long) {
         dataStore.edit { prefs ->
-            prefs[minDateKey] = minDate
+            prefs[MIN_DATE_KEY] = minDate
+        }
+    }
+
+    suspend fun saveInstituteName(instituteName: String) {
+        dataStore.edit { prefs ->
+            prefs[INSTITUTE_NAME_KEY] = instituteName
         }
     }
 
     //Read minDate
     val minDate: Flow<Long?> = dataStore.data.map { prefs ->
-        prefs[minDateKey]
+        prefs[MIN_DATE_KEY]
     }
 
-    suspend fun saveUserName(userName : String){
+    suspend fun saveUserName(userName: String) {
         dataStore.edit { prefs ->
-            prefs[userNameKey] = userName
+            prefs[USER_NAME_KEY] = userName
         }
     }
 
-    val userName : Flow<String?> = dataStore.data.map { prefs ->
-        prefs[userNameKey]
+    val userName: Flow<String?> = dataStore.data.map { prefs ->
+        prefs[USER_NAME_KEY]
+    }
+
+    val instituteName: Flow<String?> = dataStore.data.map { prefs ->
+        prefs[INSTITUTE_NAME_KEY]
     }
 
 

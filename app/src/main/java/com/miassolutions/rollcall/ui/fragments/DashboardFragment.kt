@@ -55,7 +55,14 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             it?.let {
                 binding.userProfileCard.tvTitle.text = "Welcome!\n$it"
             }
-            binding.userProfileCard.tvSubtitle.text = "GHS 241 JB" //todo
+        }
+
+        settingsViewModel.instituteName.observe(viewLifecycleOwner) {
+            it?.let {
+
+                binding.userProfileCard.tvSubtitle.text = it
+            }
+
         }
     }
 

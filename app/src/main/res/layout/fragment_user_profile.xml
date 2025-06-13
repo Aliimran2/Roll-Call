@@ -9,9 +9,11 @@
         android:id="@+id/iv_user_profile"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        app:srcCompat="@drawable/mias_profile_pic"
-        tools:layout_editor_absoluteX="156dp"
-        tools:layout_editor_absoluteY="24dp" />
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mias_profile_pic" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout1"

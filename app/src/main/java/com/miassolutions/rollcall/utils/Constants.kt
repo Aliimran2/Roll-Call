@@ -7,8 +7,9 @@ object Constants {
 
     //data Store constants
     const val USER_PREFS_NAME = "user_prefs"
-    const val MIN_DATE_KEY = "min_date_key"
-    const val USER_NAME_KEY = "user_name_key"
+//    const val MIN_DATE_KEY = "min_date_key"
+//    const val USER_NAME_KEY = "user_name_key"
+//    const val INSTITUTE_NAME_KEY = "institute_name_key"
 
     //date picker dialog constants
     const val DATE_REQUEST_KEY = "date_request_key"

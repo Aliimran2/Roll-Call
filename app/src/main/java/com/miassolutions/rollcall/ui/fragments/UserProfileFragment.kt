@@ -4,16 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.miassolutions.rollcall.databinding.FragmentUserProfileBinding
 import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
-import com.miassolutions.rollcall.utils.collectLatestFlow
-import com.miassolutions.rollcall.utils.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class UserProfileFragment : BottomSheetDialogFragment() {
@@ -35,19 +31,45 @@ class UserProfileFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        collectLatestFlow {
-            viewModel.userName.observe(viewLifecycleOwner) { userName ->
-                val name = userName ?: "Set name"
-                binding.etUserName.setText(name)
+
+        viewModel.userName.observe(viewLifecycleOwner) { userName ->
+            val name = userName ?: "Set name"
+            binding.etUserName.setText(name)
+        }
+
+        viewModel.instituteName.observe(viewLifecycleOwner) { instName ->
+            instName?.let {
+                binding.etInstitute.setText(it)
             }
         }
 
+
+
+
         binding.btnSaveProfile.setOnClickListener {
             val userName = binding.etUserName.text.toString().trim()
-            viewModel.saveUserName(userName)
-            findNavController().navigateUp()
+            val instituteName = binding.etInstitute.text.toString().trim()
 
+            when {
+                userName.isBlank() -> {
+                    binding.etUserName.apply {
+                        requestFocus()
+                        error = "Enter name"
+                    }
+                }
 
+                instituteName.isBlank() -> {
+                    binding.etInstitute.apply {
+                        requestFocus()
+                        error = "Enter institute name"
+                    }
+                }
+
+                else -> {
+                    viewModel.saveUserProfile(userName, instituteName)
+                    findNavController().navigateUp()
+                }
+            }
         }
 
 
