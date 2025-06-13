@@ -40,46 +40,43 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
 
 
 
-        menuProvider()
+
+        binding.btnTakeAtt.setOnClickListener {
+            val action =
+                StatsFragmentDirections.actionStatsFragmentToAttendanceFragment()
+            findNavController().navigate(action)
+        }
 
 
     }
 
-    private fun menuProvider() {
-        val menuHost = requireActivity()
-        menuHost.addMenuProvider(
-            object : MenuProvider {
-                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuInflater.inflate(R.menu.menu_attendance, menu)
-                }
 
-                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                    return when (menuItem.itemId) {
-                        R.id.action_add_att -> {
-                            val action =
-                                StatsFragmentDirections.actionStatsFragmentToAttendanceFragment()
-                            findNavController().navigate(action)
-                            true
-                        }
 
-                        R.id.sort_asc -> {
-                            showToast("sorting asc...")
-                            true
-                        }
-
-                        R.id.sort_desc -> {
-                            showToast("sorting desc...")
-                            true
-                        }
-
-                        else -> false
-                    }
-                }
-            },
-            viewLifecycleOwner,
-            Lifecycle.State.RESUMED
-        )
-    }
+//    private fun menuProvider() {
+//        val menuHost = requireActivity()
+//        menuHost.addMenuProvider(
+//            object : MenuProvider {
+//                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+//                    menuInflater.inflate(R.menu.menu_attendance, menu)
+//                }
+//
+//                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+//                    return when (menuItem.itemId) {
+//                        R.id.action_add_att -> {
+//                            val action =
+//                                StatsFragmentDirections.actionStatsFragmentToAttendanceFragment()
+//                            findNavController().navigate(action)
+////                            true
+//                        }
+//
+//                        else -> false
+//                    }
+//                }
+//            },
+//            viewLifecycleOwner,
+//            Lifecycle.State.RESUMED
+//        )
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

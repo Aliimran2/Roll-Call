@@ -38,13 +38,13 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        collectLatestFlow {
-            settingsViewModel.userName.collectLatest { userName ->
-                val name = userName ?: "Set user name"
-                binding.toolbar.subtitle = "Welcome! $name"
-
-            }
-        }
+//        collectLatestFlow {
+//            settingsViewModel.userName.collectLatest { userName ->
+//                val name = userName ?: "Set user name"
+//                binding.toolbar.subtitle = "Welcome! $name"
+//
+//            }
+//        }
 
 
         val navHostFragment: NavHostFragment =
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.toolbar.setupWithNavController(navController)
-//        binding.bottomNavView.setupWithNavController(navController)
+
 
 
 

@@ -12,8 +12,8 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:paddingTop="32dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="35dp"
         android:theme="@style/ThemeOverlay.Material3.Dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +21,6 @@
         app:popupTheme="@style/ThemeOverlay.Material3.Light"
         app:subtitleTextColor="@color/white_one"
         app:title="Attendance App"
-        tools:subtitle="Ali Imran"
         app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Body1"
         app:titleTextAppearance="@style/TextAppearance.Material3.ActionBar.Title"
         app:titleTextColor="@color/white_two" />

@@ -7,19 +7,7 @@
         android:icon="@drawable/ic_add"
         android:title="Add Att."
         app:iconTint="@color/white_two"
-        app:showAsAction="withText|ifRoom" />
+        app:showAsAction="always|withText" />
 
-    <item android:title="Sort">
-        <menu>
-            <item
-                android:id="@+id/sort_asc"
-                android:title="ASC" />
-
-            <item
-                android:id="@+id/sort_desc"
-                android:title="DESC" />
-
-        </menu>
-    </item>
 
 </menu>
