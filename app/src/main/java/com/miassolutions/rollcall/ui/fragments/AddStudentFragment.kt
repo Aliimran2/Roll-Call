@@ -48,13 +48,17 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
                     is StudentInsertResult.Failure -> {
                         when (result.reason) {
                             DUPLICATE_REG_NUMBER -> {
-                                binding.etRegNumber.requestFocus()
-                                binding.etRegNumber.error = "Reg no already exists"
+                                binding.apply {
+                                    etRegNumber.requestFocus()
+                                    etRegNumber.error = "Reg no already exists"
+                                }
                             }
 
                             DUPLICATE_ROLL_NUMBER -> {
-                                binding.etRollNumber.requestFocus()
-                                binding.etRollNumber.error = "Roll no already exists"
+                                binding.apply {
+                                    etRollNumber.requestFocus()
+                                    binding.etRollNumber.error = "Roll no already exists"
+                                }
                             }
 
                             else -> {
@@ -83,27 +87,39 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
             val studentName = etName.text.toString()
             val fatherName = etFatherName.text.toString()
             val phoneNumber = etPhoneNumber.text.toString()
+            val dob = etDob.text.toString()
+            val address = etAddress.text.toString()
 
             when {
                 regNumber.isBlank() -> {
-                    binding.etRegNumber.requestFocus()
-                    binding.etRegNumber.error = "Enter reg. number"
+                    binding.apply {
+                        etRegNumber.requestFocus()
+                        etRegNumber.error = "Enter reg. number"
+                    }
                 }
 
                 rollNumber.isBlank() -> {
-                    binding.etRollNumber.requestFocus()
-                    binding.etRollNumber.error = "Enter roll number"
+                    binding.apply {
+                        etRollNumber.requestFocus()
+                        etRollNumber.error = "Enter roll number"
+                    }
                 }
 
                 studentName.isBlank() -> {
-                    binding.etName.requestFocus()
-                    binding.etName.error = "Enter name of the student"
+                    binding.apply {
+                        etName.requestFocus()
+                        etName.error = "Enter name of the student"
+                    }
                 }
 
                 fatherName.isBlank() -> {
-                    binding.etFatherName.requestFocus()
-                    binding.etFatherName.error = "Enter name of the student"
+                    binding.apply {
+                        etFatherName.requestFocus()
+                        etFatherName.error = "Enter name of the student"
+                    }
                 }
+
+
 
                 else -> {
                     val roll = rollNumber.toInt()
@@ -114,8 +130,10 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
                             rollNumber = roll,
                             studentName = studentName,
                             fatherName = fatherName,
+                            dob =  dob,
                             phoneNumber = phoneNumber,
-                            klass = "8th B"
+                            klass = "8th B",
+                            address = address
                         )
                     viewModel.insertStudent(studentEntity)
                 }

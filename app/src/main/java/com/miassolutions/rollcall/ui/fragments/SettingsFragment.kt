@@ -46,7 +46,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 .setTitle("Confirm!")
                 .setMessage("Are you sure to reset date")
                 .setPositiveButton("Yes, Sure") { _, _ ->
-                    viewModel.resetDate()
+                    viewModel.resetPreferences()
                     showSnackbar("Session date reset")
                 }
                 .setNegativeButton("Cancel", null)

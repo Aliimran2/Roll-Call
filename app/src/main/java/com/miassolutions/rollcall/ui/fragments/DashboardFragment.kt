@@ -51,8 +51,11 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
     private fun observeViewModel() {
+
+
         settingsViewModel.userName.observe(viewLifecycleOwner) {
             it?.let {
+
                 binding.userProfileCard.tvTitle.text = "Welcome!\n$it"
             }
         }

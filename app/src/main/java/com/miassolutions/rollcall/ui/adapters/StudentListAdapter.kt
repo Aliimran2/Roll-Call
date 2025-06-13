@@ -29,7 +29,7 @@ class StudentListAdapter(
                 ivReport.setOnClickListener { onReportClick(item.studentId) }
                 ivEdit.setOnClickListener { onEditClick(item) }
                 ivDelete.setOnClickListener { onDeleteClick(item.studentId) }
-                ivPhone.setOnClickListener { onPhoneClick(item.phoneNumber) }
+                ivPhone.setOnClickListener { item.phoneNumber?.let { phoneNum -> onPhoneClick(phoneNum) } }
 
 
             }

@@ -70,7 +70,7 @@ class StudentDetailFragment : Fragment(R.layout.fragment_student_profile) {
                             secondaryProfile.apply {
                                 tvFatherName.text = "FATHER NAME : ${student.fatherName.uppercase()}"
                                 tvPhoneNumber.text = "PHONE NO : ${student.phoneNumber}"
-                                tvAddress.text = "ADDRESS : ${student.address.uppercase()}"
+                                tvAddress.text = "ADDRESS : ${student.address?.uppercase()}"
                             }
 
 

@@ -19,8 +19,8 @@ data class StudentEntity(
     val rollNumber: Int,
     val studentName: String,
     val fatherName: String,
-    val dob: String = "",
-    val klass: String = "",
-    val phoneNumber: String = "",
-    val address: String = ""
+    val dob: String,
+    val klass: String? = null,
+    val phoneNumber: String? = null,
+    val address: String? = null
 )
