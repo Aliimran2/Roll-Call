@@ -36,8 +36,8 @@ class UserProfileFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         collectLatestFlow {
-            viewModel.userName.collectLatest { userName ->
-                val name = userName ?: "Not set yet"
+            viewModel.userName.observe(viewLifecycleOwner) { userName ->
+                val name = userName ?: "Set name"
                 binding.etUserName.setText(name)
             }
         }

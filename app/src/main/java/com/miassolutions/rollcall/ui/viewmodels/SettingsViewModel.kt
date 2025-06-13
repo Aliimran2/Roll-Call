@@ -1,6 +1,7 @@
 package com.miassolutions.rollcall.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.miassolutions.rollcall.data.datastore.UserPrefsManager
 import com.miassolutions.rollcall.data.repository.Repository
@@ -24,7 +25,7 @@ class SettingsViewModel @Inject constructor(
 
     val minDate = prefs.minDate.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
     val userName =
-        prefs.userName.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+        prefs.userName.asLiveData()
 
     fun saveMinDate(timestamp: Long) {
         viewModelScope.launch {

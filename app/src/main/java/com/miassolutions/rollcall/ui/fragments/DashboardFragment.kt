@@ -3,6 +3,7 @@ package com.miassolutions.rollcall.ui.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentDashboardBinding
@@ -11,21 +12,23 @@ import com.miassolutions.rollcall.ui.adapters.DashboardAdapter
 import com.miassolutions.rollcall.ui.model.CommonListItem
 import com.miassolutions.rollcall.ui.model.Dashboard
 import com.miassolutions.rollcall.ui.model.TopCard
+import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
 import com.miassolutions.rollcall.utils.getCurrentDateAndTime
-import com.miassolutions.rollcall.utils.showLongToast
-import com.miassolutions.rollcall.utils.showToast
 import com.miassolutions.rollcall.utils.toFormattedDate
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var topCardAdapter: DashboardAdapter
+
+    private val settingsViewModel by viewModels<SettingsViewModel>()
+
     private lateinit var dashboardGridAdapter: DashboardAdapter
 
-    private val topCardItems = mutableListOf<CommonListItem>()
+
     private val dashboardItems = mutableListOf<CommonListItem>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,17 +37,35 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
         setupDashboardItems()
         setupRecyclerView()
+        setDateCard()
+        observeViewModel()
 
     }
 
-    private fun setupDashboardItems() {
+    private fun setDateCard() {
+        binding.dateCard.apply {
+            tvTitle.text = getCurrentDateAndTime().toFormattedDate("EEEE\ndd.MM.yyyy")
+            tvSubtitle.text = "Date"
 
-        topCardItems.clear()
-        dashboardItems.clear()
-        topCardItems.apply {
-            add(TopCard(getCurrentDateAndTime().toFormattedDate("EEEE\n dd/MM/yyyy"), "Date"))
-            add(TopCard(getCurrentDateAndTime().toFormattedDate("hh:mm:ss"), "Time"))
         }
+    }
+
+    private fun observeViewModel() {
+        settingsViewModel.userName.observe(viewLifecycleOwner) {
+            it?.let {
+                binding.userProfileCard.tvTitle.text = "Welcome!\n$it"
+            }
+            binding.userProfileCard.tvSubtitle.text = "GHS 241 JB" //todo
+        }
+    }
+
+
+    private fun setupDashboardItems() {
+        dashboardItems.clear()
+//        topCardItems.apply {
+//            add(TopCard(getCurrentDateAndTime().toFormattedDate("EEEE\ndd/MM/yyyy"), "Date"))
+//            add(TopCard(userName ?: "Set user name", userInstitute ?: "Set institute name"))
+//        }
 
         dashboardItems.apply {
             add(Dashboard(R.drawable.ic_attendances, "Attendance"))
@@ -53,27 +74,10 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             add(Dashboard(R.drawable.ic_settings, "Settings"))
 
         }
-
-
     }
 
     private fun setupRecyclerView() {
 
-        topCardAdapter = DashboardAdapter(topCardItems) { clickedItem ->
-
-            if (clickedItem is TopCard) {
-                showToast("Top Card clicked: ${clickedItem.title} (still unexpected if non-clickable)")
-            }
-        }
-        binding.rvTopCard.apply {
-
-            adapter = topCardAdapter
-            // You might want to add some item decoration for spacing in horizontal lists
-//             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL))
-        }
-
-
-        // 2. Setup the Dashboard Grid RecyclerView
         dashboardGridAdapter = DashboardAdapter(dashboardItems) { clickedItem ->
             when (clickedItem) {
                 is Dashboard -> {
@@ -92,7 +96,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
                         "My Profile" -> {
 
-                            val action = DashboardFragmentDirections.actionDashboardFragmentToUserProfileFragment()
+                            val action =
+                                DashboardFragmentDirections.actionDashboardFragmentToUserProfileFragment()
                             findNavController().navigate(action)
 
 
@@ -105,10 +110,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                         }
                     }
 
-                    // Add navigation logic here, e.g.:
-                    // findNavController().navigate(R.id.action_dashboard_to_detailFragment, bundleOf("itemTitle" to clickedItem.title))
                 }
-                // No need for TopCard 'is' check here, as this adapter only receives Dashboard items.
+
             }
         }
         binding.rvDashboard.apply { // Reference the existing ID

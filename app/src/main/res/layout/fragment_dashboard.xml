@@ -6,15 +6,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_top_card"
+    <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        tools:itemCount="2"
-        tools:listitem="@layout/item_top_card" />
+        android:columnCount="2"
+
+        android:padding="8dp"
+        android:useDefaultMargins="true">
+
+        <include
+            android:id="@+id/user_profile_card"
+            layout="@layout/item_top_card"
+            android:layout_width="0dp"
+
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1" />
+
+        <include
+            android:id="@+id/date_card"
+            layout="@layout/item_top_card"
+            android:layout_width="0dp"
+
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1" />
+
+    </GridLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView
