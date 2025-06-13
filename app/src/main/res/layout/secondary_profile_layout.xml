@@ -22,7 +22,8 @@
             android:text="father : "
             android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
 
         <TextView
@@ -36,7 +37,8 @@
             android:text="Phone no : "
             android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_phone_number"
@@ -48,7 +50,8 @@
             android:text="Address : "
             android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_address"
