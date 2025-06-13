@@ -9,8 +9,9 @@
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:columnCount="2"
-
         android:padding="8dp"
         android:useDefaultMargins="true">
 
@@ -18,7 +19,6 @@
             android:id="@+id/user_profile_card"
             layout="@layout/item_top_card"
             android:layout_width="0dp"
-
             android:layout_height="wrap_content"
             android:layout_columnWeight="1" />
 
@@ -26,24 +26,74 @@
             android:id="@+id/date_card"
             layout="@layout/item_top_card"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1" />
 
+    </GridLayout>
+
+    <Button
+        android:id="@+id/btn_calendar"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/dashboard_card"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="48dp"
+        android:text="Calendar" />
+
+
+    <GridLayout
+        android:id="@+id/dashboard_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/dashboard_card_two"
+        android:columnCount="2"
+        android:paddingHorizontal="8dp"
+        android:useDefaultMargins="true">
+
+        <include
+            android:id="@+id/attendance_card"
+            layout="@layout/item_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="3" />
+
+        <include
+            android:id="@+id/students_card"
+            layout="@layout/item_card"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1" />
 
     </GridLayout>
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_dashboard"
+    <GridLayout
+        android:id="@+id/dashboard_card_two"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="56dp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        tools:itemCount="3"
-        tools:listitem="@layout/item_card" />
+        android:layout_marginBottom="48dp"
+        android:columnCount="2"
+        android:paddingHorizontal="8dp"
+        android:useDefaultMargins="true">
+
+
+        <include
+            android:id="@+id/user_card"
+            layout="@layout/item_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1" />
+
+        <include
+            android:id="@+id/settings_card"
+            layout="@layout/item_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="3" />
+
+
+    </GridLayout>
 
 
 </RelativeLayout>

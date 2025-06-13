@@ -90,6 +90,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
     </fragment>
     <dialog
         android:id="@+id/datePickerFragment"
@@ -100,4 +103,8 @@
         tools:layout="@layout/fragment_user_profile"
         android:name="com.miassolutions.rollcall.ui.fragments.UserProfileFragment"
         android:label="UserProfileFragment" />
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.miassolutions.rollcall.ui.fragments.CalendarFragment"
+        android:label="CalendarFragment" />
 </navigation>

@@ -7,11 +7,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentDashboardBinding
-
 import com.miassolutions.rollcall.ui.adapters.DashboardAdapter
 import com.miassolutions.rollcall.ui.model.CommonListItem
 import com.miassolutions.rollcall.ui.model.Dashboard
-import com.miassolutions.rollcall.ui.model.TopCard
 import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
 import com.miassolutions.rollcall.utils.getCurrentDateAndTime
 import com.miassolutions.rollcall.utils.toFormattedDate
@@ -36,9 +34,53 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         _binding = FragmentDashboardBinding.bind(view)
 
         setupDashboardItems()
-        setupRecyclerView()
         setDateCard()
         observeViewModel()
+
+        binding.btnCalendar.setOnClickListener {
+            findNavController().navigate(R.id.action_dashboardFragment_to_calendarFragment)
+
+        }
+
+
+        binding.apply {
+            attendanceCard.apply {
+                ivCard.setImageResource(R.drawable.ic_attendances)
+                tvCard.text = "Attendance"
+            }.root.setOnClickListener {
+
+                val action =
+                    DashboardFragmentDirections.actionDashboardFragmentToStatsFragment()
+                findNavController().navigate(action)
+
+            }
+
+            settingsCard.apply {
+                ivCard.setImageResource(R.drawable.ic_settings)
+                tvCard.text = "Settings"
+            }.root.setOnClickListener {
+                val action = DashboardFragmentDirections.actionDashboardFragmentToSettingsFragment()
+                findNavController().navigate(action)
+
+            }
+
+            userCard.apply {
+                ivCard.setImageResource(R.drawable.ic_person)
+                tvCard.text = "Profile"
+            }.root.setOnClickListener {
+                val action =
+                    DashboardFragmentDirections.actionDashboardFragmentToUserProfileFragment()
+                findNavController().navigate(action)
+            }
+
+            studentsCard.apply {
+                ivCard.setImageResource(R.drawable.ic_students_m)
+                tvCard.text = "Students"
+            }.root.setOnClickListener {
+                val action = DashboardFragmentDirections.actionDashboardFragmentToStudentsFragment()
+                findNavController().navigate(action)
+            }
+        }
 
     }
 
@@ -51,31 +93,21 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
     private fun observeViewModel() {
-
-
         settingsViewModel.userName.observe(viewLifecycleOwner) {
             it?.let {
-
                 binding.userProfileCard.tvTitle.text = "Welcome!\n$it"
             }
         }
-
         settingsViewModel.instituteName.observe(viewLifecycleOwner) {
             it?.let {
-
                 binding.userProfileCard.tvSubtitle.text = it
             }
-
         }
     }
 
 
     private fun setupDashboardItems() {
         dashboardItems.clear()
-//        topCardItems.apply {
-//            add(TopCard(getCurrentDateAndTime().toFormattedDate("EEEE\ndd/MM/yyyy"), "Date"))
-//            add(TopCard(userName ?: "Set user name", userInstitute ?: "Set institute name"))
-//        }
 
         dashboardItems.apply {
             add(Dashboard(R.drawable.ic_attendances, "Attendance"))
@@ -83,50 +115,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             add(Dashboard(R.drawable.ic_person, "My Profile"))
             add(Dashboard(R.drawable.ic_settings, "Settings"))
 
-        }
-    }
-
-    private fun setupRecyclerView() {
-
-        dashboardGridAdapter = DashboardAdapter(dashboardItems) { clickedItem ->
-            when (clickedItem) {
-                is Dashboard -> {
-                    when (clickedItem.title) {
-                        "Attendance" -> {
-                            val action =
-                                DashboardFragmentDirections.actionDashboardFragmentToStatsFragment()
-                            findNavController().navigate(action)
-                        }
-
-                        "Students" -> {
-                            val action =
-                                DashboardFragmentDirections.actionDashboardFragmentToStudentsFragment()
-                            findNavController().navigate(action)
-                        }
-
-                        "My Profile" -> {
-
-                            val action =
-                                DashboardFragmentDirections.actionDashboardFragmentToUserProfileFragment()
-                            findNavController().navigate(action)
-
-
-                        }
-
-                        "Settings" -> {
-                            val action =
-                                DashboardFragmentDirections.actionDashboardFragmentToSettingsFragment()
-                            findNavController().navigate(action)
-                        }
-                    }
-
-                }
-
-            }
-        }
-        binding.rvDashboard.apply { // Reference the existing ID
-
-            adapter = dashboardGridAdapter
         }
     }
 
