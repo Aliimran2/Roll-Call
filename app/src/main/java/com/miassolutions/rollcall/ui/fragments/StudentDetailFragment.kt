@@ -7,10 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.data.repository.StudentFetchResult
@@ -37,31 +34,31 @@ class StudentDetailFragment : Fragment(R.layout.student_detail_layout) {
         val studentId = args.id
 
         loadStudentData()
-        actionButtonsListener(args.id, args.studentName)
+//        actionButtonsListener(args.id, args.studentName)
         viewModel.fetchStudentById(studentId)
 
     }
 
-    private fun actionButtonsListener(studentId: String, studentName: String) {
-        binding.apply {
-            deleteBtn.setOnClickListener {
-
-                MaterialAlertDialogBuilder(requireContext())
-
-                    .setTitle("Delete $studentName!!")
-                    .setMessage("Are you sure?")
-                    .setPositiveButton("Yes, Delete") { dialog, _ ->
-                        viewModel.deleteStudentById(studentId)
-                        Snackbar.make(binding.root, "$studentName Deleted", Snackbar.LENGTH_LONG)
-                            .show()
-                        findNavController().navigateUp()
-                    }
-                    .setNegativeButton("Cancel", null)
-                    .show()
-            }
-
-        }
-    }
+//    private fun actionButtonsListener(studentId: String, studentName: String) {
+//        binding.apply {
+//            deleteBtn.setOnClickListener {
+//
+//                MaterialAlertDialogBuilder(requireContext())
+//
+//                    .setTitle("Delete $studentName!!")
+//                    .setMessage("Are you sure?")
+//                    .setPositiveButton("Yes, Delete") { dialog, _ ->
+//                        viewModel.deleteStudentById(studentId)
+//                        Snackbar.make(binding.root, "$studentName Deleted", Snackbar.LENGTH_LONG)
+//                            .show()
+//                        findNavController().navigateUp()
+//                    }
+//                    .setNegativeButton("Cancel", null)
+//                    .show()
+//            }
+//
+//        }
+//    }
 
     private fun loadStudentData() {
 
