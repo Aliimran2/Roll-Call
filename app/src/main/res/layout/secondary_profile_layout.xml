@@ -9,47 +9,52 @@
     app:cardBackgroundColor="@color/white_two"
     app:cardCornerRadius="8dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:columnCount="2"
+        android:layout_margin="8dp"
+        android:useDefaultMargins="true"
+        >
+
+
+        <TextView
+            android:text="father : "
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
 
 
         <TextView
             android:id="@+id/tv_father_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Father Name : M Imran Ali Sajid"
+            android:text="M Imran Ali Sajid"
+            android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="12sp" />
+
+        <TextView
+            android:text="Phone no : "
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv_phone_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:text="Phone No : 03120000000"
             android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/tv_father_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_father_name" />
+            android:textSize="12sp" />
+
+        <TextView
+            android:text="Address : "
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:text="Address : abc 123 xyz"
             android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_phone_number"
-            app:layout_constraintTop_toBottomOf="@+id/tv_phone_number" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:textSize="12sp" />
+    </GridLayout>
 
 </com.google.android.material.card.MaterialCardView>

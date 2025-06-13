@@ -59,7 +59,7 @@ class StudentDetailFragment : Fragment(R.layout.fragment_student_profile) {
 
                         binding.apply {
                             primaryProfile.apply {
-                                tvStudentName.text = student.studentName.uppercase()
+                                tvStudentName.text = student.studentName
                                 tvRegNum.text = "${student.regNumber}"
                                 tvRollNum.text = "${student.rollNumber}"
                                 tvDob.text = "${student.dob}"
@@ -68,9 +68,9 @@ class StudentDetailFragment : Fragment(R.layout.fragment_student_profile) {
                             }
 
                             secondaryProfile.apply {
-                                tvFatherName.text = "FATHER NAME : ${student.fatherName.uppercase()}"
-                                tvPhoneNumber.text = "PHONE NO : ${student.phoneNumber}"
-                                tvAddress.text = "ADDRESS : ${student.address?.uppercase()}"
+                                tvFatherName.text = "${student.fatherName}"
+                                tvPhoneNumber.text = "${student.phoneNumber}"
+                                tvAddress.text = "${student.address}"
                             }
 
 
