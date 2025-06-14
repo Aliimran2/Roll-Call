@@ -16,6 +16,7 @@ import com.miassolutions.rollcall.databinding.StudentDetailLayoutBinding
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
 import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showLongToast
+import com.miassolutions.rollcall.utils.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -62,9 +63,9 @@ class StudentDetailFragment : Fragment(R.layout.fragment_student_profile) {
                                 tvStudentName.text = student.studentName
                                 tvRegNum.text = "${student.regNumber}"
                                 tvRollNum.text = "${student.rollNumber}"
-                                tvDob.text = "${student.dob}"
-                                tvDoa.text = "${student.dob}" //todo
-                                tvBForm.text = "00000-0000000-0"
+                                tvDob.text = "${student.dob.toFormattedDate()}"
+                                tvDoa.text = "${student.dob.toFormattedDate()}" //todo
+                                tvBForm.text = "${student.bForm}"
                             }
 
                             secondaryProfile.apply {

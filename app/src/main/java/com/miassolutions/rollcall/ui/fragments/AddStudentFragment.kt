@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
@@ -15,6 +16,7 @@ import com.miassolutions.rollcall.utils.StudentInsertResult
 import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showLongToast
 import com.miassolutions.rollcall.utils.showToast
+import com.miassolutions.rollcall.utils.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,6 +27,8 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
     private var _binding: FragmentAddStudentBinding? = null
     private val binding get() = _binding!!
 
+    private var dob : Long = System.currentTimeMillis()
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,12 +36,28 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
 
         observeViewModel()
         saveButtonClick()
+        datePicker()
 
     }
 
     private fun saveButtonClick() {
         binding.saveBtn.setOnClickListener {
             setupSaveBtn()
+        }
+    }
+
+    private fun datePicker(){
+        binding.etDob.setOnClickListener{
+            val datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Input Birth Date")
+                .setInputMode(MaterialDatePicker.INPUT_MODE_TEXT)
+                .build()
+
+            datePicker.addOnPositiveButtonClickListener {
+                binding.etDob.setText(it.toFormattedDate())
+                dob = it
+            }
+            datePicker.show(parentFragmentManager,datePicker.tag)
         }
     }
 
@@ -87,7 +107,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
             val studentName = etName.text.toString()
             val fatherName = etFatherName.text.toString()
             val phoneNumber = etPhoneNumber.text.toString()
-            val dob = 0L
+
             val address = etAddress.text.toString()
 
             when {
@@ -118,6 +138,8 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
                         etFatherName.error = "Enter name of the student"
                     }
                 }
+
+
 
 
 
