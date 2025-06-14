@@ -20,15 +20,12 @@ import javax.inject.Inject
 @HiltViewModel
 class AttendanceViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    // Exposes a LiveData stream of all students from the repository.
-    // LiveData is lifecycle-aware, making it suitable for UI observation.
-    val studentList = repository.allStudents.asLiveData()
+
+    val studentList = repository.allStudents
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
 
-
-    // A MutableStateFlow to hold the currently selected date for attendance.
-    // It's initialized with the current date using a utility function.
-    private val _selectedDate = MutableStateFlow("")
+    private val _selectedDate = MutableStateFlow(System.currentTimeMillis())
 
     // A MutableStateFlow to hold the list of AttendanceUIModel objects.
     // This list represents the attendance status of students for the selected date.
@@ -114,7 +111,7 @@ class AttendanceViewModel @Inject constructor(private val repository: Repository
      * Sets the selected date for attendance.
      * @param date The date string in the format used by the application.
      */
-    fun setDate(date: String) {
+    fun setDate(date: Long) {
         _selectedDate.value = date
     }
 

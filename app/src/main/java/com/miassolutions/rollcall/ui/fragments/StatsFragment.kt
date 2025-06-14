@@ -14,8 +14,10 @@ import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentStatsBinding
 import com.miassolutions.rollcall.ui.adapters.StatsListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.StatsViewModel
+import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class StatsFragment : Fragment(R.layout.fragment_stats) {
@@ -31,8 +33,10 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
 
         val adapter = StatsListAdapter()
 
-        viewModel.loadAttendanceSummary().observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+        collectLatestFlow {
+            viewModel.attendanceSummary.collectLatest {
+                adapter.submitList(it)
+            }
         }
 
         binding.rvStats.adapter = adapter
@@ -49,7 +53,6 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
 
 
     }
-
 
 
 //    private fun menuProvider() {

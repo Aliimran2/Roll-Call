@@ -87,7 +87,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
             val studentName = etName.text.toString()
             val fatherName = etFatherName.text.toString()
             val phoneNumber = etPhoneNumber.text.toString()
-            val dob = etDob.text.toString()
+            val dob = 0L
             val address = etAddress.text.toString()
 
             when {

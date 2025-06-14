@@ -10,6 +10,7 @@ import com.miassolutions.rollcall.utils.Constants.DUPLICATE_ROLL_NUMBER
 import com.miassolutions.rollcall.utils.StudentInsertResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -22,7 +23,7 @@ sealed class StudentFetchResult<out T> {
 
 class Repository @Inject constructor(
     private val studentDao: StudentDao,
-    private val attendanceDao: AttendanceDao
+    private val attendanceDao: AttendanceDao,
 ) {
 
     val allStudents: Flow<List<StudentEntity>> = studentDao.getAllStudents()
@@ -80,7 +81,6 @@ class Repository @Inject constructor(
 
     //attendance operations
 
-
     suspend fun insertAttendance(attendanceEntity: AttendanceEntity) {
         attendanceDao.insertAttendance(attendanceEntity)
     }
@@ -89,33 +89,24 @@ class Repository @Inject constructor(
         attendanceDao.insertAttendances(attendanceEntityList)
     }
 
-    suspend fun isAttendanceTaken(date: String): Boolean {
+    suspend fun isAttendanceTaken(date: Long): Boolean {
         return attendanceDao.getAttendanceCountForDate(date) > 0
     }
 
-    suspend fun getAttendanceGroupedByDate(): Map<String, List<AttendanceEntity>> {
-        return attendanceDao.getAllAttendances().groupBy { it.date }
+    fun getAttendanceGroupedByDate(): Flow<Map<Long, List<AttendanceEntity>>> {
+        return attendanceDao.getAllAttendances().map { attendList ->
+            attendList.groupBy { it.date }
+        }
     }
 
     fun getAttendanceForStudent(studentId: String): Flow<List<AttendanceEntity>> {
         return attendanceDao.getAttendanceByStudent(studentId)
     }
 
-    fun getAttendanceForDate(date: String): Flow<List<AttendanceEntity>> {
+    fun getAttendanceForDate(date: Long): Flow<List<AttendanceEntity>> {
         return attendanceDao.getAttendanceForDate(date)
     }
 
-    fun getTotalMarkedStudentsCount(date: String): Flow<Int> {
-        return attendanceDao.getTotalMarkedStudentsCount(date)
-    }
-
-    fun getPresentStudentsCount(date: String): Flow<Int> {
-        return attendanceDao.getPresentStudentsCount(date)
-    }
-
-    fun getAbsentStudentsCount(date: String): Flow<Int> {
-        return attendanceDao.getAbsentStudentsCount(date)
-    }
 
     suspend fun deleteAttendanceForStudent(studentId: String) {
         attendanceDao.deleteAttendanceForStudent(studentId)

@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
 import com.miassolutions.rollcall.ui.adapters.AttendanceAdapter
@@ -19,6 +20,7 @@ import com.miassolutions.rollcall.utils.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 @AndroidEntryPoint
 class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
@@ -54,11 +56,13 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     }
 
     private fun clickListener() {
+
         binding.apply {
             etDatePicker.setOnClickListener {
-                val action =
-                    AttendanceFragmentDirections.actionAttendanceFragmentToDatePickerFragment()
-                findNavController().navigate(action)
+                datePicker()
+//                val action =
+//                    AttendanceFragmentDirections.actionAttendanceFragmentToDatePickerFragment()
+//                findNavController().navigate(action)
             }
 
             saveBtn.setOnClickListener {
@@ -68,7 +72,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                     return@setOnClickListener
                 }
 
-                viewModel.setDate(date)
+//                viewModel.setDate(date)
                 viewModel.saveAttendance { success ->
                     if (success) {
                         showSnackbar("Attendance saved for $date")
@@ -81,6 +85,27 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         }
 
 
+    }
+
+    private fun datePicker() {
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Select Date")
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener { selectedDateInMillis ->
+            val calendar = Calendar.getInstance().apply {
+                timeInMillis = selectedDateInMillis
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
+            val normalizeDateInMillis = calendar.timeInMillis
+            binding.etDatePicker.setText(normalizeDateInMillis.toFormattedDate())
+            viewModel.setDate(normalizeDateInMillis)
+        }
+
+        datePicker.show(parentFragmentManager, datePicker.toString())
     }
 
 
@@ -125,16 +150,21 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         }
         binding.rvAttendance.adapter = adapter
 
-        viewModel.studentList.observe(viewLifecycleOwner) { students ->
-            val initialList = students.map {
-                AttendanceUIModel(
-                    studentId = it.studentId,
-                    studentName = it.studentName,
-                    rollNumber = it.rollNumber
-                )
+        collectLatestFlow {
+            viewModel.studentList.collectLatest { students ->
+                val initialList = students.map {
+                    AttendanceUIModel(
+                        studentId = it.studentId,
+                        studentName = it.studentName,
+                        rollNumber = it.rollNumber
+                    )
+                }
+                viewModel.setInitialAttendanceList(initialList)
             }
-            viewModel.setInitialAttendanceList(initialList)
+
         }
+
+
     }
 
     override fun onDestroyView() {
