@@ -5,18 +5,27 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.miassolutions.rollcall.data.entities.AttendanceEntity
 import com.miassolutions.rollcall.databinding.ItemStatsBinding
 import com.miassolutions.rollcall.ui.model.StatsUiModel
+import com.miassolutions.rollcall.utils.toFormattedDate
 
-class StatsListAdapter : ListAdapter<StatsUiModel, StatsListAdapter.StatsViewHolder>(StatsDiffUtil()) {
+class StatsListAdapter(
+    private val deleteAction: (Long) -> Unit
+) : ListAdapter<StatsUiModel, StatsListAdapter.StatsViewHolder>(StatsDiffUtil()) {
 
-    class StatsViewHolder(private val binding: ItemStatsBinding) :
+    inner class StatsViewHolder(private val binding: ItemStatsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: StatsUiModel) {
             binding.apply {
-                tvDate.text = item.date
+                tvDate.text = item.date.toFormattedDate()
                 tvPresent.text = "${item.presentCount}/${item.totalCount}"
                 tvPercent.text = "${item.percent}%"
+
+                btnDelete.setOnClickListener {
+                    deleteAction(item.date)
+                }
+
 
             }
 

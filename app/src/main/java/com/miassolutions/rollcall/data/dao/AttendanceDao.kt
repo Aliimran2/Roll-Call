@@ -27,7 +27,7 @@ interface AttendanceDao {
 
     @Query("SELECT COUNT(*) FROM attendance_table WHERE date = :date")
 
-    suspend fun getAttendanceCountForDate(date: Long):Int
+    suspend fun getAttendanceCountForDate(date: Long): Int
 
     /**
      * Retrieves all attendance records for a specific student, ordered by date in descending order.
@@ -95,6 +95,9 @@ interface AttendanceDao {
 
 
     // Deletes all attendance records associated with a specific student.
+
+    @Query("DELETE FROM attendance_table WHERE date =:date")
+    suspend fun deleteAttendanceForDate(date: Long)
 
 
     @Query("DELETE FROM attendance_table WHERE studentId = :studentId")

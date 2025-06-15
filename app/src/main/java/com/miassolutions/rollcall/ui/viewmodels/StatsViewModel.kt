@@ -1,36 +1,21 @@
 package com.miassolutions.rollcall.ui.viewmodels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import com.miassolutions.rollcall.ui.model.StatsUiModel
 import com.miassolutions.rollcall.data.repository.Repository
+import com.miassolutions.rollcall.ui.model.StatsUiModel
 import com.miassolutions.rollcall.utils.AttendanceStatus
 import com.miassolutions.rollcall.utils.toFormattedDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class StatsViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-//    fun loadAttendanceSummary(): LiveData<List<StatsUiModel>> = liveData {
-//        val attendanceGroupedByDate = repository.getAttendanceGroupedByDate()
-//        val uiList = attendanceGroupedByDate.map { (date, list) ->
-//            StatsUiModel(
-//                date = date,
-//                presentCount = list.count { it.attendanceStatus == AttendanceStatus.PRESENT },
-//                totalCount = list.size
-//            )
-//        }
-//
-//        emit(uiList)
-//    }
 
     val attendanceSummary =
         repository.getAttendanceGroupedByDate()
@@ -40,7 +25,7 @@ class StatsViewModel @Inject constructor(private val repository: Repository) : V
                         attendanceList.count() { it.attendanceStatus == AttendanceStatus.PRESENT }
                     val totalCount = attendanceList.size
                     StatsUiModel(
-                        dateMillis.toFormattedDate(),
+                        dateMillis,
                         presentCount,
                         totalCount
                     )
@@ -52,6 +37,12 @@ class StatsViewModel @Inject constructor(private val repository: Repository) : V
                 started = SharingStarted.WhileSubscribed(5000),
                 initialValue = emptyList()
             )
+
+    fun deleteAttendance(date: Long) {
+        viewModelScope.launch {
+            repository.deleteAttendanceForDate(date)
+        }
+    }
 
 
 }

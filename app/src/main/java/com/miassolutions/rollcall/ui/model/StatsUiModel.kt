@@ -2,7 +2,7 @@ package com.miassolutions.rollcall.ui.model
 
 data class StatsUiModel(
 
-    val date: String,
+    val date: Long,
     val presentCount: Int,
     val totalCount: Int,
 

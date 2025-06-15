@@ -77,7 +77,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/materialButton3"
+            android:id="@+id/btn_delete"
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,9 +107,9 @@
             app:iconPadding="0dp"
             app:iconSize="24dp"
             app:iconTint="@color/purple_two"
-            app:layout_constraintBottom_toBottomOf="@+id/materialButton3"
-            app:layout_constraintEnd_toStartOf="@+id/materialButton3"
-            app:layout_constraintTop_toTopOf="@+id/materialButton3" />
+            app:layout_constraintBottom_toBottomOf="@+id/btn_delete"
+            app:layout_constraintEnd_toStartOf="@+id/btn_delete"
+            app:layout_constraintTop_toTopOf="@+id/btn_delete" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/materialButton2"

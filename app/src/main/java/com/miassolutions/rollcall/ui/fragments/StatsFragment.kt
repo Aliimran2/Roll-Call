@@ -10,12 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentStatsBinding
 import com.miassolutions.rollcall.ui.adapters.StatsListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.StatsViewModel
 import com.miassolutions.rollcall.utils.collectLatestFlow
+import com.miassolutions.rollcall.utils.showSnackbar
 import com.miassolutions.rollcall.utils.showToast
+import com.miassolutions.rollcall.utils.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -31,7 +34,17 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentStatsBinding.bind(view)
 
-        val adapter = StatsListAdapter()
+        val adapter = StatsListAdapter{date ->
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Delete Confirmation!!")
+                .setMessage("Are you suer?")
+                .setPositiveButton("Yes, Delete"){_,_ ->
+                    viewModel.deleteAttendance(date)
+                    showSnackbar("Attendance record deleted for ${date.toFormattedDate()}")
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
 
         collectLatestFlow {
             viewModel.attendanceSummary.collectLatest {

@@ -112,6 +112,10 @@ class Repository @Inject constructor(
         attendanceDao.deleteAttendanceForStudent(studentId)
     }
 
+    suspend fun deleteAttendanceForDate(date: Long) {
+        attendanceDao.deleteAttendanceForDate(date)
+    }
+
     suspend fun deleteAllAttendance() {
         attendanceDao.deleteAllAttendance()
     }
