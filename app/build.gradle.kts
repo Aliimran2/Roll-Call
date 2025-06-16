@@ -56,6 +56,9 @@ dependencies {
     //splash screen
     implementation("androidx.core:core-splashscreen:1.0.1")
 
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
+
 
     implementation ("com.leinardi.android:speed-dial:3.2.0")
     // Navigation Component

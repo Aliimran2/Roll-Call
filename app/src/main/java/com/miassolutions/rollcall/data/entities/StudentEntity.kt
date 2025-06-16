@@ -16,6 +16,7 @@ import java.util.UUID
 data class StudentEntity(
     @PrimaryKey
     val studentId: String = UUID.randomUUID().toString(),
+    val studentImage : String?= null,
     val regNumber: Int,
     val rollNumber: Int,
     val studentName: String,

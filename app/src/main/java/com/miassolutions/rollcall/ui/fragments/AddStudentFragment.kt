@@ -41,20 +41,20 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
     }
 
     private fun saveButtonClick() {
-        binding.saveBtn.setOnClickListener {
+        binding.btnSubmit.setOnClickListener {
             setupSaveBtn()
         }
     }
 
     private fun datePicker(){
-        binding.etDob.setOnClickListener{
+        binding.etDOB.setOnClickListener{
             val datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Input Birth Date")
                 .setInputMode(MaterialDatePicker.INPUT_MODE_TEXT)
                 .build()
 
             datePicker.addOnPositiveButtonClickListener {
-                binding.etDob.setText(it.toFormattedDate())
+                binding.etDOB.setText(it.toFormattedDate())
                 dob = it
             }
             datePicker.show(parentFragmentManager,datePicker.tag)
@@ -104,9 +104,9 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
 
             val regNumber = etRegNumber.text.toString()
             val rollNumber = etRollNumber.text.toString()
-            val studentName = etName.text.toString()
+            val studentName = etStudentName.text.toString()
             val fatherName = etFatherName.text.toString()
-            val phoneNumber = etPhoneNumber.text.toString()
+            val phoneNumber = etPhone.text.toString()
 
             val address = etAddress.text.toString()
 
@@ -127,8 +127,8 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
 
                 studentName.isBlank() -> {
                     binding.apply {
-                        etName.requestFocus()
-                        etName.error = "Enter name of the student"
+                        etStudentName.requestFocus()
+                        etStudentName.error = "Enter name of the student"
                     }
                 }
 
