@@ -20,9 +20,7 @@
         <action
             android:id="@+id/action_studentsFragment_to_studentDetailFragment"
             app:destination="@id/studentDetailFragment" />
-        <action
-            android:id="@+id/action_studentsFragment_to_editStudentFragment"
-            app:destination="@id/editStudentFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/attendanceFragment"
@@ -51,18 +49,7 @@
             android:id="@+id/action_settingsFragment_to_datePickerFragment"
             app:destination="@id/datePickerFragment" />
     </fragment>
-    <fragment
-        tools:layout="@layout/fragment_edit_student"
-        android:id="@+id/editStudentFragment"
-        android:name="com.miassolutions.rollcall.ui.fragments.EditStudentFragment"
-        android:label="Update {student_name}" >
-        <argument
-            android:name="id"
-            app:argType="string" />
-        <argument
-            android:name="student_name"
-            app:argType="string" />
-    </fragment>
+
     <fragment
         android:id="@+id/studentDetailFragment"
         tools:layout="@layout/fragment_student_detail"

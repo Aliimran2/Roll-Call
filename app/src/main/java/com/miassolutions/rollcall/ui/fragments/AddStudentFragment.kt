@@ -1,9 +1,14 @@
 package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.miassolutions.rollcall.R
@@ -13,6 +18,7 @@ import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.utils.Constants.DUPLICATE_REG_NUMBER
 import com.miassolutions.rollcall.utils.Constants.DUPLICATE_ROLL_NUMBER
 import com.miassolutions.rollcall.utils.StudentInsertResult
+import com.miassolutions.rollcall.utils.addMenu
 import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showLongToast
 import com.miassolutions.rollcall.utils.showToast
@@ -27,7 +33,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
     private var _binding: FragmentAddStudentBinding? = null
     private val binding get() = _binding!!
 
-    private var dob : Long = System.currentTimeMillis()
+    private var dob: Long = System.currentTimeMillis()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,19 +41,30 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         _binding = FragmentAddStudentBinding.bind(view)
 
         observeViewModel()
-        saveButtonClick()
+        menuProvider()
         datePicker()
 
     }
 
-    private fun saveButtonClick() {
-        binding.btnSubmit.setOnClickListener {
-            setupSaveBtn()
+
+    private fun menuProvider() {
+
+        addMenu(R.menu.menu_add_student) { item ->
+            when (item.itemId) {
+                R.id.action_save -> {
+                    setupSaveBtn()
+                    true
+                }
+
+                else -> false
+            }
         }
+
     }
 
-    private fun datePicker(){
-        binding.etDOB.setOnClickListener{
+
+    private fun datePicker() {
+        binding.etDOB.setOnClickListener {
             val datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Input Birth Date")
                 .setInputMode(MaterialDatePicker.INPUT_MODE_TEXT)
@@ -57,7 +74,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
                 binding.etDOB.setText(it.toFormattedDate())
                 dob = it
             }
-            datePicker.show(parentFragmentManager,datePicker.tag)
+            datePicker.show(parentFragmentManager, datePicker.tag)
         }
     }
 
@@ -139,10 +156,6 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
                     }
                 }
 
-
-
-
-
                 else -> {
                     val roll = rollNumber.toInt()
                     val reg = regNumber.toInt()
@@ -152,7 +165,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
                             rollNumber = roll,
                             studentName = studentName,
                             fatherName = fatherName,
-                            dob =  dob,
+                            dob = dob,
                             phoneNumber = phoneNumber,
                             klass = "8th B",
                             address = address

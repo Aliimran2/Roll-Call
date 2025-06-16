@@ -185,7 +185,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
             onPhoneClick = ::dialPhoneNumber,
             onProfileClick = ::navToDetail,
             onReportClick = ::reportClickListener,
-            onEditClick = ::navToEdit,
+            onEditClick = {showToast("editing...")},
             onDeleteClick = ::deleteClickListener
         )
 
@@ -217,14 +217,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     }
 
 
-    private fun navToEdit(studentEntity: StudentEntity) {
-        val action = StudentsFragmentDirections.actionStudentsFragmentToEditStudentFragment(
-            studentEntity.studentId,
-            studentEntity.studentName
-        )
 
-        findNavController().navigate(action)
-    }
 
     private fun reportClickListener(studentId: String) {
         showToast("Showing report for $studentId")
