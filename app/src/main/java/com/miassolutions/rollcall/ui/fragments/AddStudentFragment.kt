@@ -150,7 +150,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
             when (item.itemId) {
                 R.id.action_save -> {
                     val bForm = binding.etBForm.text.toString()
-                    if (isValidBForm(bForm)) {
+                    if (isValidBForm(bForm) || bForm.isBlank()) {
                         saveStudent()
                     } else {
                         binding.tilBForm.error = "Invalid B-Form format"
