@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:clipToPadding="true"
     android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -234,9 +235,11 @@
                 android:id="@+id/etAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:lines="3"
-                android:maxLines="5" />
+                android:lines="1"
+                android:inputType="textPostalAddress"
+                android:imeOptions="actionDone"
+
+                android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Submit Button -->

@@ -7,14 +7,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.ItemStudentBinding
+import kotlin.reflect.KFunction1
 
 class StudentListAdapter(
 
     private val onProfileClick: (StudentEntity) -> Unit,
     private val onReportClick: (String) -> Unit,
-    private val onEditClick: (StudentEntity) -> Unit,
+    private val onEditClick: (String) -> Unit,
     private val onDeleteClick: (String) -> Unit,
-    private val onPhoneClick: (String) -> Unit
+    private val onPhoneClick: (String) -> Unit,
 ) : ListAdapter<StudentEntity, StudentListAdapter.StudentViewHolder>(StudentDiffUtil()) {
 
     inner class StudentViewHolder(private val binding: ItemStudentBinding) :
@@ -27,9 +28,15 @@ class StudentListAdapter(
 
                 ivProfile.setOnClickListener { onProfileClick(item) }
                 ivReport.setOnClickListener { onReportClick(item.studentId) }
-                ivEdit.setOnClickListener { onEditClick(item) }
+                ivEdit.setOnClickListener { onEditClick(item.studentId) }
                 ivDelete.setOnClickListener { onDeleteClick(item.studentId) }
-                ivPhone.setOnClickListener { item.phoneNumber?.let { phoneNum -> onPhoneClick(phoneNum) } }
+                ivPhone.setOnClickListener {
+                    item.phoneNumber?.let { phoneNum ->
+                        onPhoneClick(
+                            phoneNum
+                        )
+                    }
+                }
 
 
             }

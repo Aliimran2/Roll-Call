@@ -1,29 +1,34 @@
 package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
-import androidx.core.view.MenuProvider
+import android.widget.EditText
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
+import com.miassolutions.rollcall.ui.MainActivity
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.utils.Constants.DUPLICATE_REG_NUMBER
 import com.miassolutions.rollcall.utils.Constants.DUPLICATE_ROLL_NUMBER
 import com.miassolutions.rollcall.utils.StudentInsertResult
 import com.miassolutions.rollcall.utils.addMenu
 import com.miassolutions.rollcall.utils.collectLatestFlow
+import com.miassolutions.rollcall.utils.materialDatePicker
 import com.miassolutions.rollcall.utils.showLongToast
+import com.miassolutions.rollcall.utils.showSnackbar
 import com.miassolutions.rollcall.utils.showToast
 import com.miassolutions.rollcall.utils.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import java.util.UUID
 
 @AndroidEntryPoint
 class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
@@ -34,145 +39,222 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
     private val binding get() = _binding!!
 
     private var dob: Long = System.currentTimeMillis()
+    private var doa: Long = System.currentTimeMillis()
+
+    private val args by navArgs<AddStudentFragmentArgs>()
+
+    private var currentStudent: StudentEntity? = null
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAddStudentBinding.bind(view)
 
+        args.studentId?.let { viewModel.fetchStudentById(it) }
+
+        val scrollView = binding.scrollView
+
+// Listen for focus changes on all EditTexts inside the scrollView
+        scrollView.viewTreeObserver.addOnGlobalFocusChangeListener { _, newFocus ->
+            newFocus?.let { view ->
+                if (view is EditText) {
+                    scrollView.post {
+                        scrollView.smoothScrollTo(0, view.top)
+                    }
+                }
+            }
+        }
+        scrollView.post {
+            scrollView.smoothScrollTo(0, view.top - 50)
+        }
+
+
+        setToolbarTitle()
+        setupDatePickers()
+        setupValidationListeners()
         observeViewModel()
         menuProvider()
-        datePicker()
+
 
     }
 
+    private fun prefillForm(student: StudentEntity) {
+        currentStudent = student
+        binding.apply {
+            etStudentName.setText(student.studentName)
+            etFatherName.setText(student.fatherName)
+            etRegNumber.setText(student.regNumber.toString())
+            etRollNumber.setText(student.rollNumber.toString())
+            etBForm.setText(student.bForm)
+            etDOB.setText(student.dob.toFormattedDate())
+            etDOA.setText(student.doa?.toFormattedDate() ?: System.currentTimeMillis().toFormattedDate())
+            etClass.setText(student.klass)
+            etPhone.setText(student.phoneNumber)
+            etAddress.setText(student.address)
+
+            dob = student.dob
+            doa = student.doa ?: System.currentTimeMillis()
+        }
+    }
+
+    private fun setupValidationListeners() {
+        binding.apply {
+            etRegNumber.doAfterTextChanged { etRegNumber.error = null }
+            etRollNumber.doAfterTextChanged { etRollNumber.error = null }
+            etStudentName.doAfterTextChanged { etStudentName.error = null }
+            etFatherName.doAfterTextChanged { etFatherName.error = null }
+            etDOB.doAfterTextChanged { etDOB.error = null }
+        }
+    }
+
+    private fun setupDatePickers() {
+
+        binding.etDOB.setOnClickListener {
+            materialDatePicker("Enter date of birth", MaterialDatePicker.INPUT_MODE_TEXT) {
+                binding.etDOB.setText(it.toFormattedDate())
+                dob = it
+            }
+        }
+
+        binding.etDOA.setOnClickListener {
+            materialDatePicker("Enter admission date", MaterialDatePicker.INPUT_MODE_CALENDAR) {
+                binding.etDOA.setText(it.toFormattedDate())
+                doa = it
+            }
+        }
+
+    }
+
+    private fun setToolbarTitle() {
+        val toolbar =
+            (requireActivity() as MainActivity).findViewById<MaterialToolbar>(R.id.toolbar)
+        toolbar.title = if (args.studentId == null) "Add New Student" else "Update Student"
+    }
 
     private fun menuProvider() {
-
         addMenu(R.menu.menu_add_student) { item ->
             when (item.itemId) {
                 R.id.action_save -> {
-                    setupSaveBtn()
+                    saveStudent()
                     true
                 }
 
                 else -> false
             }
         }
-
-    }
-
-
-    private fun datePicker() {
-        binding.etDOB.setOnClickListener {
-            val datePicker = MaterialDatePicker.Builder.datePicker()
-                .setTitleText("Input Birth Date")
-                .setInputMode(MaterialDatePicker.INPUT_MODE_TEXT)
-                .build()
-
-            datePicker.addOnPositiveButtonClickListener {
-                binding.etDOB.setText(it.toFormattedDate())
-                dob = it
-            }
-            datePicker.show(parentFragmentManager, datePicker.tag)
-        }
     }
 
     private fun observeViewModel() {
         collectLatestFlow {
-            viewModel.toastMessage.collect { result: StudentInsertResult ->
-                when (result) {
-                    is StudentInsertResult.Failure -> {
-                        when (result.reason) {
-                            DUPLICATE_REG_NUMBER -> {
-                                binding.apply {
-                                    etRegNumber.requestFocus()
-                                    etRegNumber.error = "Reg no already exists"
-                                }
-                            }
+            launch {
+                viewModel.studentToEdit.collectLatest { student ->
+                    student?.let { prefillForm(it) }
+                }
+            }
 
-                            DUPLICATE_ROLL_NUMBER -> {
-                                binding.apply {
-                                    etRollNumber.requestFocus()
+            launch {
+                viewModel.toastMessage.collect { result ->
+                    when (result) {
+                        is StudentInsertResult.Failure -> {
+                            when (result.reason) {
+                                DUPLICATE_REG_NUMBER -> {
+                                    binding.etRegNumber.requestFocus()
+                                    binding.etRegNumber.error = "Reg no already exists"
+                                }
+
+                                DUPLICATE_ROLL_NUMBER -> {
+                                    binding.etRollNumber.requestFocus()
                                     binding.etRollNumber.error = "Roll no already exists"
                                 }
-                            }
 
-                            else -> {
-                                showLongToast("Failed : ${result.reason}")
+                                else -> showLongToast("Failed: ${result.reason}")
                             }
-
                         }
 
-                    }
+                        is StudentInsertResult.Success -> {
 
-                    is StudentInsertResult.Success -> {
-                        showToast("Student added!")
-                        findNavController().navigateUp()
+                            showToast(
+                                if (currentStudent == null) "Student added!" else "Student updated!"
+                            )
+                            findNavController().navigateUp()
+                        }
                     }
                 }
             }
         }
     }
 
+    private fun saveStudent() = with(binding) {
+        val regNumberStr = etRegNumber.text.toString()
+        val rollNumberStr = etRollNumber.text.toString()
+        val studentName = etStudentName.text.toString()
+        val fatherName = etFatherName.text.toString()
+        val dobStr = etDOB.text.toString()
+        val phoneNumber = etPhone.text.toString()
+        val bForm = etBForm.text.toString()
+        val klass = etClass.text.toString()
+        val address = etAddress.text.toString()
 
-    private fun setupSaveBtn() {
-        binding.apply {
-
-            val regNumber = etRegNumber.text.toString()
-            val rollNumber = etRollNumber.text.toString()
-            val studentName = etStudentName.text.toString()
-            val fatherName = etFatherName.text.toString()
-            val phoneNumber = etPhone.text.toString()
-
-            val address = etAddress.text.toString()
-
-            when {
-                regNumber.isBlank() -> {
-                    binding.apply {
-                        etRegNumber.requestFocus()
-                        etRegNumber.error = "Enter reg. number"
-                    }
-                }
-
-                rollNumber.isBlank() -> {
-                    binding.apply {
-                        etRollNumber.requestFocus()
-                        etRollNumber.error = "Enter roll number"
-                    }
-                }
-
-                studentName.isBlank() -> {
-                    binding.apply {
-                        etStudentName.requestFocus()
-                        etStudentName.error = "Enter name of the student"
-                    }
-                }
-
-                fatherName.isBlank() -> {
-                    binding.apply {
-                        etFatherName.requestFocus()
-                        etFatherName.error = "Enter name of the student"
-                    }
-                }
-
-                else -> {
-                    val roll = rollNumber.toInt()
-                    val reg = regNumber.toInt()
-                    val studentEntity =
-                        StudentEntity(
-                            regNumber = reg,
-                            rollNumber = roll,
-                            studentName = studentName,
-                            fatherName = fatherName,
-                            dob = dob,
-                            phoneNumber = phoneNumber,
-                            klass = "8th B",
-                            address = address
-                        )
-                    viewModel.insertStudent(studentEntity)
-                }
+        when {
+            regNumberStr.isBlank() -> {
+                etRegNumber.requestFocus()
+                etRegNumber.error = "Enter reg. number"
+                return
             }
+
+            rollNumberStr.isBlank() -> {
+                etRollNumber.requestFocus()
+                etRollNumber.error = "Enter roll number"
+                return
+            }
+
+            studentName.isBlank() -> {
+                etStudentName.requestFocus()
+                etStudentName.error = "Enter student name"
+                return
+            }
+
+            fatherName.isBlank() -> {
+                etFatherName.requestFocus()
+                etFatherName.error = "Enter father's name"
+                return
+            }
+
+            dobStr.isBlank() -> {
+                etDOB.requestFocus()
+                etDOB.error = "Enter date of birth"
+                return
+            }
+        }
+
+        val reg = regNumberStr.toIntOrNull()
+        val roll = rollNumberStr.toIntOrNull()
+
+        if (reg == null || roll == null) {
+            showLongToast("Invalid Registration or Roll Number")
+            return
+        }
+
+        val student = StudentEntity(
+            studentId = currentStudent?.studentId ?: UUID.randomUUID().toString(),
+            regNumber = reg,
+            rollNumber = roll,
+            studentName = studentName,
+            fatherName = fatherName,
+            dob = dob,
+            doa = doa,
+            phoneNumber = phoneNumber,
+            klass = klass,
+            address = address,
+            bForm = bForm
+        )
+
+        if (currentStudent != null) {
+            viewModel.updateStudent(student)
+            showSnackbar("Student updated")
+
+        } else {
+            viewModel.insertStudent(student)
         }
     }
 

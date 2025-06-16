@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.data.repository.Repository
+import com.miassolutions.rollcall.data.repository.StudentFetchResult
 import com.miassolutions.rollcall.utils.StudentInsertResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,8 +26,33 @@ class AddStudentViewModel @Inject constructor(private val repository: Repository
     val allStudents: StateFlow<List<StudentEntity>> = repository.allStudents
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
+
+    private val _studentToEdit = MutableStateFlow<StudentEntity?>(null)
+    val studentToEdit = _studentToEdit.asStateFlow()
+
+    fun fetchStudentById(studentId: String) {
+        viewModelScope.launch {
+            try {
+                when (val student = repository.getStudentById(studentId)) {
+                    is StudentFetchResult.Error -> {}
+                    StudentFetchResult.Loading -> {}
+                    is StudentFetchResult.Success<StudentEntity> -> {
+                        _studentToEdit.value = student.data
+                    }
+                }
+            } catch (e: Exception) {
+                _toastMessage.emit(StudentInsertResult.Failure("failed"))
+
+            }
+        }
+    }
+
     private val _toastMessage = MutableSharedFlow<StudentInsertResult>()
     val toastMessage = _toastMessage.asSharedFlow()
+
+    fun updateStudent(student: StudentEntity) {
+        viewModelScope.launch { repository.updateStudent(student);  _toastMessage.emit(StudentInsertResult.Success) }
+    }
 
 
     fun insertStudent(studentEntity: StudentEntity) {
@@ -51,14 +77,14 @@ class AddStudentViewModel @Inject constructor(private val repository: Repository
         data class Error(val message: String) : ImportUIState()
     }
 
-    fun importStudents(studentEntities: List<StudentEntity>){
+    fun importStudents(studentEntities: List<StudentEntity>) {
         viewModelScope.launch {
             _importUIState.value = ImportUIState.Importing
             var successCount = 0
             var failureCount = 0
 
-            studentEntities.forEach { student->
-                when(repository.insertStudent(student)){
+            studentEntities.forEach { student ->
+                when (repository.insertStudent(student)) {
                     is StudentInsertResult.Failure -> failureCount++
                     is StudentInsertResult.Success -> successCount++
                 }

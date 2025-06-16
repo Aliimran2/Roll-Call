@@ -24,10 +24,9 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val settingsViewModel by viewModels<SettingsViewModel>()
 
     private lateinit var navController: NavController
-//    private lateinit var appBarConfiguration: AppBarConfiguration
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,39 +35,11 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
-
-
-//        collectLatestFlow {
-//            settingsViewModel.userName.collectLatest { userName ->
-//                val name = userName ?: "Set user name"
-//                binding.toolbar.subtitle = "Welcome! $name"
-//
-//            }
-//        }
-
-
         val navHostFragment: NavHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-//        appBarConfiguration = AppBarConfiguration(
-//            setOf(
-//                R.id.studentsFragment,
-//                R.id.attendanceFragment,
-//                R.id.statsFragment,
-//                R.id.settingsFragment
-//            )
-//        )
-
-
-
-
         binding.toolbar.setupWithNavController(navController)
 
-
-
-
     }
-
-
 }

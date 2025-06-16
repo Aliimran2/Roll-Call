@@ -179,13 +179,19 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         findNavController().navigate(action)
     }
 
+    private fun navToEdit(studentId: String) {
+        val action =
+            StudentsFragmentDirections.actionStudentsFragmentToAddStudentFragment(studentId)
+        findNavController().navigate(action)
+    }
+
 
     private fun setupRecyclerView() {
         adapter = StudentListAdapter(
             onPhoneClick = ::dialPhoneNumber,
             onProfileClick = ::navToDetail,
             onReportClick = ::reportClickListener,
-            onEditClick = {showToast("editing...")},
+            onEditClick = ::navToEdit,
             onDeleteClick = ::deleteClickListener
         )
 
@@ -215,8 +221,6 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
             .setNegativeButton("Cancel", null)
             .show()
     }
-
-
 
 
     private fun reportClickListener(studentId: String) {

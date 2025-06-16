@@ -43,6 +43,9 @@ class Repository @Inject constructor(
 
     }
 
+    suspend fun updateStudent(studentEntity: StudentEntity) =
+        studentDao.updateStudent(studentEntity)
+
     suspend fun insertStudent(studentEntity: StudentEntity): StudentInsertResult {
         val duplicateRegNum = studentDao.getStudentByRegNum(studentEntity.regNumber)
         val duplicateRollNum = studentDao.getStudentByRollNum(studentEntity.rollNumber)
@@ -73,6 +76,7 @@ class Repository @Inject constructor(
             }
         }
     }
+
 
     suspend fun clearAllStudents() = studentDao.clearAllStudents()
 

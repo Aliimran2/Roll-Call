@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -76,4 +77,22 @@ fun Fragment.addMenu(
             return onItemSelected(menuItem)
         }
     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+}
+
+fun Fragment.materialDatePicker(
+    title: String,
+    inputMode: Int,
+    onPositiveButtonClick: (date: Long) -> Unit,
+) {
+    val datePicker = MaterialDatePicker.Builder.datePicker()
+        .setTitleText(title)
+        .setInputMode(inputMode)
+        .build()
+
+    datePicker.addOnPositiveButtonClickListener {
+        onPositiveButtonClick(it)
+    }
+
+    datePicker.show(parentFragmentManager, datePicker.tag)
+
 }
