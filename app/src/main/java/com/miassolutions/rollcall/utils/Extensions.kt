@@ -1,8 +1,10 @@
 package com.miassolutions.rollcall.utils
 
+import WeekdayPastDateValidator
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.core.view.MenuHost
@@ -12,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
@@ -82,12 +85,20 @@ fun Fragment.addMenu(
 fun Fragment.materialDatePicker(
     title: String,
     inputMode: Int,
+    constraints: CalendarConstraints? = null,
     onPositiveButtonClick: (date: Long) -> Unit,
 ) {
+
+
+
+
     val datePicker = MaterialDatePicker.Builder.datePicker()
         .setTitleText(title)
         .setInputMode(inputMode)
+        .setCalendarConstraints(constraints)
         .build()
+
+
 
     datePicker.addOnPositiveButtonClickListener {
         onPositiveButtonClick(it)

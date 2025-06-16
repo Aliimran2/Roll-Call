@@ -37,10 +37,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         setDateCard()
         observeViewModel()
 
-        binding.btnCalendar.setOnClickListener {
-            findNavController().navigate(R.id.action_dashboardFragment_to_calendarFragment)
 
-        }
 
 
         binding.apply {
