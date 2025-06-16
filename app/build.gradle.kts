@@ -56,11 +56,12 @@ dependencies {
     //splash screen
     implementation("androidx.core:core-splashscreen:1.0.1")
 
-    implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 
 
 
-    implementation ("com.leinardi.android:speed-dial:3.2.0")
+
+    implementation("com.leinardi.android:speed-dial:3.2.0")
     // Navigation Component
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.9")
     implementation("androidx.navigation:navigation-ui-ktx:2.8.9") //
@@ -84,20 +85,20 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
     //data store
-    implementation ("androidx.datastore:datastore-preferences:1.1.7")
+    implementation("androidx.datastore:datastore-preferences:1.1.7")
     // fragment for view model code generation
     implementation("androidx.fragment:fragment-ktx:1.8.6")
     //hilt
     implementation("com.google.dagger:hilt-android:2.51.1")
     ksp("com.google.dagger:hilt-android-compiler:2.51.1")
 
-    implementation ("org.apache.poi:poi:5.2.2")
-    implementation ("org.apache.poi:poi-ooxml:5.2.2")
+    implementation("org.apache.poi:poi:5.2.2")
+    implementation("org.apache.poi:poi-ooxml:5.2.2")
 
-    implementation ("org.apache.xmlbeans:xmlbeans:5.1.1") // Match a recent stable version
-    implementation ("com.fasterxml:aalto-xml:1.3.2") // A fast, non-blocking XML processor
-    implementation ("javax.xml.stream:stax-api:1.0-2") // Standard Java XML Streaming API
+    implementation("org.apache.xmlbeans:xmlbeans:5.1.1") // Match a recent stable version
+    implementation("com.fasterxml:aalto-xml:1.3.2") // A fast, non-blocking XML processor
+    implementation("javax.xml.stream:stax-api:1.0-2") // Standard Java XML Streaming API
 
-    implementation ("com.github.angads25:toggle:1.1.0")
+    implementation("com.github.angads25:toggle:1.1.0")
 
 }

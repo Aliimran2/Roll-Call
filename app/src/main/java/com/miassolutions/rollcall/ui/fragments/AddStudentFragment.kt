@@ -1,8 +1,10 @@
 package com.miassolutions.rollcall.ui.fragments
 
+import android.graphics.MaskFilter
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import androidx.core.widget.NestedScrollView
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -10,11 +12,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.textfield.TextInputEditText
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
 import com.miassolutions.rollcall.ui.MainActivity
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
+import com.miassolutions.rollcall.utils.BFormTextWatcher
 import com.miassolutions.rollcall.utils.Constants.DUPLICATE_REG_NUMBER
 import com.miassolutions.rollcall.utils.Constants.DUPLICATE_ROLL_NUMBER
 import com.miassolutions.rollcall.utils.StudentInsertResult
@@ -52,21 +56,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
 
         args.studentId?.let { viewModel.fetchStudentById(it) }
 
-        val scrollView = binding.scrollView
 
-// Listen for focus changes on all EditTexts inside the scrollView
-        scrollView.viewTreeObserver.addOnGlobalFocusChangeListener { _, newFocus ->
-            newFocus?.let { view ->
-                if (view is EditText) {
-                    scrollView.post {
-                        scrollView.smoothScrollTo(0, view.top)
-                    }
-                }
-            }
-        }
-        scrollView.post {
-            scrollView.smoothScrollTo(0, view.top - 50)
-        }
 
 
         setToolbarTitle()
@@ -76,7 +66,29 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         menuProvider()
 
 
+        binding.etBForm.addTextChangedListener(BFormTextWatcher(binding.etBForm))
+
+
+        val scrollView = binding.scrollView
+
+        // Scroll to focused field
+        scrollView.viewTreeObserver.addOnGlobalFocusChangeListener { _, newFocus ->
+            newFocus?.let { view ->
+                if (view is TextInputEditText) {
+                    scrollView.post {
+                        scrollView.smoothScrollTo(0, view.top)
+                    }
+                }
+            }
+        }
+
     }
+
+    fun isValidBForm(bForm: String): Boolean {
+        val pattern = Regex("^\\d{5}-\\d{7}-\\d{1}$")
+        return pattern.matches(bForm)
+    }
+
 
     private fun prefillForm(student: StudentEntity) {
         currentStudent = student
@@ -87,7 +99,9 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
             etRollNumber.setText(student.rollNumber.toString())
             etBForm.setText(student.bForm)
             etDOB.setText(student.dob.toFormattedDate())
-            etDOA.setText(student.doa?.toFormattedDate() ?: System.currentTimeMillis().toFormattedDate())
+            etDOA.setText(
+                student.doa?.toFormattedDate() ?: System.currentTimeMillis().toFormattedDate()
+            )
             etClass.setText(student.klass)
             etPhone.setText(student.phoneNumber)
             etAddress.setText(student.address)
@@ -135,7 +149,14 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         addMenu(R.menu.menu_add_student) { item ->
             when (item.itemId) {
                 R.id.action_save -> {
-                    saveStudent()
+                    val bForm = binding.etBForm.text.toString()
+                    if (isValidBForm(bForm)) {
+                        saveStudent()
+                    } else {
+                        binding.tilBForm.error = "Invalid B-Form format"
+                    }
+
+
                     true
                 }
 
@@ -234,6 +255,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
             showLongToast("Invalid Registration or Roll Number")
             return
         }
+
 
         val student = StudentEntity(
             studentId = currentStudent?.studentId ?: UUID.randomUUID().toString(),

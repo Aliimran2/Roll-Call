@@ -5,60 +5,59 @@
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:clipToPadding="true"
-    android:background="@color/white">
+    android:background="@color/white"
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    android:clipToPadding="false"
+    android:padding="16dp">
+
+    <LinearLayout
         android:id="@+id/formContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingVertical="16dp"
+        android:orientation="vertical">
 
         <!-- Student Image -->
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivStudentImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
             android:contentDescription="Student Image"
             android:src="@drawable/mias_profile_pic"
             app:civ_border_width="2dp"
 
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+             />
 
         <!-- Change Photo Text -->
         <TextView
             android:id="@+id/tvChangePhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Change Photo"
-
-            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
             android:clickable="true"
             android:focusable="true"
-            app:layout_constraintTop_toBottomOf="@id/ivStudentImage"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:text="Change Photo"
+            android:textStyle="bold"
+/>
 
 
         <!-- Student Name -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilStudentName"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:hint="Student Name"
-            app:layout_constraintTop_toBottomOf="@id/tvChangePhoto"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp">
+          >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etStudentName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
                 android:inputType="textPersonName" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,19 +65,18 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilFatherName"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Father Name"
+            android:layout_marginTop="12dp"
 
-            app:layout_constraintTop_toBottomOf="@id/tilStudentName"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="12dp">
+            android:hint="Father Name"
+           >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etFatherName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
                 android:inputType="textPersonName" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -86,18 +84,17 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilRegNumber"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:hint="Registration Number"
-            app:layout_constraintTop_toBottomOf="@id/tilFatherName"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="12dp">
+         >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etRegNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,37 +102,37 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilRollNumber"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:hint="Roll Number"
-            app:layout_constraintTop_toBottomOf="@id/tilRegNumber"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="12dp">
+          >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etRollNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- B-Form -->
+
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilBForm"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:hint="B-Form (xxxxx-xxxxxxx-x)"
-            app:layout_constraintTop_toBottomOf="@id/tilRollNumber"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="12dp">
+         >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etBForm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -143,60 +140,38 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilDOB"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:hint="Date of Birth"
-            app:layout_constraintTop_toBottomOf="@id/tilBForm"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="12dp">
+>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etDOB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_date_picker"
                 android:focusable="false"
-                android:inputType="none"
-                android:drawableEnd="@drawable/ic_date_picker" />
+                android:imeOptions="actionNext"
+                android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Date of Admission -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilDOA"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Date of Admission"
-            app:layout_constraintTop_toBottomOf="@id/tilDOB"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="12dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etDOA"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:inputType="none"
-                android:drawableEnd="@drawable/ic_date_picker" />
-        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Class -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilClass"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:hint="Class"
-            app:layout_constraintTop_toBottomOf="@id/tilDOA"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="12dp">
+     >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etClass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -204,45 +179,60 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPhone"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:hint="Phone Number"
-            app:layout_constraintTop_toBottomOf="@id/tilClass"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="12dp">
+>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
                 android:inputType="phone" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Date of Admission -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilDOA"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Date of Admission"
+         >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDOA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_date_picker"
+                android:focusable="false"
+                android:imeOptions="actionNext"
+                android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Address -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilAddress"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:hint="Address"
-            app:layout_constraintTop_toBottomOf="@id/tilPhone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="12dp">
+        >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lines="1"
-                android:inputType="textPostalAddress"
                 android:imeOptions="actionDone"
-
+                android:inputType="textPostalAddress"
+                android:lines="1"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Submit Button -->
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>
