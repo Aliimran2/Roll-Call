@@ -80,33 +80,39 @@ fun Fragment.addMenu(
     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 }
 
-fun Fragment.materialDatePicker(
+fun Fragment.showMaterialDatePicker(
     title: String,
-    inputMode: Int,
+    inputMode: Int = MaterialDatePicker.INPUT_MODE_CALENDAR,
     constraints: CalendarConstraints? = null,
-    onPositiveButtonClick: (date: Long) -> Unit,
+    onDateSelected: (Long) -> Unit,
 ) {
 
+//    val today = MaterialDatePicker.todayInUtcMilliseconds()
 
-
-
-    val datePicker = MaterialDatePicker.Builder.datePicker()
+    val builder = MaterialDatePicker.Builder.datePicker()
         .setTitleText(title)
         .setInputMode(inputMode)
-        .setCalendarConstraints(constraints)
-        .build()
+//        .setSelection(today)
 
-
-
-    datePicker.addOnPositiveButtonClickListener {
-        onPositiveButtonClick(it)
+    constraints?.let {
+        builder.setCalendarConstraints(constraints)
     }
+
+    val datePicker = builder.build()
+
+   datePicker.addOnPositiveButtonClickListener {
+       val calendar = Calendar.getInstance().apply {
+           timeInMillis = it
+           clearTimeComponents()
+       }
+       onDateSelected(calendar.timeInMillis)
+   }
 
     datePicker.show(parentFragmentManager, datePicker.tag)
 
 }
 
-fun Calendar.clearTimeComponents(){
+fun Calendar.clearTimeComponents() {
     set(Calendar.HOUR_OF_DAY, 0)
     set(Calendar.MINUTE, 0)
     set(Calendar.SECOND, 0)

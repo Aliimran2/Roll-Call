@@ -25,6 +25,7 @@ import com.miassolutions.rollcall.utils.addMenu
 import com.miassolutions.rollcall.utils.clearTimeComponents
 import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showLongToast
+import com.miassolutions.rollcall.utils.showMaterialDatePicker
 import com.miassolutions.rollcall.utils.showSnackbar
 import com.miassolutions.rollcall.utils.showToast
 import com.miassolutions.rollcall.utils.toFormattedDate
@@ -69,19 +70,6 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         binding.etBForm.addTextChangedListener(BFormTextWatcher(binding.etBForm))
 
 
-        val scrollView = binding.scrollView
-
-        // Scroll to focused field
-        scrollView.viewTreeObserver.addOnGlobalFocusChangeListener { _, newFocus ->
-            newFocus?.let { view ->
-                if (view is TextInputEditText) {
-                    scrollView.post {
-                        scrollView.smoothScrollTo(0, view.top)
-                    }
-                }
-            }
-        }
-
     }
 
     private fun isValidBForm(bForm: String): Boolean {
@@ -121,7 +109,8 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         }
     }
 
-    private fun showDatePicker(onDateSelected: (Long) -> Unit) {
+    private fun showDatePicker(inputMode : Int,onDateSelected: (Long) -> Unit) {
+
         val validator = SundayPastDateValidator()
         validator.isWeekendDisabled = false
 
@@ -129,33 +118,23 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
             .setFirstDayOfWeek(Calendar.MONDAY)
             .setValidator(validator)
 
-
-        val datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Select Attendance date")
-            .setCalendarConstraints(constraintsBuilder.build())
-            .build()
-
-        datePicker.addOnPositiveButtonClickListener {
-            val calendar = Calendar.getInstance().apply {
-                clearTimeComponents()
-            }
-            onDateSelected(calendar.timeInMillis)
-
-        }
-
-        datePicker.show(parentFragmentManager, datePicker.tag)
-
+        showMaterialDatePicker(
+            title = "Select date",
+            inputMode = inputMode,
+            constraints = constraintsBuilder.build(),
+            onDateSelected = { onDateSelected(it) }
+        )
     }
 
     private fun setupDatePickers() {
         binding.etDOB.setOnClickListener {
-            showDatePicker {
+            showDatePicker(MaterialDatePicker.INPUT_MODE_TEXT) {
                 binding.etDOB.setText(it.toFormattedDate())
                 dob = it
             }
         }
         binding.etDOA.setOnClickListener {
-            showDatePicker {
+            showDatePicker(MaterialDatePicker.INPUT_MODE_CALENDAR) {
                 binding.etDOA.setText(it.toFormattedDate())
                 doa = it
             }
