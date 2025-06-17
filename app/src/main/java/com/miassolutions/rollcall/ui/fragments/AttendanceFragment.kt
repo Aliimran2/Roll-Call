@@ -84,6 +84,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             etDatePicker.setOnClickListener {
                 showDatePicker {
                     etDatePicker.setText(it.toFormattedDate())
+                    viewModel.setDate(it)
                 }
 
             }
@@ -95,7 +96,11 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                     return@setOnClickListener
                 }
 
-                val date = selectedDate.takeIf { it != -1L } ?: return@setOnClickListener // Use the selectedDate from navArgs
+                val date = viewModel.selectedDate.value
+                if (date== null) {
+                    showSnackbar("Date not selected")
+                    return@setOnClickListener
+                }
 
                 if (attendanceMode == "update") {
                     viewModel.updateAttendanceForDate(date) { success ->
