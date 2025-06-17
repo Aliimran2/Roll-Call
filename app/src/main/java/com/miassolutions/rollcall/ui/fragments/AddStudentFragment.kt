@@ -109,7 +109,11 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         }
     }
 
-    private fun showDatePicker(inputMode : Int,onDateSelected: (Long) -> Unit) {
+    private fun showDatePicker(
+        selection: Long? = null,
+        inputMode: Int,
+        onDateSelected: (Long) -> Unit,
+    ) {
 
         val validator = SundayPastDateValidator()
         validator.isWeekendDisabled = false
@@ -121,6 +125,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         showMaterialDatePicker(
             title = "Select date",
             inputMode = inputMode,
+            selection = selection,
             constraints = constraintsBuilder.build(),
             onDateSelected = { onDateSelected(it) }
         )
@@ -128,13 +133,15 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
 
     private fun setupDatePickers() {
         binding.etDOB.setOnClickListener {
-            showDatePicker(MaterialDatePicker.INPUT_MODE_TEXT) {
+
+            showDatePicker(null, MaterialDatePicker.INPUT_MODE_TEXT) {
                 binding.etDOB.setText(it.toFormattedDate())
                 dob = it
             }
         }
         binding.etDOA.setOnClickListener {
-            showDatePicker(MaterialDatePicker.INPUT_MODE_CALENDAR) {
+            val today = MaterialDatePicker.todayInUtcMilliseconds()
+            showDatePicker(today, MaterialDatePicker.INPUT_MODE_CALENDAR) {
                 binding.etDOA.setText(it.toFormattedDate())
                 doa = it
             }

@@ -83,6 +83,7 @@ fun Fragment.addMenu(
 fun Fragment.showMaterialDatePicker(
     title: String,
     inputMode: Int = MaterialDatePicker.INPUT_MODE_CALENDAR,
+    selection: Long? = null,
     constraints: CalendarConstraints? = null,
     onDateSelected: (Long) -> Unit,
 ) {
@@ -93,6 +94,10 @@ fun Fragment.showMaterialDatePicker(
         .setTitleText(title)
         .setInputMode(inputMode)
 
+    selection?.let {
+        builder.setSelection(it)
+    }
+
 //        .setSelection(today)
 
     constraints?.let {
@@ -101,13 +106,13 @@ fun Fragment.showMaterialDatePicker(
 
     val datePicker = builder.build()
 
-   datePicker.addOnPositiveButtonClickListener {
-       val calendar = Calendar.getInstance().apply {
-           timeInMillis = it
-           clearTimeComponents()
-       }
-       onDateSelected(calendar.timeInMillis)
-   }
+    datePicker.addOnPositiveButtonClickListener {
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = it
+            clearTimeComponents()
+        }
+        onDateSelected(calendar.timeInMillis)
+    }
 
     datePicker.show(parentFragmentManager, datePicker.tag)
 
