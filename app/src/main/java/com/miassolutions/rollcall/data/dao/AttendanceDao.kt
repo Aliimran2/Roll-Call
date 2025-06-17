@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.miassolutions.rollcall.data.entities.AttendanceEntity
 import com.miassolutions.rollcall.utils.AttendanceStatus
 import kotlinx.coroutines.flow.Flow
@@ -90,6 +91,24 @@ interface AttendanceDao {
      */
     @Query("SELECT COUNT(*) FROM student_table")
     fun getTotalStudentsCount(): Flow<Int>
+
+    @Update
+    suspend fun updateAttendance(attendance: AttendanceEntity)
+
+
+    @Update
+    suspend fun updateAttendances(attendanceList: List<AttendanceEntity>)
+
+
+
+
+
+
+
+
+
+
+
 
     // --- Delete Operations ---
 

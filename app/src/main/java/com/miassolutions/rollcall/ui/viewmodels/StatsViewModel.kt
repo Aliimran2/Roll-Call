@@ -2,6 +2,7 @@ package com.miassolutions.rollcall.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.miassolutions.rollcall.data.entities.AttendanceEntity
 import com.miassolutions.rollcall.data.repository.Repository
 import com.miassolutions.rollcall.ui.model.StatsUiModel
 import com.miassolutions.rollcall.utils.AttendanceStatus
@@ -41,6 +42,12 @@ class StatsViewModel @Inject constructor(private val repository: Repository) : V
     fun deleteAttendance(date: Long) {
         viewModelScope.launch {
             repository.deleteAttendanceForDate(date)
+        }
+    }
+
+    fun updateStudentsAttendanceForDate(updatedList: List<AttendanceEntity>) {
+        viewModelScope.launch {
+            repository.updateAttendances(updatedList)
         }
     }
 

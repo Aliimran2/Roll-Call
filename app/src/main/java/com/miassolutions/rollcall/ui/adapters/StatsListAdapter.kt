@@ -11,7 +11,9 @@ import com.miassolutions.rollcall.ui.model.StatsUiModel
 import com.miassolutions.rollcall.utils.toFormattedDate
 
 class StatsListAdapter(
-    private val deleteAction: (Long) -> Unit
+    private val deleteAction: (Long) -> Unit,
+    private val onEditAttendanceAction: (Long) -> Unit,
+    private val onReportAttendanceAction: (Long) -> Unit,
 ) : ListAdapter<StatsUiModel, StatsListAdapter.StatsViewHolder>(StatsDiffUtil()) {
 
     inner class StatsViewHolder(private val binding: ItemStatsBinding) :
@@ -24,6 +26,14 @@ class StatsListAdapter(
 
                 btnDelete.setOnClickListener {
                     deleteAction(item.date)
+                }
+
+                btnEditAttendance.setOnClickListener {
+                    onEditAttendanceAction(item.date)
+                }
+
+                btnReportAttendance.setOnClickListener {
+                    onReportAttendanceAction(item.date)
                 }
 
 

@@ -93,7 +93,7 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/materialButton"
+            android:id="@+id/btn_edit_attendance"
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
             app:layout_constraintTop_toTopOf="@+id/btn_delete" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/materialButton2"
+            android:id="@+id/btn_report_attendance"
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -126,9 +126,9 @@
             app:iconPadding="0dp"
             app:iconSize="24dp"
             app:iconTint="@color/purple_two"
-            app:layout_constraintBottom_toBottomOf="@+id/materialButton"
-            app:layout_constraintEnd_toStartOf="@+id/materialButton"
-            app:layout_constraintTop_toTopOf="@+id/materialButton" />
+            app:layout_constraintBottom_toBottomOf="@+id/btn_edit_attendance"
+            app:layout_constraintEnd_toStartOf="@+id/btn_edit_attendance"
+            app:layout_constraintTop_toTopOf="@+id/btn_edit_attendance" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

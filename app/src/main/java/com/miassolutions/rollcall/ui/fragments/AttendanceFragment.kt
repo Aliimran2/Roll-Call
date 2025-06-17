@@ -16,7 +16,6 @@ import com.miassolutions.rollcall.ui.model.AttendanceUIModel
 import com.miassolutions.rollcall.ui.viewmodels.AttendanceViewModel
 import com.miassolutions.rollcall.utils.Constants
 import com.miassolutions.rollcall.utils.Constants.DATE_REQUEST_KEY
-import com.miassolutions.rollcall.utils.clearTimeComponents
 import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showMaterialDatePicker
 import com.miassolutions.rollcall.utils.showSnackbar

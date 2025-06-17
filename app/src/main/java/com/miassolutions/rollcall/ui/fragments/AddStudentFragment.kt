@@ -11,7 +11,6 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.textfield.TextInputEditText
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
@@ -22,7 +21,6 @@ import com.miassolutions.rollcall.utils.Constants.DUPLICATE_REG_NUMBER
 import com.miassolutions.rollcall.utils.Constants.DUPLICATE_ROLL_NUMBER
 import com.miassolutions.rollcall.utils.StudentInsertResult
 import com.miassolutions.rollcall.utils.addMenu
-import com.miassolutions.rollcall.utils.clearTimeComponents
 import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showLongToast
 import com.miassolutions.rollcall.utils.showMaterialDatePicker

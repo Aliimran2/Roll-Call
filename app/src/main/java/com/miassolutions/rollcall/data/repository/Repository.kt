@@ -111,6 +111,15 @@ class Repository @Inject constructor(
         return attendanceDao.getAttendanceForDate(date)
     }
 
+    suspend fun updateAttendance(attendance: AttendanceEntity) {
+        attendanceDao.updateAttendance(attendance)
+    }
+
+    suspend fun updateAttendances(attendanceList: List<AttendanceEntity>) {
+        attendanceDao.updateAttendances(attendanceList)
+    }
+
+
 
     suspend fun deleteAttendanceForStudent(studentId: String) {
         attendanceDao.deleteAttendanceForStudent(studentId)
