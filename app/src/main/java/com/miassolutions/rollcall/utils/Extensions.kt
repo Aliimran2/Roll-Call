@@ -92,6 +92,7 @@ fun Fragment.showMaterialDatePicker(
     val builder = MaterialDatePicker.Builder.datePicker()
         .setTitleText(title)
         .setInputMode(inputMode)
+
 //        .setSelection(today)
 
     constraints?.let {

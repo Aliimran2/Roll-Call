@@ -18,6 +18,7 @@ import com.miassolutions.rollcall.utils.Constants
 import com.miassolutions.rollcall.utils.Constants.DATE_REQUEST_KEY
 import com.miassolutions.rollcall.utils.clearTimeComponents
 import com.miassolutions.rollcall.utils.collectLatestFlow
+import com.miassolutions.rollcall.utils.showMaterialDatePicker
 import com.miassolutions.rollcall.utils.showSnackbar
 import com.miassolutions.rollcall.utils.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
@@ -96,20 +97,14 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             .setFirstDayOfWeek(Calendar.MONDAY)
             .setValidator(SundayPastDateValidator())
 
-        val datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Select Attendance date")
-            .setCalendarConstraints(constraintsBuilder.build())
-            .build()
-
-        datePicker.addOnPositiveButtonClickListener {
-            val calendar = Calendar.getInstance().apply {
-                clearTimeComponents()
-            }
-            onDateSelected(calendar.timeInMillis)
-            viewModel.setDate(calendar.timeInMillis)
+        showMaterialDatePicker(
+            title = "Select Attendance Date",
+            constraints = constraintsBuilder.build(),
+            ) {
+            onDateSelected(it)
+            viewModel.setDate(it)
         }
 
-        datePicker.show(parentFragmentManager, datePicker.tag)
 
     }
 
