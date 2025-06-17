@@ -48,7 +48,7 @@ interface AttendanceDao {
      * @return A [Flow] emitting a list of [AttendanceEntity] for the specified date.
      */
     @Query("SELECT * FROM attendance_table WHERE date = :date ORDER BY studentId ASC")
-    fun getAttendanceForDate(date: Long): Flow<List<AttendanceEntity>>
+   suspend fun getAttendanceForDate(date: Long): List<AttendanceEntity>
 
     /**
      * Retrieves all attendance records present in the database, ordered by date in descending order.

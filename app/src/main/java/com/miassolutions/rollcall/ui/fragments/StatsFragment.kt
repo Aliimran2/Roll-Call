@@ -49,8 +49,11 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
 
 
         binding.btnTakeAtt.setOnClickListener {
-            val action =
-                StatsFragmentDirections.actionStatsFragmentToAttendanceFragment()
+            val action = StatsFragmentDirections
+                .actionStatsFragmentToAttendanceFragment(
+                    attendanceMode = "add",
+                    selectedDate = -1L
+                )
             findNavController().navigate(action)
         }
 
@@ -58,7 +61,11 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
     }
 
     private fun editAttendance(date: Long) {
-        StatsFragmentDirections.actionStatsFragmentToAttendanceFragment()
+        val action = StatsFragmentDirections.actionStatsFragmentToAttendanceFragment(
+            attendanceMode = "update",
+            selectedDate = date
+        )
+        findNavController().navigate(action)
     }
 
     private fun reportAttendance(date: Long) {

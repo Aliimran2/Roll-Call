@@ -107,7 +107,7 @@ class Repository @Inject constructor(
         return attendanceDao.getAttendanceByStudent(studentId)
     }
 
-    fun getAttendanceForDate(date: Long): Flow<List<AttendanceEntity>> {
+    suspend fun getAttendanceForDate(date: Long): List<AttendanceEntity> {
         return attendanceDao.getAttendanceForDate(date)
     }
 
@@ -132,5 +132,15 @@ class Repository @Inject constructor(
     suspend fun deleteAllAttendance() {
         attendanceDao.deleteAllAttendance()
     }
+
+
+    suspend fun replaceAttendanceForDate(date: Long, updatedList: List<AttendanceEntity>) {
+        // Step 1: Delete old attendance for that date
+        attendanceDao.deleteAttendanceForDate(date)
+
+        // Step 2: Insert updated list
+        attendanceDao.insertAttendances(updatedList)
+    }
+
 
 }

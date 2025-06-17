@@ -7,12 +7,13 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
 import com.miassolutions.rollcall.ui.adapters.AttendanceAdapter
-import com.miassolutions.rollcall.ui.model.AttendanceUIModel
+
 import com.miassolutions.rollcall.ui.viewmodels.AttendanceViewModel
 import com.miassolutions.rollcall.utils.Constants
 import com.miassolutions.rollcall.utils.Constants.DATE_REQUEST_KEY
@@ -34,9 +35,28 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     private lateinit var adapter: AttendanceAdapter
     private val viewModel by viewModels<AttendanceViewModel>()
 
+    private val navArgs by navArgs<AttendanceFragmentArgs>()
+    private var attendanceMode = "add"
+    private var selectedDate: Long = -1L
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAttendanceBinding.bind(view)
+
+
+        attendanceMode = navArgs.attendanceMode
+        selectedDate = navArgs.selectedDate
+
+        if (attendanceMode == "update" && selectedDate != -1L) {
+            // Pre-fill date and disable picker
+            binding.etDatePicker.setText(selectedDate.toFormattedDate())
+            binding.etDatePicker.isEnabled = false
+
+            // Load attendance from DB
+            viewModel.setDate(selectedDate)
+
+        }
+
 
 
 
@@ -69,28 +89,45 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             }
 
             saveBtn.setOnClickListener {
-                val date = binding.etDatePicker.text.toString()
-                if (date.isEmpty()) {
+                val dateStr = binding.etDatePicker.text.toString()
+                if (dateStr.isEmpty()) {
                     showSnackbar("Select date first")
                     return@setOnClickListener
                 }
 
-//                viewModel.setDate(date)
-                viewModel.saveAttendance { success ->
-                    if (success) {
-                        showSnackbar("Attendance saved for $date")
-                        findNavController().navigateUp()
-                    } else {
-                        showSnackbar("Attendance already exists for $date")
+                val date = selectedDate.takeIf { it != -1L } ?: return@setOnClickListener // Use the selectedDate from navArgs
+
+                if (attendanceMode == "update") {
+                    viewModel.updateAttendanceForDate(date) { success ->
+                        if (success) {
+                            showSnackbar("Attendance updated for $dateStr")
+                            findNavController().navigateUp()
+                        } else {
+                            showSnackbar("Failed to update attendance for $dateStr")
+                        }
+                    }
+                } else {
+                    viewModel.saveAttendance { success ->
+                        if (success) {
+                            showSnackbar("Attendance saved for $dateStr")
+                            findNavController().navigateUp()
+                        } else {
+                            showSnackbar("Attendance already exists for $dateStr")
+                        }
                     }
                 }
             }
+
         }
 
 
     }
 
+
+
     private fun showDatePicker(onDateSelected: (Long) -> Unit) {
+
+        if (attendanceMode == "update") return  // Prevent interaction
 
         val constraintsBuilder = CalendarConstraints.Builder()
             .setFirstDayOfWeek(Calendar.MONDAY)
@@ -150,19 +187,6 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         }
         binding.rvAttendance.adapter = adapter
 
-        collectLatestFlow {
-            viewModel.studentList.collectLatest { students ->
-                val initialList = students.map {
-                    AttendanceUIModel(
-                        studentId = it.studentId,
-                        studentName = it.studentName,
-                        rollNumber = it.rollNumber
-                    )
-                }
-                viewModel.setInitialAttendanceList(initialList)
-            }
-
-        }
 
 
     }
