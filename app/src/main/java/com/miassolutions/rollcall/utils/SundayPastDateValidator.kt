@@ -4,7 +4,9 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.miassolutions.rollcall.utils.clearTimeComponents
 import java.util.*
 
-class SundayPastDateValidator() : CalendarConstraints.DateValidator {
+class SundayPastDateValidator() :
+    CalendarConstraints.DateValidator {
+    var isWeekendDisabled: Boolean = true
 
 
     override fun isValid(date: Long): Boolean {
@@ -21,7 +23,11 @@ class SundayPastDateValidator() : CalendarConstraints.DateValidator {
         val isWeekend = dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY
         val isFuture = calendar.after(today)
 
-        return !isWeekend && !isFuture
+        return when {
+            isWeekendDisabled -> !isWeekend && !isFuture // disable weekends and future dates
+            else -> !isFuture // disable future date only
+        }
+
     }
 
 
