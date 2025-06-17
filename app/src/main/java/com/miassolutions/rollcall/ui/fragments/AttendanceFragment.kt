@@ -1,11 +1,13 @@
 package com.miassolutions.rollcall.ui.fragments
 
+import SundayPastDateValidator
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
@@ -14,6 +16,7 @@ import com.miassolutions.rollcall.ui.model.AttendanceUIModel
 import com.miassolutions.rollcall.ui.viewmodels.AttendanceViewModel
 import com.miassolutions.rollcall.utils.Constants
 import com.miassolutions.rollcall.utils.Constants.DATE_REQUEST_KEY
+import com.miassolutions.rollcall.utils.clearTimeComponents
 import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showSnackbar
 import com.miassolutions.rollcall.utils.toFormattedDate
@@ -59,10 +62,10 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
         binding.apply {
             etDatePicker.setOnClickListener {
-                datePicker()
-//                val action =
-//                    AttendanceFragmentDirections.actionAttendanceFragmentToDatePickerFragment()
-//                findNavController().navigate(action)
+                showDatePicker {
+                    etDatePicker.setText(it.toFormattedDate())
+                }
+
             }
 
             saveBtn.setOnClickListener {
@@ -87,25 +90,27 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
     }
 
-    private fun datePicker() {
+    private fun showDatePicker(onDateSelected: (Long) -> Unit) {
+
+        val constraintsBuilder = CalendarConstraints.Builder()
+            .setFirstDayOfWeek(Calendar.MONDAY)
+            .setValidator(SundayPastDateValidator())
+
         val datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Select Date")
+            .setTitleText("Select Attendance date")
+            .setCalendarConstraints(constraintsBuilder.build())
             .build()
 
-        datePicker.addOnPositiveButtonClickListener { selectedDateInMillis ->
+        datePicker.addOnPositiveButtonClickListener {
             val calendar = Calendar.getInstance().apply {
-                timeInMillis = selectedDateInMillis
-                set(Calendar.HOUR_OF_DAY, 0)
-                set(Calendar.MINUTE, 0)
-                set(Calendar.SECOND, 0)
-                set(Calendar.MILLISECOND, 0)
+                clearTimeComponents()
             }
-            val normalizeDateInMillis = calendar.timeInMillis
-            binding.etDatePicker.setText(normalizeDateInMillis.toFormattedDate())
-            viewModel.setDate(normalizeDateInMillis)
+            onDateSelected(calendar.timeInMillis)
+            viewModel.setDate(calendar.timeInMillis)
         }
 
-        datePicker.show(parentFragmentManager, datePicker.toString())
+        datePicker.show(parentFragmentManager, datePicker.tag)
+
     }
 
 

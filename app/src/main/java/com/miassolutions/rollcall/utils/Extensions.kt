@@ -1,10 +1,8 @@
 package com.miassolutions.rollcall.utils
 
-import WeekdayPastDateValidator
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.DatePicker
 import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.core.view.MenuHost
@@ -106,4 +104,11 @@ fun Fragment.materialDatePicker(
 
     datePicker.show(parentFragmentManager, datePicker.tag)
 
+}
+
+fun Calendar.clearTimeComponents(){
+    set(Calendar.HOUR_OF_DAY, 0)
+    set(Calendar.MINUTE, 0)
+    set(Calendar.SECOND, 0)
+    set(Calendar.MILLISECOND, 0)
 }

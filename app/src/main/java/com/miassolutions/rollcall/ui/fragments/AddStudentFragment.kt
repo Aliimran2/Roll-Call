@@ -1,19 +1,13 @@
 package com.miassolutions.rollcall.ui.fragments
 
-import WeekdayPastDateValidator
-import android.graphics.MaskFilter
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
-import androidx.core.widget.NestedScrollView
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.StudentEntity
@@ -26,17 +20,13 @@ import com.miassolutions.rollcall.utils.Constants.DUPLICATE_ROLL_NUMBER
 import com.miassolutions.rollcall.utils.StudentInsertResult
 import com.miassolutions.rollcall.utils.addMenu
 import com.miassolutions.rollcall.utils.collectLatestFlow
-import com.miassolutions.rollcall.utils.materialDatePicker
-import com.miassolutions.rollcall.utils.setFirstDayOfWeekToMonday
 import com.miassolutions.rollcall.utils.showLongToast
-import com.miassolutions.rollcall.utils.showMaterialDatePicker
 import com.miassolutions.rollcall.utils.showSnackbar
 import com.miassolutions.rollcall.utils.showToast
 import com.miassolutions.rollcall.utils.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.util.Calendar
 import java.util.UUID
 
 @AndroidEntryPoint
@@ -128,16 +118,16 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
 
     private fun setupDatePickers() {
         binding.etDOB.setOnClickListener {
-            parentFragmentManager.showMaterialDatePicker(
-                tag = "mtc",
-                titleText = "Select date",
-
-                constraintsBuilder = { setFirstDayOfWeekToMonday() },
-                onPositiveButtonClick = {
-                    binding.etDOB.setText(it.toFormattedDate())
-                    dob = it
-                }
-            )
+//            parentFragmentManager.showMaterialDatePicker(
+//                tag = "mtc",
+//                titleText = "Select date",
+//
+//                constraintsBuilder = { setFirstDayOfWeekToMonday() },
+//                onPositiveButtonClick = {
+//                    binding.etDOB.setText(it.toFormattedDate())
+//                    dob = it
+//                }
+//            )
         }
 
 
@@ -149,10 +139,10 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
 //        }
 
         binding.etDOA.setOnClickListener {
-            materialDatePicker("Enter admission date", MaterialDatePicker.INPUT_MODE_CALENDAR) {
-                binding.etDOA.setText(it.toFormattedDate())
-                doa = it
-            }
+//            materialDatePicker("Enter admission date", MaterialDatePicker.INPUT_MODE_CALENDAR) {
+//                binding.etDOA.setText(it.toFormattedDate())
+//                doa = it
+//            }
         }
 
     }
