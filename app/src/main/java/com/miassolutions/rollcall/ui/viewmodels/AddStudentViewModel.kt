@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -31,31 +32,36 @@ import javax.inject.Inject
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class AddStudentViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    private val _allStudents =  MutableStateFlow<List<StudentEntity>>(emptyList())
-    val allStudents : StateFlow<List<StudentEntity>> = _allStudents.asStateFlow()
-
+    // Internal mutable StateFlow for the search query
     private val _searchQuery = MutableStateFlow<String>("")
-    private val searchQuery : StateFlow<String> = _searchQuery.asStateFlow()
 
-    init {
-        searchQuery
-            .debounce(300L)
-            .flatMapLatest {query ->
-                if (query.isEmpty()){
-                    repository.allStudents
-                } else {
-                    repository.searchStudents(query)
-                }
+    // Public StateFlow to expose the filtered list of students to the UI
+    // Naming changed from 'allStudents' to 'filteredStudents' for clarity
+    val filteredStudents: StateFlow<List<StudentEntity>> = _searchQuery
+        .debounce(300L)          // Wait for 300ms of inactivity before processing
+        .distinctUntilChanged()  // Only proceed if the query is different from the previous one
+        .flatMapLatest { query -> // Cancel previous search and start a new one if query changes
+            if (query.isBlank()) {
+                repository.allStudents // Get all students if query is empty or just whitespace
+            } else {
+                repository.searchStudents(query) // Perform search with the given query
             }
-            .onEach { studentList ->
-                _allStudents.value = studentList
-            }
-            .launchIn(viewModelScope)
-    }
+        }
+        // Convert the Flow to a StateFlow, sharing the underlying data
+        // Starts collection when there's at least one subscriber, keeps active for 5s after last subscriber leaves
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    fun searchQuery(query : String){
+
+    /**
+     * Updates the current search query. This function should be called from the UI
+     * whenever the text in the SearchView changes.
+     */
+    // Function name changed from 'searchQuery' to 'onSearchQueryChanged' for clarity
+    fun onSearchQueryChanged(query: String) {
         _searchQuery.value = query
     }
+
+
 
 
 

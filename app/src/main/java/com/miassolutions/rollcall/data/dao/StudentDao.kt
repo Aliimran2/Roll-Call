@@ -49,14 +49,13 @@ interface StudentDao {
     suspend fun getStudentByRollNum(rollNumber: Int) : StudentEntity?
 
 
-    //search by name, father, phone, roll no, reg no
+    //search by name, roll no, reg no
     @Query(
         """
         SELECT * FROM student_table
         WHERE studentName LIKE '%'||:searchQuery|| '%'
-        OR phoneNumber LIKE '%' || :searchQuery || '%'
-        OR CAST(rollNumber AS TEXT) LIKE '%' || :searchQuery || '%'
-        OR CAST(regNumber AS TEXT) LIKE '%' || :searchQuery || '%'
+        OR CAST(rollNumber AS TEXT) LIKE  :searchQuery || '%'
+        OR CAST(regNumber AS TEXT) LIKE :searchQuery || '%'
     """
     )
     fun searchStudent(searchQuery: String): Flow<List<StudentEntity>>

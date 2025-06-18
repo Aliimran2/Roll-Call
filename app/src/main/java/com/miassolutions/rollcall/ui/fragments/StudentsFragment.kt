@@ -105,7 +105,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
     private fun observeViewModel() {
         collectLatestFlow {
-            addStudentViewModel.allStudents.collectLatest {
+            addStudentViewModel.filteredStudents.collectLatest {
                 adapter.submitList(it)
             }
         }
@@ -147,7 +147,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
                     override fun onQueryTextChange(newText: String?): Boolean {
 
-                            addStudentViewModel.searchQuery(newText.orEmpty())
+                            addStudentViewModel.onSearchQueryChanged(newText.orEmpty())
 
                         return true
                     }
