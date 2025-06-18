@@ -115,6 +115,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
     private fun observeViewModel() {
 
+
         collectLatestFlow {
             addStudentViewModel.totalStudents.collectLatest {
 

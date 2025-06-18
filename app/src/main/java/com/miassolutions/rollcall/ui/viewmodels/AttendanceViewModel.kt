@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.miassolutions.rollcall.data.entities.AttendanceEntity
 import com.miassolutions.rollcall.data.repository.Repository
 import com.miassolutions.rollcall.ui.model.AttendanceUIModel
+import com.miassolutions.rollcall.utils.AttendanceFilter
 import com.miassolutions.rollcall.utils.AttendanceStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -13,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AttendanceViewModel @Inject constructor(
-    private val repository: Repository
+    private val repository: Repository,
 ) : ViewModel() {
 
     // --- Public State ---
@@ -27,7 +28,24 @@ class AttendanceViewModel @Inject constructor(
     private val _attendanceUI = MutableStateFlow<List<AttendanceUIModel>>(emptyList())
     val attendanceUI: StateFlow<List<AttendanceUIModel>> = _attendanceUI
 
-    
+    private val _filter = MutableStateFlow(AttendanceFilter.ALL)
+    val filter: StateFlow<AttendanceFilter> = _filter.asStateFlow()
+
+    fun setFilter(filter: AttendanceFilter) {
+        _filter.value = filter
+    }
+
+    val filteredAttendanceUI: StateFlow<List<AttendanceUIModel>> = combine(
+        _attendanceUI, _filter
+    ) { list, filter ->
+        when (filter) {
+            AttendanceFilter.ALL -> list
+            AttendanceFilter.PRESENT -> list.filter { it.attendanceStatus == AttendanceStatus.PRESENT }
+            AttendanceFilter.ABSENT -> list.filter { it.attendanceStatus == AttendanceStatus.ABSENT }
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+
     // --- Init block to collect studentList + selectedDate ---
     init {
         viewModelScope.launch {

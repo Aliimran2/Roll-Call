@@ -17,6 +17,7 @@ import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
 import com.miassolutions.rollcall.ui.adapters.AttendanceAdapter
 
 import com.miassolutions.rollcall.ui.viewmodels.AttendanceViewModel
+import com.miassolutions.rollcall.utils.AttendanceFilter
 import com.miassolutions.rollcall.utils.Constants
 import com.miassolutions.rollcall.utils.Constants.DATE_REQUEST_KEY
 import com.miassolutions.rollcall.utils.collectLatestFlow
@@ -162,20 +163,23 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         val popupMenu = PopupMenu(requireContext(), binding.saveBtn)
         popupMenu.apply {
             menuInflater.inflate(R.menu.popup_menu_filter_attendance, menu)
-            setOnMenuItemClickListener {menuItem ->
-                when(menuItem.itemId){
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
                     R.id.menu_all -> {
-                        showSnackbar("all")
+                        viewModel.setFilter(AttendanceFilter.ALL)
                         true
                     }
+
                     R.id.menu_present -> {
-                        showSnackbar("present only")
+                        viewModel.setFilter(AttendanceFilter.PRESENT)
                         true
                     }
+
                     R.id.menu_absent -> {
-                        showSnackbar("absent only")
+                        viewModel.setFilter(AttendanceFilter.ABSENT)
                         true
                     }
+
                     else -> false
                 }
             }
@@ -211,6 +215,11 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
     private fun collectFlows() {
         collectLatestFlow {
+
+            launch {
+                viewModel.filteredAttendanceUI.collectLatest { adapter.submitList(it) }
+            }
+
             launch {
                 viewModel.totalCount.collectLatest {
                     binding.totalCard.tvCount.text = it.toString()
