@@ -32,12 +32,19 @@ import javax.inject.Inject
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class AddStudentViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
+
+    val students = repository.allStudents.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000),
+        emptyList()
+    )
+
+
     // Internal mutable StateFlow for the search query
     private val _searchQuery = MutableStateFlow<String>("")
 
     //total students
     private val _totalStudents = MutableStateFlow<Int>(0)
-    val totalStudents : StateFlow<Int> = _totalStudents.asStateFlow()
+    val totalStudents: StateFlow<Int> = _totalStudents.asStateFlow()
 
     // Public StateFlow to expose the filtered list of students to the UI
     // Naming changed from 'allStudents' to 'filteredStudents' for clarity
@@ -69,10 +76,6 @@ class AddStudentViewModel @Inject constructor(private val repository: Repository
     }
 
 
-
-
-
-
     private val _studentToEdit = MutableStateFlow<StudentEntity?>(null)
     val studentToEdit = _studentToEdit.asStateFlow()
 
@@ -97,7 +100,11 @@ class AddStudentViewModel @Inject constructor(private val repository: Repository
     val toastMessage = _toastMessage.asSharedFlow()
 
     fun updateStudent(student: StudentEntity) {
-        viewModelScope.launch { repository.updateStudent(student);  _toastMessage.emit(StudentInsertResult.Success) }
+        viewModelScope.launch {
+            repository.updateStudent(student); _toastMessage.emit(
+            StudentInsertResult.Success
+        )
+        }
     }
 
 

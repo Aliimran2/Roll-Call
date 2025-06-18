@@ -37,11 +37,13 @@ import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
 import com.miassolutions.rollcall.utils.ImportFromExcel
 import com.miassolutions.rollcall.utils.collectLatestFlow
+import com.miassolutions.rollcall.utils.exportExcelToDownloadsWithMediaStore
 import com.miassolutions.rollcall.utils.showSnackbar
 import com.miassolutions.rollcall.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -180,9 +182,41 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
                     }
 
                     R.id.action_export_excel -> {
-                        // TODO: Implement export
+                        lifecycleScope.launch {
+                            val dialog = ImportProgressDialogFragment()
+                            dialog.show(parentFragmentManager, ImportProgressDialogFragment.TAG)
+
+                            try {
+                                val studentList = addStudentViewModel.filteredStudents.value
+
+                                if (studentList.isNotEmpty()) {
+                                    withContext(Dispatchers.IO) {
+                                        exportExcelToDownloadsWithMediaStore(requireContext(), studentList)
+                                    }
+                                    // Make sure showing Snackbar on Main thread
+                                    withContext(Dispatchers.Main) {
+                                        showSnackbar("Excel exported to Downloads")
+                                    }
+                                } else {
+                                    withContext(Dispatchers.Main) {
+                                        showSnackbar("No students to export")
+                                    }
+                                }
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                withContext(Dispatchers.Main) {
+                                    showSnackbar("Export failed: ${e.localizedMessage}")
+                                }
+                            } finally {
+                                dialog.dismiss()
+                            }
+                        }
                         true
                     }
+
+
+
+
 
 
                     else -> false
