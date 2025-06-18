@@ -54,7 +54,6 @@ interface StudentDao {
         """
         SELECT * FROM student_table
         WHERE studentName LIKE '%'||:searchQuery|| '%'
-        OR fatherName LIKE '%' || :searchQuery || '%'
         OR phoneNumber LIKE '%' || :searchQuery || '%'
         OR CAST(rollNumber AS TEXT) LIKE '%' || :searchQuery || '%'
         OR CAST(regNumber AS TEXT) LIKE '%' || :searchQuery || '%'

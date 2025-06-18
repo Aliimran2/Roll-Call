@@ -136,7 +136,8 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
                 val searchItem = menu.findItem(R.id.app_bar_search)
                 val searchView = searchItem.actionView as? SearchView
-                searchView?.queryHint = "Search Student"
+                searchView?.queryHint = "Name, Roll, Reg..."
+
 
 
                 searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -145,9 +146,9 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
-                        newText?.let {
-                            showToast(it)
-                        }
+
+                            addStudentViewModel.searchQuery(newText.orEmpty())
+
                         return true
                     }
                 })

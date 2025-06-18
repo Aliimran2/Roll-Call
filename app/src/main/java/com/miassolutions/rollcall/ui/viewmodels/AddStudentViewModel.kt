@@ -8,23 +8,54 @@ import com.miassolutions.rollcall.data.repository.StudentFetchResult
 import com.miassolutions.rollcall.utils.StudentInsertResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
+@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class AddStudentViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    val allStudents: StateFlow<List<StudentEntity>> = repository.allStudents
-        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+    private val _allStudents =  MutableStateFlow<List<StudentEntity>>(emptyList())
+    val allStudents : StateFlow<List<StudentEntity>> = _allStudents.asStateFlow()
+
+    private val _searchQuery = MutableStateFlow<String>("")
+    private val searchQuery : StateFlow<String> = _searchQuery.asStateFlow()
+
+    init {
+        searchQuery
+            .debounce(300L)
+            .flatMapLatest {query ->
+                if (query.isEmpty()){
+                    repository.allStudents
+                } else {
+                    repository.searchStudents(query)
+                }
+            }
+            .onEach { studentList ->
+                _allStudents.value = studentList
+            }
+            .launchIn(viewModelScope)
+    }
+
+    fun searchQuery(query : String){
+        _searchQuery.value = query
+    }
 
 
 
