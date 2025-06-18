@@ -38,6 +38,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     private val navArgs by navArgs<AttendanceFragmentArgs>()
     private var attendanceMode = "add"
     private var selectedDate: Long = -1L
+    private var studentsCount : Int = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -91,10 +92,18 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
             saveBtn.setOnClickListener {
                 val dateStr = binding.etDatePicker.text.toString()
-                if (dateStr.isEmpty()) {
-                    showSnackbar("Select date first")
-                    return@setOnClickListener
+
+                when{
+                    dateStr.isEmpty() -> {
+                        showSnackbar("Select date first")
+                        return@setOnClickListener
+                    }
+                    studentsCount == 0 -> {
+                        showSnackbar("No students for attendance")
+                        return@setOnClickListener
+                    }
                 }
+
 
                 val date = viewModel.selectedDate.value
                 if (date== null) {
@@ -156,6 +165,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             launch {
                 viewModel.totalCount.collectLatest {
                     binding.totalCard.tvCount.text = it.toString()
+                    studentsCount = it
                 }
             }
             launch {
