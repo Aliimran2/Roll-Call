@@ -34,7 +34,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         _binding = FragmentDashboardBinding.bind(view)
 
         setupDashboardItems()
-        setDateCard()
+//        setDateCard()
         observeViewModel()
 
 
@@ -81,23 +81,23 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     }
 
-    private fun setDateCard() {
-        binding.dateCard.apply {
-            tvTitle.text = getCurrentDateAndTime().toFormattedDate("EEEE\ndd.MM.yyyy")
-            tvSubtitle.text = "Date"
-
-        }
-    }
+//    private fun setDateCard() {
+//        binding.dateCard.apply {
+//            tvTitle.text = getCurrentDateAndTime().toFormattedDate("EEEE\ndd.MM.yyyy")
+//            tvSubtitle.text = "Date"
+//
+//        }
+//    }
 
     private fun observeViewModel() {
         settingsViewModel.userName.observe(viewLifecycleOwner) {
             it?.let {
-                binding.userProfileCard.tvTitle.text = "Welcome!\n$it"
+                binding.topLayout.tvTitle.text = "Welcome! $it"
             }
         }
         settingsViewModel.instituteName.observe(viewLifecycleOwner) {
             it?.let {
-                binding.userProfileCard.tvSubtitle.text = it
+                binding.topLayout.tvSubtitle.text = it
             }
         }
     }
