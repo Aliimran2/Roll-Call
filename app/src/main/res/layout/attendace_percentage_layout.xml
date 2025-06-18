@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/attendanceChart"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:layout_gravity="center"
+    android:layout_marginTop="16dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_present"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Present : 08"
+            android:textColor="@color/green_present"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_absent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:text="Absent : 02"
+            android:textColor="@color/red_absent"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvPercentageText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Percentage: 80%"
+            android:textColor="@color/purple_two"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressCircular"
+        style="@style/Widget.Material3.CircularProgressIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:progress="0"
+        app:indicatorColor="@color/purple_two"
+        app:indicatorInset="0dp"
+        app:indicatorSize="150dp"
+
+        app:trackColor="@color/blue_one"
+        app:trackThickness="10dp" />
+
+</FrameLayout>

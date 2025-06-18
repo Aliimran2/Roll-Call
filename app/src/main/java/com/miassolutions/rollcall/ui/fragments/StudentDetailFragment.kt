@@ -60,17 +60,22 @@ class StudentDetailFragment : Fragment(R.layout.fragment_student_profile) {
 
             launch {
                 viewModel.presentCount.collectLatest {
-                    binding.attendanceTable.tvPresenceCurr.text = it.toString()
+                    binding.attendanceGraph.tvPresent.text = "Presence : $it"
                 }
             }
 
             launch {
                 viewModel.absentCount.collectLatest {
-                    binding.attendanceTable.tvAbsenceCurr.text = it.toString()
+                    binding.attendanceGraph.tvAbsent.text = "Absence : $it"
                 }
             }
 
-            launch {  }
+            launch {
+                viewModel.attendancePercentage.collectLatest {
+                    binding.attendanceGraph.progressCircular.setProgressCompat(it, true)
+                    binding.attendanceGraph.tvPercentageText.text = "Percentage : $it%"
+                }
+            }
 
 
             launch {
