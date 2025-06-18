@@ -1,6 +1,7 @@
 package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,8 +17,10 @@ import com.miassolutions.rollcall.databinding.StudentDetailLayoutBinding
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
 import com.miassolutions.rollcall.utils.collectLatestFlow
 import com.miassolutions.rollcall.utils.showLongToast
+import com.miassolutions.rollcall.utils.showToast
 import com.miassolutions.rollcall.utils.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -39,6 +42,7 @@ class StudentDetailFragment : Fragment(R.layout.fragment_student_profile) {
         loadStudentData()
 //        actionButtonsListener(args.id, args.studentName)
         viewModel.fetchStudentById(studentId)
+        viewModel.setStudentId(studentId)
 
     }
 
@@ -46,38 +50,64 @@ class StudentDetailFragment : Fragment(R.layout.fragment_student_profile) {
     private fun loadStudentData() {
 
         collectLatestFlow {
-            viewModel.studentEntityState.collect { result ->
-                when (result) {
-                    is StudentFetchResult.Error -> {
-                        showLongToast(result.message)
-                    }
+            launch {
+                viewModel.attendanceOfStudent.collectLatest {
 
-                    StudentFetchResult.Loading -> {/*nothing to do*/
-                    }
+                    Log.d("MiasSolutionsDetails", it.toString())
 
-                    is StudentFetchResult.Success<StudentEntity> -> {
-                        val student = result.data
+                }
+            }
 
-                        binding.apply {
-                            primaryProfile.apply {
-                                tvStudentName.text = student.studentName
-                                tvRegNum.text = "${student.regNumber}"
-                                tvRollNum.text = "${student.rollNumber}"
-                                tvDob.text = "${student.dob.toFormattedDate()}"
-                                tvDoa.text = "${student.dob.toFormattedDate()}" //todo
-                                tvBForm.text = "${student.bForm}"
-                            }
+            launch {
+                viewModel.presentCount.collectLatest {
+                    binding.attendanceTable.tvPresenceCurr.text = it.toString()
+                }
+            }
 
-                            secondaryProfile.apply {
-                                tvFatherName.text = "${student.fatherName}"
-                                tvPhoneNumber.text = "${student.phoneNumber}"
-                                tvAddress.text = "${student.address}"
-                            }
+            launch {
+                viewModel.absentCount.collectLatest {
+                    binding.attendanceTable.tvAbsenceCurr.text = it.toString()
+                }
+            }
+
+            launch {  }
 
 
+            launch {
+                viewModel.studentEntityState.collect { result ->
+                    when (result) {
+                        is StudentFetchResult.Error -> {
+                            showLongToast(result.message)
                         }
 
+                        StudentFetchResult.Loading -> {/*nothing to do*/
+                        }
+
+                        is StudentFetchResult.Success<StudentEntity> -> {
+                            val student = result.data
+
+                            binding.apply {
+                                primaryProfile.apply {
+                                    tvStudentName.text = student.studentName
+                                    tvRegNum.text = "${student.regNumber}"
+                                    tvRollNum.text = "${student.rollNumber}"
+                                    tvDob.text = "${student.dob.toFormattedDate()}"
+                                    tvDoa.text = "${student.dob.toFormattedDate()}" //todo
+                                    tvBForm.text = "${student.bForm}"
+                                }
+
+                                secondaryProfile.apply {
+                                    tvFatherName.text = "${student.fatherName}"
+                                    tvPhoneNumber.text = "${student.phoneNumber}"
+                                    tvAddress.text = "${student.address}"
+                                }
+
+
+                            }
+
+                        }
                     }
+
                 }
 
             }

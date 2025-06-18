@@ -27,4 +27,5 @@ data class StudentEntity(
     val klass: String? = null,
     val phoneNumber: String? = null,
     val address: String? = null,
+
 )
