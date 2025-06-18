@@ -1,5 +1,6 @@
 package com.miassolutions.rollcall.ui.fragments
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import com.miassolutions.rollcall.databinding.FragmentSettingsBinding
 import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
 import com.miassolutions.rollcall.utils.Constants
 import com.miassolutions.rollcall.utils.collectLatestFlow
+import com.miassolutions.rollcall.utils.copySampleExcelFromAssets
 import com.miassolutions.rollcall.utils.showSnackbar
 import com.miassolutions.rollcall.utils.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,8 +63,20 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             }
         }
 
+        binding.btnExcelDownload.setOnClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                copySampleExcelFromAssets(requireContext(), "sample_students.xlsx")
+                showSnackbar("Sample Excel exported to Downloads")
+            } else {
+                showSnackbar("Export supported only on Android 10+")
+            }
+
+        }
 
     }
+
+
+
 
     private fun setupDateChangeListener() {
         parentFragmentManager.setFragmentResultListener(
