@@ -60,5 +60,5 @@ interface StudentDao {
         OR CAST(regNumber AS TEXT) LIKE '%' || :searchQuery || '%'
     """
     )
-    fun searchStudentByName(searchQuery: String): Flow<List<StudentEntity>>
+    fun searchStudent(searchQuery: String): Flow<List<StudentEntity>>
 }

@@ -18,7 +18,7 @@ class AttendanceViewModel @Inject constructor(
 
     // --- Public State ---
 
-    val studentList = repository.allStudents
+    private val studentList = repository.allStudents
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val _selectedDate = MutableStateFlow<Long?>(null)
@@ -27,17 +27,7 @@ class AttendanceViewModel @Inject constructor(
     private val _attendanceUI = MutableStateFlow<List<AttendanceUIModel>>(emptyList())
     val attendanceUI: StateFlow<List<AttendanceUIModel>> = _attendanceUI
 
-    val totalCount = attendanceUI.map { it.size }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
-
-    val presentCount = attendanceUI.map { list ->
-        list.count { it.attendanceStatus == AttendanceStatus.PRESENT }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
-
-    val absentCount = attendanceUI.map { list ->
-        list.count { it.attendanceStatus == AttendanceStatus.ABSENT }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
-
+    
     // --- Init block to collect studentList + selectedDate ---
     init {
         viewModelScope.launch {
@@ -109,4 +99,17 @@ class AttendanceViewModel @Inject constructor(
             }
         }
     }
+
+    //counts
+
+    val totalCount = attendanceUI.map { it.size }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+
+    val presentCount = attendanceUI.map { list ->
+        list.count { it.attendanceStatus == AttendanceStatus.PRESENT }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+
+    val absentCount = attendanceUI.map { list ->
+        list.count { it.attendanceStatus == AttendanceStatus.ABSENT }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
 }

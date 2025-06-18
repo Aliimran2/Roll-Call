@@ -13,6 +13,7 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.SearchView
 import androidx.core.net.toUri
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
@@ -132,6 +133,24 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {
                 inflater.inflate(R.menu.student_list_fragment, menu)
+
+                val searchItem = menu.findItem(R.id.app_bar_search)
+                val searchView = searchItem.actionView as? SearchView
+                searchView?.queryHint = "Search Student"
+
+
+                searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        return false
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        newText?.let {
+                            showToast(it)
+                        }
+                        return true
+                    }
+                })
             }
 
             @RequiresApi(Build.VERSION_CODES.Q)
@@ -146,6 +165,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
                         // TODO: Implement export
                         true
                     }
+
 
                     else -> false
                 }

@@ -31,7 +31,6 @@ class StudentDetailViewModel @Inject constructor(private val repository: Reposit
             _studentEntityState.value = repository.getStudentById(studentId)
                 _deleteMessage.emit("Deleted")
 
-
         }
     }
 

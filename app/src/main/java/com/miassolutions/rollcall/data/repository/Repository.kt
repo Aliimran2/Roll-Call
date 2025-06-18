@@ -77,6 +77,8 @@ class Repository @Inject constructor(
         }
     }
 
+    fun searchStudents(query : String) = studentDao.searchStudent(query)
+
 
     suspend fun clearAllStudents() = studentDao.clearAllStudents()
 

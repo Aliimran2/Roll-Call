@@ -14,8 +14,9 @@
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="20"
+
         android:contentDescription="Student List"
-        tools:listitem="@tools:sample/cities" />
+        tools:listitem="@layout/item_student" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
