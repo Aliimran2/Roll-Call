@@ -10,7 +10,8 @@ import com.miassolutions.rollcall.ui.model.AttendanceUIModel
 import com.miassolutions.rollcall.utils.AttendanceStatus
 
 class AttendanceAdapter(
-    private val onStatusChanged: (AttendanceUIModel, AttendanceStatus) -> Unit
+    private val readOnly: Boolean = false,
+    private val onStatusChanged: (AttendanceUIModel, AttendanceStatus) -> Unit,
 ) :
     ListAdapter<AttendanceUIModel, AttendanceAdapter.AttendanceViewHolder>(AttendanceDiffUtil()) {
 
@@ -22,13 +23,18 @@ class AttendanceAdapter(
                 tvStudentName.text = item.studentName
 
                 toggleAttendance.setOnCheckedChangeListener(null) // clear old listener
-
                 toggleAttendance.isChecked = item.attendanceStatus == AttendanceStatus.PRESENT
 
-                toggleAttendance.setOnCheckedChangeListener { _, isChecked ->
-                    val newState = if (isChecked) AttendanceStatus.PRESENT else AttendanceStatus.ABSENT
-                    onStatusChanged(item, newState)
+                toggleAttendance.isEnabled = !readOnly
+                if (!readOnly) {
+
+                    toggleAttendance.setOnCheckedChangeListener { _, isChecked ->
+                        val newState =
+                            if (isChecked) AttendanceStatus.PRESENT else AttendanceStatus.ABSENT
+                        onStatusChanged(item, newState)
+                    }
                 }
+
 
             }
         }
@@ -53,14 +59,14 @@ class AttendanceAdapter(
 class AttendanceDiffUtil : DiffUtil.ItemCallback<AttendanceUIModel>() {
     override fun areItemsTheSame(
         oldItem: AttendanceUIModel,
-        newItem: AttendanceUIModel
+        newItem: AttendanceUIModel,
     ): Boolean {
         return oldItem.studentId == newItem.studentId
     }
 
     override fun areContentsTheSame(
         oldItem: AttendanceUIModel,
-        newItem: AttendanceUIModel
+        newItem: AttendanceUIModel,
     ): Boolean {
         return oldItem == newItem
     }

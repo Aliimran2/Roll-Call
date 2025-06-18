@@ -2,7 +2,9 @@ package com.miassolutions.rollcall.ui.fragments
 
 import SundayPastDateValidator
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -38,7 +40,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     private val navArgs by navArgs<AttendanceFragmentArgs>()
     private var attendanceMode = "add"
     private var selectedDate: Long = -1L
-    private var studentsCount : Int = 0
+    private var studentsCount: Int = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,6 +58,14 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             // Load attendance from DB
             viewModel.setDate(selectedDate)
 
+        } else if (attendanceMode == "report" && selectedDate != -1L) {
+            binding.etDatePicker.setText(selectedDate.toFormattedDate())
+            binding.etDatePicker.isEnabled = false
+            binding.saveBtn.text = "Sort"
+            binding.saveBtn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_filter)
+
+            // Load attendance from DB
+            viewModel.setDate(selectedDate)
         }
 
 
@@ -93,11 +103,12 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             saveBtn.setOnClickListener {
                 val dateStr = binding.etDatePicker.text.toString()
 
-                when{
+                when {
                     dateStr.isEmpty() -> {
                         showSnackbar("Select date first")
                         return@setOnClickListener
                     }
+
                     studentsCount == 0 -> {
                         showSnackbar("No students for attendance")
                         return@setOnClickListener
@@ -106,28 +117,38 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
 
                 val date = viewModel.selectedDate.value
-                if (date== null) {
+                if (date == null) {
                     showSnackbar("Date not selected")
                     return@setOnClickListener
                 }
 
-                if (attendanceMode == "update") {
-                    viewModel.updateAttendanceForDate(date) { success ->
-                        if (success) {
-                            showSnackbar("Attendance updated for $dateStr")
-                            findNavController().navigateUp()
-                        } else {
-                            showSnackbar("Failed to update attendance for $dateStr")
+                when (attendanceMode) {
+                    "update" -> {
+
+                        viewModel.updateAttendanceForDate(date) { success ->
+                            if (success) {
+                                showSnackbar("Attendance updated for $dateStr")
+                                findNavController().navigateUp()
+                            } else {
+                                showSnackbar("Failed to update attendance for $dateStr")
+                            }
                         }
                     }
-                } else {
-                    viewModel.saveAttendance { success ->
-                        if (success) {
-                            showSnackbar("Attendance saved for $dateStr")
-                            findNavController().navigateUp()
-                        } else {
-                            showSnackbar("Attendance already exists for $dateStr")
+
+                    "report" -> {
+                        filterAttendance()
+                    }
+
+                    else -> {
+                        viewModel.saveAttendance { success ->
+                            if (success) {
+                                showSnackbar("Attendance saved for $dateStr")
+                                findNavController().navigateUp()
+                            } else {
+                                showSnackbar("Attendance already exists for $dateStr")
+                            }
                         }
+
                     }
                 }
             }
@@ -137,11 +158,39 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
     }
 
+    private fun filterAttendance() {
+        val popupMenu = PopupMenu(requireContext(), binding.saveBtn)
+        popupMenu.apply {
+            menuInflater.inflate(R.menu.popup_menu_filter_attendance, menu)
+            setOnMenuItemClickListener {menuItem ->
+                when(menuItem.itemId){
+                    R.id.menu_all -> {
+                        showSnackbar("all")
+                        true
+                    }
+                    R.id.menu_present -> {
+                        showSnackbar("present only")
+                        true
+                    }
+                    R.id.menu_absent -> {
+                        showSnackbar("absent only")
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+        }
+
+
+        popupMenu.show()
+    }
 
 
     private fun showDatePicker(onDateSelected: (Long) -> Unit) {
 
         if (attendanceMode == "update") return  // Prevent interaction
+        if (attendanceMode == "report") return
 
         val constraintsBuilder = CalendarConstraints.Builder()
             .setFirstDayOfWeek(Calendar.MONDAY)
@@ -151,7 +200,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             title = "Select Attendance Date",
             selection = MaterialDatePicker.todayInUtcMilliseconds(),
             constraints = constraintsBuilder.build(),
-            ) {
+        ) {
             onDateSelected(it)
             viewModel.setDate(it)
         }
@@ -197,11 +246,12 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     }
 
     private fun setupRecyclerView() {
-        adapter = AttendanceAdapter { student, newStatus ->
+        val readOnly = attendanceMode == "report"
+
+        adapter = AttendanceAdapter(readOnly) { student, newStatus ->
             viewModel.updateAttendanceStatus(student, newStatus)
         }
         binding.rvAttendance.adapter = adapter
-
 
 
     }

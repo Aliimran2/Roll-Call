@@ -69,7 +69,8 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
     }
 
     private fun reportAttendance(date: Long) {
-        showToast("Reporting...")
+        val action = StatsFragmentDirections.actionStatsFragmentToAttendanceFragment("report", date)
+        findNavController().navigate(action)
     }
 
     private fun deleteAttendance(date: Long) {
