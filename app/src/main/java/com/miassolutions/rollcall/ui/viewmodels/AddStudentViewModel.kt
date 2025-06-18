@@ -35,6 +35,10 @@ class AddStudentViewModel @Inject constructor(private val repository: Repository
     // Internal mutable StateFlow for the search query
     private val _searchQuery = MutableStateFlow<String>("")
 
+    //total students
+    private val _totalStudents = MutableStateFlow<Int>(0)
+    val totalStudents : StateFlow<Int> = _totalStudents.asStateFlow()
+
     // Public StateFlow to expose the filtered list of students to the UI
     // Naming changed from 'allStudents' to 'filteredStudents' for clarity
     val filteredStudents: StateFlow<List<StudentEntity>> = _searchQuery
@@ -46,6 +50,9 @@ class AddStudentViewModel @Inject constructor(private val repository: Repository
             } else {
                 repository.searchStudents(query) // Perform search with the given query
             }
+        }
+        .onEach {
+            _totalStudents.value = it.size
         }
         // Convert the Flow to a StateFlow, sharing the underlying data
         // Starts collection when there's at least one subscriber, keeps active for 5s after last subscriber leaves

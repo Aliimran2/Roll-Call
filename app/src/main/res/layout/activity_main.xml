@@ -16,7 +16,9 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="35dp"
+        android:paddingTop="32dp"
+        android:paddingBottom="8dp"
+        tools:subtitle = "My subtitle"
         android:theme="@style/ThemeOverlay.Material3.Dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

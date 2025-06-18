@@ -25,11 +25,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
+import com.miassolutions.rollcall.ui.MainActivity
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
@@ -52,12 +54,18 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     private val addStudentViewModel by viewModels<AddStudentViewModel>()
     private val studentDetailViewModel by viewModels<StudentDetailViewModel>()
 
+    private lateinit var toolbar: MaterialToolbar
+
     private lateinit var adapter: StudentListAdapter
     private lateinit var filePickerLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentStudentsBinding.bind(view)
+
+
+        toolbar = (activity as MainActivity).findViewById<MaterialToolbar>(R.id.toolbar)
+
 
         setupRecyclerView()
         setupFabClickListener()
@@ -104,6 +112,15 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     }
 
     private fun observeViewModel() {
+
+        collectLatestFlow {
+            addStudentViewModel.totalStudents.collectLatest {
+
+                toolbar.subtitle = "Total Students : $it"
+            }
+        }
+
+
         collectLatestFlow {
             addStudentViewModel.filteredStudents.collectLatest {
                 adapter.submitList(it)
@@ -147,7 +164,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
                     override fun onQueryTextChange(newText: String?): Boolean {
 
-                            addStudentViewModel.onSearchQueryChanged(newText.orEmpty())
+                        addStudentViewModel.onSearchQueryChanged(newText.orEmpty())
 
                         return true
                     }
@@ -250,6 +267,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        toolbar.subtitle = null
         _binding = null
     }
 }
