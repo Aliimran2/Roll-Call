@@ -6,21 +6,16 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.SearchView
 import androidx.core.net.toUri
-import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -31,16 +26,17 @@ import com.google.android.material.snackbar.Snackbar
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
+import com.miassolutions.rollcall.extenstions.addMenu
+import com.miassolutions.rollcall.extenstions.collectLatestFlow
+import com.miassolutions.rollcall.extenstions.showSnackbar
+import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.ui.MainActivity
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
 import com.miassolutions.rollcall.utils.ImportFromExcel
-import com.miassolutions.rollcall.extenstions.collectLatestFlow
-import com.miassolutions.rollcall.utils.exportExcelToDownloadsWithMediaStore
-import com.miassolutions.rollcall.extenstions.showSnackbar
-import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.utils.UiState
+import com.miassolutions.rollcall.utils.exportExcelToDownloadsWithMediaStore
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -74,6 +70,14 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         setupMenuProvider()
         observeViewModel()
         setupFilePicker()
+        setupSearchBar()
+    }
+
+
+    private fun setupSearchBar() {
+        binding.searchInput.addTextChangedListener { text ->
+            addStudentViewModel.onSearchQueryChanged(text.toString())
+        }
     }
 
     private fun setupFilePicker() {
@@ -148,81 +152,52 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun setupMenuProvider() {
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {
-                inflater.inflate(R.menu.student_list_fragment, menu)
 
-                val searchItem = menu.findItem(R.id.app_bar_search)
-                val searchView = searchItem.actionView as? SearchView
-                searchView?.queryHint = "Name, Roll, Reg..."
-
-
-
-                searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        return false
-                    }
-
-                    override fun onQueryTextChange(newText: String?): Boolean {
-
-                        addStudentViewModel.onSearchQueryChanged(newText.orEmpty())
-
-                        return true
-                    }
-                })
-            }
-
-            @RequiresApi(Build.VERSION_CODES.Q)
-            override fun onMenuItemSelected(item: MenuItem): Boolean {
-                return when (item.itemId) {
-                    R.id.action_import_excel -> {
-                        pickExcelFile()
-                        true
-                    }
-
-                    R.id.action_export_excel -> {
-                        lifecycleScope.launch {
-                            val dialog = ImportProgressDialogFragment()
-                            dialog.show(parentFragmentManager, ImportProgressDialogFragment.TAG)
-
-                            try {
-                                val studentList = addStudentViewModel.filteredStudents.value
-
-                                if (studentList.isNotEmpty()) {
-                                    withContext(Dispatchers.IO) {
-                                        exportExcelToDownloadsWithMediaStore(requireContext(), studentList)
-                                    }
-                                    // Make sure showing Snackbar on Main thread
-                                    withContext(Dispatchers.Main) {
-                                        showSnackbar("Excel exported to Downloads")
-                                    }
-                                } else {
-                                    withContext(Dispatchers.Main) {
-                                        showSnackbar("No students to export")
-                                    }
-                                }
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                                withContext(Dispatchers.Main) {
-                                    showSnackbar("Export failed: ${e.localizedMessage}")
-                                }
-                            } finally {
-                                dialog.dismiss()
-                            }
-                        }
-                        true
-                    }
-
-
-
-
-
-
-                    else -> false
+        addMenu(R.menu.student_list_fragment){menuItem ->
+            when(menuItem.itemId){
+                R.id.action_import_excel -> {
+                    pickExcelFile()
+                    true
                 }
+
+                R.id.action_export_excel -> {
+                    lifecycleScope.launch {
+                        val dialog = ImportProgressDialogFragment()
+                        dialog.show(parentFragmentManager, ImportProgressDialogFragment.TAG)
+
+                        try {
+                            val studentList = addStudentViewModel.filteredStudents.value
+
+                            if (studentList.isNotEmpty()) {
+                                withContext(Dispatchers.IO) {
+                                    exportExcelToDownloadsWithMediaStore(requireContext(), studentList)
+                                }
+                                // Make sure showing Snackbar on Main thread
+                                withContext(Dispatchers.Main) {
+                                    showSnackbar("Excel exported to Downloads")
+                                }
+                            } else {
+                                withContext(Dispatchers.Main) {
+                                    showSnackbar("No students to export")
+                                }
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            withContext(Dispatchers.Main) {
+                                showSnackbar("Export failed: ${e.localizedMessage}")
+                            }
+                        } finally {
+                            dialog.dismiss()
+                        }
+                    }
+                    true
+                }
+                else -> false
             }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        }
+
     }
 
     private fun setupFabClickListener() {
