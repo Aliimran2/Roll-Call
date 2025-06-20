@@ -21,6 +21,7 @@ import com.miassolutions.rollcall.common.Constants
 import com.miassolutions.rollcall.common.Constants.DATE_REQUEST_KEY
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.hide
+import com.miassolutions.rollcall.extenstions.setToolbarTitle
 import com.miassolutions.rollcall.extenstions.show
 import com.miassolutions.rollcall.extenstions.showMaterialDatePicker
 import com.miassolutions.rollcall.extenstions.showSnackbar
@@ -53,21 +54,23 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         selectedDate = navArgs.selectedDate
 
         if (attendanceMode == "update" && selectedDate != -1L) {
+            setToolbarTitle("Update Attendance")
             binding.attendanceToggleGroup.show()
             // Pre-fill date and disable picker
             binding.etDatePicker.setText(selectedDate.toFormattedDate())
             binding.etDatePicker.isEnabled = false
             binding.saveBtn.text = "Update"
 
+
             // Load attendance from DB
             viewModel.setDate(selectedDate)
 
         } else if (attendanceMode == "report" && selectedDate != -1L) {
+            setToolbarTitle("Report\n${selectedDate.toFormattedDate()}")
             binding.attendanceToggleGroup.show()
             binding.etDatePicker.setText(selectedDate.toFormattedDate())
             binding.etDatePicker.isEnabled = false
             binding.saveBtn.hide()
-//            binding.saveBtn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_filter)
 
             // Load attendance from DB
             viewModel.setDate(selectedDate)

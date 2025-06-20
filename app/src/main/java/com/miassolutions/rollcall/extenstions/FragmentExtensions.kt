@@ -5,11 +5,15 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.MenuRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
+import com.miassolutions.rollcall.R
+import com.miassolutions.rollcall.ui.MainActivity
 
 
 fun Fragment.addMenu(
@@ -45,4 +49,9 @@ fun Fragment.showSnackbar(
     view?.let { hostView ->
         Snackbar.make(hostView, message, duration).show()
     }
+}
+
+
+fun Fragment.setToolbarTitle(title: String) {
+    (activity as? AppCompatActivity)?.supportActionBar?.title = title
 }
