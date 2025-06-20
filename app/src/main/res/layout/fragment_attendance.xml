@@ -46,23 +46,23 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/save_btn"
-            style="@style/Widget.Material3.Button.IconButton.Outlined"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_edit_text_background"
+
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
 
 
-            android:backgroundTint="@color/white_two"
-            android:text="Save Att"
-            android:textColor="@color/white_two"
+            android:backgroundTint="@color/white"
+            android:text="Save Attendance"
+            android:textColor="@color/purple_two"
             app:cornerRadius="8dp"
             app:icon="@drawable/ic_save"
             app:iconGravity="start"
             app:iconPadding="8dp"
             app:iconSize="18dp"
-            app:iconTint="@color/white_two"
+            app:iconTint="@color/purple_two"
              />
 
         <EditText
@@ -80,7 +80,7 @@
             android:inputType="date"
             android:padding="12dp"
             android:paddingEnd="16dp"
-            android:background="@drawable/rounded_edit_text_background"
+
             android:textColor="@color/white_two"
             android:textColorHint="@android:color/darker_gray"
             android:textSize="18sp"
