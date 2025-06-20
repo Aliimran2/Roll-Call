@@ -40,6 +40,7 @@ import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.utils.exportExcelToDownloadsWithMediaStore
 import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.extenstions.showToast
+import com.miassolutions.rollcall.utils.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -116,8 +117,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
 
         collectLatestFlow {
-            addStudentViewModel.totalStudents.collectLatest {
-
+            addStudentViewModel.noOfTotalStudents.collectLatest {
                 toolbar.subtitle = "Total Students : $it"
             }
         }
@@ -131,14 +131,14 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
         collectLatestFlow {
             addStudentViewModel.importUIState.collectLatest { state ->
-                binding.progressBar.isVisible = state is AddStudentViewModel.ImportUIState.Importing
+                binding.progressBar.isVisible = state is UiState.Loading
 
                 when (state) {
-                    is AddStudentViewModel.ImportUIState.Success -> {
-                        showSnackbar("Imported: ${state.successCount}, Skipped: ${state.failureCount}")
+                    is UiState.Success -> {
+                        showSnackbar("Imported: ${state.data.first}, Skipped: ${state.data.second}")
                     }
 
-                    is AddStudentViewModel.ImportUIState.Error -> {
+                    is UiState.Error -> {
                         showSnackbar(state.message)
                     }
 

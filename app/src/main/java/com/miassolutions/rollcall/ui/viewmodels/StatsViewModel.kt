@@ -22,14 +22,13 @@ class StatsViewModel @Inject constructor(private val repository: Repository) : V
             .map { groupedMap ->
                 groupedMap.map { (dateMillis, attendanceList) ->
                     val presentCount =
-                        attendanceList.count() { it.attendanceStatus == AttendanceStatus.PRESENT }
+                        attendanceList.count { it.attendanceStatus == AttendanceStatus.PRESENT }
                     val totalCount = attendanceList.size
                     StatsUiModel(
                         dateMillis,
                         presentCount,
                         totalCount
                     )
-
                 }
             }
             .stateIn(

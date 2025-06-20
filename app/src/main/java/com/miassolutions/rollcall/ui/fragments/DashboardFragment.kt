@@ -7,9 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentDashboardBinding
-import com.miassolutions.rollcall.ui.adapters.DashboardAdapter
-import com.miassolutions.rollcall.ui.model.CommonListItem
-import com.miassolutions.rollcall.ui.model.Dashboard
+
 import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,24 +17,13 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
 
-
     private val settingsViewModel by viewModels<SettingsViewModel>()
-
-    private lateinit var dashboardGridAdapter: DashboardAdapter
-
-
-    private val dashboardItems = mutableListOf<CommonListItem>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentDashboardBinding.bind(view)
 
-        setupDashboardItems()
-//        setDateCard()
         observeViewModel()
-
-
-
 
         binding.apply {
             attendanceCard.apply {
@@ -79,13 +66,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     }
 
-//    private fun setDateCard() {
-//        binding.dateCard.apply {
-//            tvTitle.text = getCurrentDateAndTime().toFormattedDate("EEEE\ndd.MM.yyyy")
-//            tvSubtitle.text = "Date"
-//
-//        }
-//    }
 
     private fun observeViewModel() {
         settingsViewModel.userName.observe(viewLifecycleOwner) {
@@ -101,17 +81,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
 
-    private fun setupDashboardItems() {
-        dashboardItems.clear()
-
-        dashboardItems.apply {
-            add(Dashboard(R.drawable.ic_attendances, "Attendance"))
-            add(Dashboard(R.drawable.ic_students_m, "Students"))
-            add(Dashboard(R.drawable.ic_person, "My Profile"))
-            add(Dashboard(R.drawable.ic_settings, "Settings"))
-
-        }
-    }
 
 
     override fun onDestroyView() {

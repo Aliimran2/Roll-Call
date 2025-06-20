@@ -8,12 +8,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.StudentEntity
-import com.miassolutions.rollcall.data.repository.StudentFetchResult
+
 import com.miassolutions.rollcall.databinding.FragmentStudentProfileBinding
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.showLongToast
 import com.miassolutions.rollcall.extenstions.toFormattedDate
+import com.miassolutions.rollcall.utils.StudentResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -76,14 +77,14 @@ class StudentDetailFragment : Fragment(R.layout.fragment_student_profile) {
             launch {
                 viewModel.studentEntityState.collect { result ->
                     when (result) {
-                        is StudentFetchResult.Error -> {
+                        is StudentResult.Error -> {
                             showLongToast(result.message)
                         }
 
-                        StudentFetchResult.Loading -> {/*nothing to do*/
+                        StudentResult.Loading -> {/*nothing to do*/
                         }
 
-                        is StudentFetchResult.Success<StudentEntity> -> {
+                        is StudentResult.Success<StudentEntity> -> {
                             val student = result.data
 
                             binding.apply {

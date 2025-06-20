@@ -19,7 +19,7 @@ class AttendanceViewModel @Inject constructor(
 
     // --- Public State ---
 
-    private val studentList = repository.allStudents
+    private val studentList = repository.allStudentsFlow
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val _selectedDate = MutableStateFlow<Long?>(null)

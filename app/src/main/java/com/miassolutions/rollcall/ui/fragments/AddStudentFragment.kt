@@ -55,15 +55,11 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
 
         args.studentId?.let { viewModel.fetchStudentById(it) }
 
-
-
-
         setToolbarTitle()
         setupDatePickers()
         setupValidationListeners()
         observeViewModel()
         menuProvider()
-
 
         binding.etBForm.addTextChangedListener(BFormTextWatcher(binding.etBForm))
 
