@@ -66,11 +66,12 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             viewModel.setDate(selectedDate)
 
         } else if (attendanceMode == "report" && selectedDate != -1L) {
-            setToolbarTitle("Report\n${selectedDate.toFormattedDate()}")
+            setToolbarTitle("Report ${selectedDate.toFormattedDate()}")
             binding.attendanceToggleGroup.show()
             binding.etDatePicker.setText(selectedDate.toFormattedDate())
             binding.etDatePicker.isEnabled = false
             binding.saveBtn.hide()
+            binding.etDatePicker.hide()
 
             // Load attendance from DB
             viewModel.setDate(selectedDate)
