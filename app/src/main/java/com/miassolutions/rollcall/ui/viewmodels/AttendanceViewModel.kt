@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.miassolutions.rollcall.data.entities.AttendanceEntity
 import com.miassolutions.rollcall.data.repository.Repository
 import com.miassolutions.rollcall.ui.model.AttendanceUIModel
-import com.miassolutions.rollcall.utils.AttendanceFilter
-import com.miassolutions.rollcall.utils.AttendanceStatus
+import com.miassolutions.rollcall.common.AttendanceFilter
+import com.miassolutions.rollcall.common.AttendanceStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

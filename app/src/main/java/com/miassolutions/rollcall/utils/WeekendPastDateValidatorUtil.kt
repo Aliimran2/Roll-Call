@@ -1,10 +1,10 @@
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.android.material.datepicker.CalendarConstraints
-import com.miassolutions.rollcall.utils.clearTimeComponents
+import com.miassolutions.rollcall.extenstions.clearTimeComponents
 import java.util.*
 
-class SundayPastDateValidator() :
+class WeekendPastDateValidatorUtil() :
     CalendarConstraints.DateValidator {
     var isWeekendDisabled: Boolean = true
 
@@ -36,7 +36,7 @@ class SundayPastDateValidator() :
     override fun describeContents(): Int = 0
     override fun writeToParcel(dest: Parcel, flags: Int) {}
     override fun equals(other: Any?): Boolean {
-        return other is SundayPastDateValidator
+        return other is WeekendPastDateValidatorUtil
     }
 
     override fun hashCode(): Int {
@@ -44,12 +44,12 @@ class SundayPastDateValidator() :
     }
 
 
-    companion object CREATOR : Parcelable.Creator<SundayPastDateValidator> {
-        override fun createFromParcel(parcel: Parcel): SundayPastDateValidator {
-            return SundayPastDateValidator(parcel)
+    companion object CREATOR : Parcelable.Creator<WeekendPastDateValidatorUtil> {
+        override fun createFromParcel(parcel: Parcel): WeekendPastDateValidatorUtil {
+            return WeekendPastDateValidatorUtil(parcel)
         }
 
-        override fun newArray(size: Int): Array<SundayPastDateValidator?> {
+        override fun newArray(size: Int): Array<WeekendPastDateValidatorUtil?> {
             return arrayOfNulls(size)
         }
     }

@@ -10,11 +10,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentSettingsBinding
 import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
-import com.miassolutions.rollcall.utils.Constants
-import com.miassolutions.rollcall.utils.collectLatestFlow
+import com.miassolutions.rollcall.common.Constants
+import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.utils.copySampleExcelFromAssets
-import com.miassolutions.rollcall.utils.showSnackbar
-import com.miassolutions.rollcall.utils.toFormattedDate
+import com.miassolutions.rollcall.extenstions.showSnackbar
+import com.miassolutions.rollcall.extenstions.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

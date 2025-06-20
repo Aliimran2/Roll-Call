@@ -5,8 +5,8 @@ import com.miassolutions.rollcall.data.dao.AttendanceDao
 import com.miassolutions.rollcall.data.dao.StudentDao
 import com.miassolutions.rollcall.data.entities.AttendanceEntity
 import com.miassolutions.rollcall.data.entities.StudentEntity
-import com.miassolutions.rollcall.utils.Constants.DUPLICATE_REG_NUMBER
-import com.miassolutions.rollcall.utils.Constants.DUPLICATE_ROLL_NUMBER
+import com.miassolutions.rollcall.common.Constants.DUPLICATE_REG_NUMBER
+import com.miassolutions.rollcall.common.Constants.DUPLICATE_ROLL_NUMBER
 import com.miassolutions.rollcall.utils.StudentInsertResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

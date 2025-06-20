@@ -1,8 +1,7 @@
 package com.miassolutions.rollcall.ui.fragments
 
-import SundayPastDateValidator
+import WeekendPastDateValidatorUtil
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
@@ -17,13 +16,13 @@ import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
 import com.miassolutions.rollcall.ui.adapters.AttendanceAdapter
 
 import com.miassolutions.rollcall.ui.viewmodels.AttendanceViewModel
-import com.miassolutions.rollcall.utils.AttendanceFilter
-import com.miassolutions.rollcall.utils.Constants
-import com.miassolutions.rollcall.utils.Constants.DATE_REQUEST_KEY
-import com.miassolutions.rollcall.utils.collectLatestFlow
-import com.miassolutions.rollcall.utils.showMaterialDatePicker
-import com.miassolutions.rollcall.utils.showSnackbar
-import com.miassolutions.rollcall.utils.toFormattedDate
+import com.miassolutions.rollcall.common.AttendanceFilter
+import com.miassolutions.rollcall.common.Constants
+import com.miassolutions.rollcall.common.Constants.DATE_REQUEST_KEY
+import com.miassolutions.rollcall.extenstions.collectLatestFlow
+import com.miassolutions.rollcall.extenstions.showMaterialDatePicker
+import com.miassolutions.rollcall.extenstions.showSnackbar
+import com.miassolutions.rollcall.extenstions.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -198,7 +197,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
         val constraintsBuilder = CalendarConstraints.Builder()
             .setFirstDayOfWeek(Calendar.MONDAY)
-            .setValidator(SundayPastDateValidator())
+            .setValidator(WeekendPastDateValidatorUtil())
 
         showMaterialDatePicker(
             title = "Select Attendance Date",

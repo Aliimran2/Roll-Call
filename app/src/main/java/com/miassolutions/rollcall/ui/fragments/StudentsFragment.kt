@@ -36,14 +36,13 @@ import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
 import com.miassolutions.rollcall.utils.ImportFromExcel
-import com.miassolutions.rollcall.utils.collectLatestFlow
+import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.utils.exportExcelToDownloadsWithMediaStore
-import com.miassolutions.rollcall.utils.showSnackbar
-import com.miassolutions.rollcall.utils.showToast
+import com.miassolutions.rollcall.extenstions.showSnackbar
+import com.miassolutions.rollcall.extenstions.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 

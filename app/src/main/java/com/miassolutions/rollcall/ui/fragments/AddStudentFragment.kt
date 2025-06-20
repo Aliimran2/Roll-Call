@@ -1,6 +1,6 @@
 package com.miassolutions.rollcall.ui.fragments
 
-import SundayPastDateValidator
+import WeekendPastDateValidatorUtil
 import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
@@ -17,16 +17,16 @@ import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
 import com.miassolutions.rollcall.ui.MainActivity
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.utils.BFormTextWatcher
-import com.miassolutions.rollcall.utils.Constants.DUPLICATE_REG_NUMBER
-import com.miassolutions.rollcall.utils.Constants.DUPLICATE_ROLL_NUMBER
+import com.miassolutions.rollcall.common.Constants.DUPLICATE_REG_NUMBER
+import com.miassolutions.rollcall.common.Constants.DUPLICATE_ROLL_NUMBER
 import com.miassolutions.rollcall.utils.StudentInsertResult
-import com.miassolutions.rollcall.utils.addMenu
-import com.miassolutions.rollcall.utils.collectLatestFlow
-import com.miassolutions.rollcall.utils.showLongToast
-import com.miassolutions.rollcall.utils.showMaterialDatePicker
-import com.miassolutions.rollcall.utils.showSnackbar
-import com.miassolutions.rollcall.utils.showToast
-import com.miassolutions.rollcall.utils.toFormattedDate
+import com.miassolutions.rollcall.extenstions.addMenu
+import com.miassolutions.rollcall.extenstions.collectLatestFlow
+import com.miassolutions.rollcall.extenstions.showLongToast
+import com.miassolutions.rollcall.extenstions.showMaterialDatePicker
+import com.miassolutions.rollcall.extenstions.showSnackbar
+import com.miassolutions.rollcall.extenstions.showToast
+import com.miassolutions.rollcall.extenstions.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -113,7 +113,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         onDateSelected: (Long) -> Unit,
     ) {
 
-        val validator = SundayPastDateValidator()
+        val validator = WeekendPastDateValidatorUtil()
         validator.isWeekendDisabled = false
 
         val constraintsBuilder = CalendarConstraints.Builder()

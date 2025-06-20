@@ -11,8 +11,6 @@ import com.miassolutions.rollcall.ui.adapters.DashboardAdapter
 import com.miassolutions.rollcall.ui.model.CommonListItem
 import com.miassolutions.rollcall.ui.model.Dashboard
 import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
-import com.miassolutions.rollcall.utils.getCurrentDateAndTime
-import com.miassolutions.rollcall.utils.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

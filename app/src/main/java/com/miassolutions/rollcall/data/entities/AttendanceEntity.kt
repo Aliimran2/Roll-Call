@@ -3,8 +3,7 @@ package com.miassolutions.rollcall.data.entities
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import com.miassolutions.rollcall.utils.AttendanceStatus
-import java.util.Date
+import com.miassolutions.rollcall.common.AttendanceStatus
 
 @Entity(
     tableName = "attendance_table",

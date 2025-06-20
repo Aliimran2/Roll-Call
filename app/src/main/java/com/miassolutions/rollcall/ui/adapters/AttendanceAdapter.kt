@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.miassolutions.rollcall.databinding.ItemAttendanceBinding
 import com.miassolutions.rollcall.ui.model.AttendanceUIModel
-import com.miassolutions.rollcall.utils.AttendanceStatus
+import com.miassolutions.rollcall.common.AttendanceStatus
 
 class AttendanceAdapter(
     private val readOnly: Boolean = false,

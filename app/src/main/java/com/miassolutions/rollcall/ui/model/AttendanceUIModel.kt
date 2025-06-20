@@ -1,6 +1,6 @@
 package com.miassolutions.rollcall.ui.model
 
-import com.miassolutions.rollcall.utils.AttendanceStatus
+import com.miassolutions.rollcall.common.AttendanceStatus
 
 data class AttendanceUIModel(
     val studentId: String,

@@ -5,10 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.miassolutions.rollcall.data.entities.AttendanceEntity
 import com.miassolutions.rollcall.databinding.ItemStatsBinding
 import com.miassolutions.rollcall.ui.model.StatsUiModel
-import com.miassolutions.rollcall.utils.toFormattedDate
+import com.miassolutions.rollcall.extenstions.toFormattedDate
 
 class StatsListAdapter(
     private val deleteAction: (Long) -> Unit,

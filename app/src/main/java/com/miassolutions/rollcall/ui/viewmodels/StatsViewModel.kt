@@ -5,8 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.miassolutions.rollcall.data.entities.AttendanceEntity
 import com.miassolutions.rollcall.data.repository.Repository
 import com.miassolutions.rollcall.ui.model.StatsUiModel
-import com.miassolutions.rollcall.utils.AttendanceStatus
-import com.miassolutions.rollcall.utils.toFormattedDate
+import com.miassolutions.rollcall.common.AttendanceStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map

@@ -1,24 +1,18 @@
 package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentStatsBinding
 import com.miassolutions.rollcall.ui.adapters.StatsListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.StatsViewModel
-import com.miassolutions.rollcall.utils.collectLatestFlow
-import com.miassolutions.rollcall.utils.showSnackbar
-import com.miassolutions.rollcall.utils.showToast
-import com.miassolutions.rollcall.utils.toFormattedDate
+import com.miassolutions.rollcall.extenstions.collectLatestFlow
+import com.miassolutions.rollcall.extenstions.showSnackbar
+import com.miassolutions.rollcall.extenstions.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 

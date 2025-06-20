@@ -1,7 +1,7 @@
 package com.miassolutions.rollcall.data.converters
 
 import androidx.room.TypeConverter
-import com.miassolutions.rollcall.utils.AttendanceStatus
+import com.miassolutions.rollcall.common.AttendanceStatus
 
 class AttendanceStatusConverter {
 
