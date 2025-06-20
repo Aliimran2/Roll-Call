@@ -228,6 +228,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             launch {
                 viewModel.presentCount.collectLatest {
                     binding.presentCard.tvCount.text = it.toString()
+                    binding.presentCard.tvCountTitle.text = "Present"
                     binding.presentCard.tvCount.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
@@ -239,6 +240,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             launch {
                 viewModel.absentCount.collectLatest {
                     binding.absentCard.tvCount.text = it.toString()
+                    binding.absentCard.tvCountTitle.text = "Absent"
                     binding.absentCard.tvCount.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
