@@ -20,6 +20,8 @@ import com.miassolutions.rollcall.common.AttendanceFilter
 import com.miassolutions.rollcall.common.Constants
 import com.miassolutions.rollcall.common.Constants.DATE_REQUEST_KEY
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
+import com.miassolutions.rollcall.extenstions.hide
+import com.miassolutions.rollcall.extenstions.show
 import com.miassolutions.rollcall.extenstions.showMaterialDatePicker
 import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.extenstions.toFormattedDate
@@ -51,18 +53,21 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         selectedDate = navArgs.selectedDate
 
         if (attendanceMode == "update" && selectedDate != -1L) {
+            binding.attendanceToggleGroup.show()
             // Pre-fill date and disable picker
             binding.etDatePicker.setText(selectedDate.toFormattedDate())
             binding.etDatePicker.isEnabled = false
+            binding.saveBtn.text = "Update"
 
             // Load attendance from DB
             viewModel.setDate(selectedDate)
 
         } else if (attendanceMode == "report" && selectedDate != -1L) {
+            binding.attendanceToggleGroup.show()
             binding.etDatePicker.setText(selectedDate.toFormattedDate())
             binding.etDatePicker.isEnabled = false
-            binding.saveBtn.text = "Sort"
-            binding.saveBtn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_filter)
+            binding.saveBtn.hide()
+//            binding.saveBtn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_filter)
 
             // Load attendance from DB
             viewModel.setDate(selectedDate)
@@ -75,6 +80,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         setupRecyclerView()
         collectFlows()
         clickListener()
+        filterAttendance()
 
     }
 
@@ -125,6 +131,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                 when (attendanceMode) {
                     "update" -> {
 
+
                         viewModel.updateAttendanceForDate(date) { success ->
                             if (success) {
                                 showSnackbar("Attendance updated for $dateStr")
@@ -136,10 +143,12 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                     }
 
                     "report" -> {
+
                         filterAttendance()
                     }
 
                     else -> {
+
                         viewModel.saveAttendance { success ->
                             if (success) {
                                 showSnackbar("Attendance saved for $dateStr")
@@ -159,34 +168,55 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     }
 
     private fun filterAttendance() {
-        val popupMenu = PopupMenu(requireContext(), binding.saveBtn)
-        popupMenu.apply {
-            menuInflater.inflate(R.menu.popup_menu_filter_attendance, menu)
-            setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.menu_all -> {
+
+
+        binding.attendanceToggleGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.btnAll -> {
                         viewModel.setFilter(AttendanceFilter.ALL)
-                        true
+
                     }
 
-                    R.id.menu_present -> {
+                    R.id.btnPresent -> {
                         viewModel.setFilter(AttendanceFilter.PRESENT)
-                        true
                     }
 
-                    R.id.menu_absent -> {
+                    R.id.btnAbsent -> {
                         viewModel.setFilter(AttendanceFilter.ABSENT)
-                        true
                     }
-
-                    else -> false
                 }
             }
-
         }
-
-
-        popupMenu.show()
+//
+//        val popupMenu = PopupMenu(requireContext(), binding.saveBtn)
+//        popupMenu.apply {
+//            menuInflater.inflate(R.menu.popup_menu_filter_attendance, menu)
+//            setOnMenuItemClickListener { menuItem ->
+//                when (menuItem.itemId) {
+//                    R.id.menu_all -> {
+//                        viewModel.setFilter(AttendanceFilter.ALL)
+//                        true
+//                    }
+//
+//                    R.id.menu_present -> {
+//                        viewModel.setFilter(AttendanceFilter.PRESENT)
+//                        true
+//                    }
+//
+//                    R.id.menu_absent -> {
+//                        viewModel.setFilter(AttendanceFilter.ABSENT)
+//                        true
+//                    }
+//
+//                    else -> false
+//                }
+//            }
+//
+//        }
+//
+//
+//        popupMenu.show()
     }
 
 

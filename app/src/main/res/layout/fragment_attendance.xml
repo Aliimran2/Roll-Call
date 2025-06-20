@@ -26,8 +26,7 @@
             layout="@layout/item_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-             />
+            android:layout_marginEnd="24dp" />
 
         <include
             android:id="@+id/absent_card"
@@ -37,33 +36,92 @@
 
     </LinearLayout>
 
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/attendanceToggleGroup"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:visibility="gone"
+        app:checkedButton="@id/btnAll"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAll"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="All"
+            android:textColor="#232323"
+            android:textSize="14sp"
+            app:cornerRadius="12dp"
+            app:rippleColor="?attr/colorPrimaryContainer"
+            app:strokeColor="?attr/colorPrimary"
+            app:strokeWidth="1dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPresent"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Present"
+            android:textColor="#232323"
+            android:textSize="14sp"
+            app:cornerRadius="12dp"
+            app:rippleColor="?attr/colorPrimaryContainer"
+            app:strokeColor="?attr/colorPrimary"
+            app:strokeWidth="1dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAbsent"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Absent"
+            android:textColor="#232323"
+            android:textSize="14sp"
+            app:cornerRadius="12dp"
+            app:rippleColor="?attr/colorPrimaryContainer"
+            app:strokeColor="?attr/colorPrimary"
+            app:strokeWidth="1dp" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:weightSum="2">
 
-        android:orientation="horizontal">
-
+        <!-- Save Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/save_btn"
-            style="@style/Widget.Material3.Button.IconButton.Filled"
+            style="@style/Widget.Material3.Button.ElevatedButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:text="Save Attendance"
-            android:textColor="@color/purple_two"
+            android:elevation="4dp"
+            android:text="Save"
             android:textSize="12sp"
             app:cornerRadius="8dp"
-            android:elevation="4dp"
             app:icon="@drawable/ic_save"
             app:iconGravity="start"
             app:iconPadding="8dp"
-            app:iconSize="14dp"
-            app:iconTint="@color/purple_two" />
+            app:iconSize="16dp" />
 
+        <!-- Date Picker -->
         <EditText
             android:id="@+id/et_date_picker"
             android:layout_width="0dp"
@@ -85,7 +143,6 @@
 
 
     </LinearLayout>
-
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
