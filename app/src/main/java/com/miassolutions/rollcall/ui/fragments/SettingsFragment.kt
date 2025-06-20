@@ -8,13 +8,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.miassolutions.rollcall.R
-import com.miassolutions.rollcall.databinding.FragmentSettingsBinding
-import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
 import com.miassolutions.rollcall.common.Constants
+import com.miassolutions.rollcall.databinding.FragmentSettingsBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
-import com.miassolutions.rollcall.utils.copySampleExcelFromAssets
+import com.miassolutions.rollcall.extenstions.showLongToast
 import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.extenstions.toFormattedDate
+import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
+import com.miassolutions.rollcall.utils.copySampleExcelFromAssets
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -66,9 +67,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         binding.btnExcelDownload.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 copySampleExcelFromAssets(requireContext(), "sample_students.xlsx")
-                showSnackbar("Sample Excel exported to Downloads")
+
+                showLongToast("Sample Excel exported to Downloads")
             } else {
-                showSnackbar("Export supported only on Android 10+")
+                showLongToast("Export supported only on Android 10+")
             }
 
         }
