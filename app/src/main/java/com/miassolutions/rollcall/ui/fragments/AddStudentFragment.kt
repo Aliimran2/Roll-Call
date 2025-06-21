@@ -27,6 +27,7 @@ import com.miassolutions.rollcall.extenstions.showMaterialDatePicker
 import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.extenstions.toFormattedDate
+import com.miassolutions.rollcall.utils.StudentImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -35,6 +36,8 @@ import java.util.UUID
 
 @AndroidEntryPoint
 class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
+
+    private lateinit var studentImagePicker: StudentImagePicker
 
     private val viewModel by viewModels<AddStudentViewModel>()
 
@@ -52,6 +55,15 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAddStudentBinding.bind(view)
+
+        studentImagePicker = StudentImagePicker(this){uri ->
+            binding.ivStudentImage.setImageURI(uri)
+            //save in db uri.toString()
+        }
+
+        binding.tvChangePhoto.setOnClickListener {
+            studentImagePicker.requestAndPickImage()
+        }
 
         args.studentId?.let { viewModel.fetchStudentById(it) }
 
