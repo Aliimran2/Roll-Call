@@ -6,9 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import coil3.load
+import coil3.request.placeholder
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentUserProfileBinding
 import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
+import com.miassolutions.rollcall.utils.StudentImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,10 +24,14 @@ class UserProfileFragment : BottomSheetDialogFragment() {
 
     private val viewModel by viewModels<SettingsViewModel>()
 
+    private lateinit var userImagePicker: StudentImagePicker
+
+    private var userImageUriStr = ""
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentUserProfileBinding.inflate(inflater, container, false)
         return binding.root
@@ -30,6 +39,23 @@ class UserProfileFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        userImagePicker = StudentImagePicker(this) {
+            Glide.with(requireContext())
+                .load(it)
+                .placeholder(R.drawable.ic_person)
+                .error(R.drawable.ic_error_image)
+                .into(binding.ivUserProfile)
+
+            userImageUriStr = it.toString()
+            viewModel.saveImageUriStr(userImageUriStr)
+        }
+
+        binding.ivUserProfile.setOnClickListener {
+
+            userImagePicker.requestAndPickImage()
+
+        }
 
 
         viewModel.userName.observe(viewLifecycleOwner) { userName ->
@@ -41,6 +67,17 @@ class UserProfileFragment : BottomSheetDialogFragment() {
             instName?.let {
                 binding.etInstitute.setText(it)
             }
+        }
+
+        viewModel.userProfileImage.observe(viewLifecycleOwner) { imagePath ->
+            imagePath?.let {
+                Glide.with(requireContext())
+                    .load(it)
+                    .placeholder(R.drawable.ic_person)
+                    .error(R.drawable.ic_error_image)
+                    .into(binding.ivUserProfile)
+            }
+
         }
 
 

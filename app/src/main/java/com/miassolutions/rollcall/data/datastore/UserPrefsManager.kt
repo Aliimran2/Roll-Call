@@ -24,6 +24,17 @@ class UserPrefsManager @Inject constructor(@ApplicationContext private val conte
         private val MIN_DATE_KEY = longPreferencesKey("min_date_key")
         private val USER_NAME_KEY = stringPreferencesKey("user_name_key")
         private val INSTITUTE_NAME_KEY = stringPreferencesKey("institute_name_key")
+        private val USER_PROFILE_IMAGE = stringPreferencesKey("user_profile_image")
+    }
+
+    suspend fun saveUserImage(imageUri : String){
+        dataStore.edit { prefs ->
+            prefs[USER_PROFILE_IMAGE] = imageUri
+        }
+    }
+
+    val userProfileImage = dataStore.data.map {prefs ->
+        prefs[USER_PROFILE_IMAGE]
     }
 
     //Save minDate

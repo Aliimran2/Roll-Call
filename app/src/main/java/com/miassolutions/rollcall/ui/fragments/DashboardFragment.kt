@@ -5,6 +5,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import coil3.load
+import com.bumptech.glide.Glide
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentDashboardBinding
 
@@ -68,6 +70,18 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
 
     private fun observeViewModel() {
+
+        settingsViewModel.userProfileImage.observe(viewLifecycleOwner){ imageUri ->
+            imageUri?.let {
+                Glide.with(requireContext())
+                    .load(it)
+                    .placeholder(R.drawable.ic_person)
+                    .error(R.drawable.ic_error_image)
+                    .into(binding.topLayout.ivUserProfile)
+            }
+        }
+
+
         settingsViewModel.userName.observe(viewLifecycleOwner) {
             it?.let {
                 binding.topLayout.tvTitle.text = "Welcome! $it"

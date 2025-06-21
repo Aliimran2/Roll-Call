@@ -65,7 +65,11 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         _binding = FragmentAddStudentBinding.bind(view)
 
         studentImagePicker = StudentImagePicker(this){uri ->
-            binding.ivStudentImage.setImageURI(uri)
+            Glide.with(requireContext())
+                .load(uri)
+                .placeholder(R.drawable.ic_person)
+                .error(R.drawable.ic_error_image)
+                .into(binding.ivStudentImage)
             //save in db uri.toString()
             studentImageUriStr = uri.toString()
         }
