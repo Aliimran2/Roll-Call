@@ -16,27 +16,20 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/iv_student"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
 
-            app:cardBackgroundColor="@color/black"
-            app:cardCornerRadius="50dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_student"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:contentDescription="student image"
-
                 android:scaleType="centerCrop"
-                android:src="@drawable/mias_profile_pic" />
+                android:src="@drawable/ic_person" />
 
-        </com.google.android.material.card.MaterialCardView>
+
 
 
         <ImageView

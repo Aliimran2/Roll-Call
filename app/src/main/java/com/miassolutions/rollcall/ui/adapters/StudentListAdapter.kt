@@ -1,12 +1,17 @@
 package com.miassolutions.rollcall.ui.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil3.load
+import com.bumptech.glide.Glide
+import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.ItemStudentBinding
+import java.io.File
 import kotlin.reflect.KFunction1
 
 class StudentListAdapter(
@@ -21,7 +26,18 @@ class StudentListAdapter(
     inner class StudentViewHolder(private val binding: ItemStudentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: StudentEntity) {
+
             binding.apply {
+
+                item.studentImage?.let {
+                    Glide.with(ivStudent.context)
+                        .load(it)
+                        .placeholder(R.drawable.ic_person)
+                        .error(R.drawable.ic_error_image)
+                        .into(ivStudent)
+                }
+
+
                 tvStudentName.text = item.studentName
                 tvRegNum.text = "Reg No - ${item.regNumber}"
                 tvRollNum.text = "Roll No - ${item.rollNumber}"

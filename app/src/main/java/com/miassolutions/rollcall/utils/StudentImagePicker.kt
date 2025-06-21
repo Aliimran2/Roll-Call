@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.miassolutions.rollcall.extenstions.toFormattedDate
+import java.io.File
 
 class StudentImagePicker(
     private val fragment: Fragment,
@@ -40,24 +41,24 @@ class StudentImagePicker(
         fragment.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
             val permanentDenied = result.filterValues { !it }
                 .map { it.key }
-                .any {permission ->
+                .any { permission ->
                     !fragment.shouldShowRequestPermissionRationale(permission)
                 }
 
             val allGranted = result.all { it.value }
 
-           when {
-               allGranted -> showImagePickerOptions()
-               permanentDenied -> showPermissionDeniedDialog()
-               else -> showRationaleDialog()
-           }
+            when {
+                allGranted -> showImagePickerOptions()
+                permanentDenied -> showPermissionDeniedDialog()
+                else -> showRationaleDialog()
+            }
         }
 
     private fun showPermissionDeniedDialog() {
         AlertDialog.Builder(context)
             .setTitle("Permission Denied")
             .setMessage("You have permanently denied required permissions. Please enable them from app settings")
-            .setPositiveButton("Open Settings"){_, _ -> openSettings()}
+            .setPositiveButton("Open Settings") { _, _ -> openSettings() }
             .setNegativeButton("Cancel", null)
             .show()
     }
@@ -138,7 +139,7 @@ class StudentImagePicker(
         val contentValues = ContentValues().apply {
             put(
                 MediaStore.Images.Media.DISPLAY_NAME,
-                "IMG_${System.currentTimeMillis().toFormattedDate("dd_MM_yyyy_HH_mm_ss")}"
+                "IMG_${System.currentTimeMillis().toFormattedDate("dd_MM_yyyy_HH_mm_ss")}.jpg"
             )
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
         }

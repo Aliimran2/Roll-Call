@@ -2,12 +2,18 @@ package com.miassolutions.rollcall.ui.fragments
 
 import WeekendPastDateValidatorUtil
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import coil3.load
+import coil3.request.placeholder
+import coil3.toUri
+import com.bumptech.glide.Glide
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -51,6 +57,8 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
 
     private var currentStudent: StudentEntity? = null
 
+    private var studentImageUriStr = ""
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,6 +67,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         studentImagePicker = StudentImagePicker(this){uri ->
             binding.ivStudentImage.setImageURI(uri)
             //save in db uri.toString()
+            studentImageUriStr = uri.toString()
         }
 
         binding.tvChangePhoto.setOnClickListener {
@@ -87,6 +96,14 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
     private fun prefillForm(student: StudentEntity) {
         currentStudent = student
         binding.apply {
+            student.studentImage?.let {
+                Glide.with(requireContext())
+                    .load(it)
+                    .placeholder(R.drawable.ic_person)
+                    .error(R.drawable.ic_person)
+                    .into(binding.ivStudentImage)
+            }
+
             etStudentName.setText(student.studentName)
             etFatherName.setText(student.fatherName)
             etRegNumber.setText(student.regNumber.toString())
@@ -220,6 +237,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
     }
 
     private fun saveStudent() = with(binding) {
+
         val regNumberStr = etRegNumber.text.toString()
         val rollNumberStr = etRollNumber.text.toString()
         val studentName = etStudentName.text.toString()
@@ -272,6 +290,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
 
 
         val student = StudentEntity(
+            studentImage = studentImageUriStr,
             studentId = currentStudent?.studentId ?: UUID.randomUUID().toString(),
             regNumber = reg,
             rollNumber = roll,

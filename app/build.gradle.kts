@@ -66,7 +66,7 @@ dependencies {
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
 
-
+    implementation("io.coil-kt.coil3:coil:3.0.4")
 
     implementation("com.leinardi.android:speed-dial:3.2.0")
     // Navigation Component
