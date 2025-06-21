@@ -6,7 +6,11 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import coil3.load
+import coil3.request.placeholder
+import com.bumptech.glide.Glide
 import com.miassolutions.rollcall.R
+import com.miassolutions.rollcall.common.Constants.TAG
 import com.miassolutions.rollcall.data.entities.StudentEntity
 
 import com.miassolutions.rollcall.databinding.FragmentStudentProfileBinding
@@ -89,6 +93,16 @@ class StudentDetailFragment : Fragment(R.layout.fragment_student_profile) {
 
                             binding.apply {
                                 primaryProfile.apply {
+                                    student.studentImage?.let {
+                                        Log.d(TAG, it)
+                                        Glide.with(requireContext())
+                                            .load(it)
+                                            .placeholder(R.drawable.ic_person)
+                                            .error(R.drawable.ic_error_image)
+                                            .into(ivProfile)
+
+
+                                    }
                                     tvStudentName.text = student.studentName
                                     tvRegNum.text = "${student.regNumber}"
                                     tvRollNum.text = "${student.rollNumber}"
