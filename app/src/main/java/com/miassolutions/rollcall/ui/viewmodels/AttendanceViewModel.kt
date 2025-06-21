@@ -57,7 +57,7 @@ class AttendanceViewModel @Inject constructor(
             }
             .filter {
                 it.studentName.contains(searchStudent, ignoreCase = true)
-                        || it.rollNumber == searchStudent.toInt()
+                        || it.rollNumber.toString() == searchStudent
             }
 
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
