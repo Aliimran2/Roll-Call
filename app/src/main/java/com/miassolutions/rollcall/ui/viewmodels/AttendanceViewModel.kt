@@ -31,6 +31,8 @@ class AttendanceViewModel @Inject constructor(
     private val _filter = MutableStateFlow(AttendanceFilter.ALL)
     val filter: StateFlow<AttendanceFilter> = _filter.asStateFlow()
 
+    private val _search = MutableStateFlow(repository.allStudentsFlow)
+
     fun setFilter(filter: AttendanceFilter) {
         _filter.value = filter
     }
