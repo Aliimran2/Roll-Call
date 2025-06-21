@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -85,7 +86,15 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         collectFlows()
         clickListener()
         filterAttendance()
+        searchStudent()
 
+    }
+
+    private fun searchStudent() {
+        binding.etSearch.addTextChangedListener { searchText ->
+            viewModel.updateSearchQuery(searchText.toString())
+
+        }
     }
 
 

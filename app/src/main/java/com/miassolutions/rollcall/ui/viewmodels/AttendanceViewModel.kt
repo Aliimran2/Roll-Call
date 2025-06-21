@@ -31,20 +31,35 @@ class AttendanceViewModel @Inject constructor(
     private val _filter = MutableStateFlow(AttendanceFilter.ALL)
     val filter: StateFlow<AttendanceFilter> = _filter.asStateFlow()
 
-    private val _search = MutableStateFlow(repository.allStudentsFlow)
-
     fun setFilter(filter: AttendanceFilter) {
         _filter.value = filter
     }
 
+    private val _searchStudent = MutableStateFlow("")
+    private val searchStudent = _searchStudent.asStateFlow()
+
+    fun updateSearchQuery(query: String) {
+        _searchStudent.value = query
+    }
+
+
     val filteredAttendanceUI: StateFlow<List<AttendanceUIModel>> = combine(
-        _attendanceUI, _filter
-    ) { list, filter ->
-        when (filter) {
-            AttendanceFilter.ALL -> list
-            AttendanceFilter.PRESENT -> list.filter { it.attendanceStatus == AttendanceStatus.PRESENT }
-            AttendanceFilter.ABSENT -> list.filter { it.attendanceStatus == AttendanceStatus.ABSENT }
-        }
+        _attendanceUI, _filter, _searchStudent
+    ) { list, filter, searchStudent ->
+        list
+            .filter {
+                //apply the filter first
+                when (filter) {
+                    AttendanceFilter.ALL -> true
+                    AttendanceFilter.PRESENT -> it.attendanceStatus == AttendanceStatus.PRESENT
+                    AttendanceFilter.ABSENT -> it.attendanceStatus == AttendanceStatus.ABSENT
+                }
+            }
+            .filter {
+                it.studentName.contains(searchStudent, ignoreCase = true)
+                        || it.rollNumber == searchStudent.toInt()
+            }
+
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
 
@@ -60,7 +75,7 @@ class AttendanceViewModel @Inject constructor(
                         studentId = student.studentId,
                         studentName = student.studentName,
                         rollNumber = student.rollNumber,
-                        attendanceStatus = match?.attendanceStatus ?: AttendanceStatus.ABSENT
+                        attendanceStatus = match?.attendanceStatus ?: AttendanceStatus.PRESENT
                     )
                 }
             }.collectLatest { attendanceModels ->
