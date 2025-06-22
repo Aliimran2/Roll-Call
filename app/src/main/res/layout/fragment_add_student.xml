@@ -22,6 +22,7 @@
             android:id="@+id/ivStudentImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            app:civ_border_color="@color/purple_two"
             android:layout_gravity="center_horizontal"
             android:contentDescription="Student Image"
             android:src="@drawable/mias_profile_pic"
@@ -29,18 +30,7 @@
 
              />
 
-        <!-- Change Photo Text -->
-        <TextView
-            android:id="@+id/tvChangePhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="4dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="Change Photo"
-            android:textStyle="bold"
-/>
+
 
 
         <!-- Student Name -->
@@ -51,14 +41,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:hint="Student Name"
-          >
+            app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etStudentName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
-                android:inputType="textPersonName" />
+                android:inputType="textCapCharacters" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Father Name -->
@@ -70,14 +60,14 @@
             android:layout_marginTop="12dp"
 
             android:hint="Father Name"
-           >
+            app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etFatherName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
-                android:inputType="textPersonName" />
+                android:inputType="textCapCharacters" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Reg Number -->
@@ -88,14 +78,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:hint="Registration Number"
-         >
+            app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etRegNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
-                android:inputType="number" />
+                android:inputType="textCapCharacters" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Roll Number -->
@@ -106,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:hint="Roll Number"
-          >
+            app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etRollNumber"
@@ -126,14 +116,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:hint="B-Form (xxxxx-xxxxxxx-x)"
-         >
+            app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etBForm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
-                android:inputType="text" />
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- DOB -->
@@ -158,22 +148,6 @@
 
 
         <!-- Class -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilClass"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:hint="Class"
-     >
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etClass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:imeOptions="actionNext"
-                android:inputType="text" />
-        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Phone Number -->
         <com.google.android.material.textfield.TextInputLayout
@@ -183,7 +157,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:hint="Phone Number"
->
+            app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPhone"
@@ -221,14 +195,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:hint="Address"
-        >
+            app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
-                android:inputType="textPostalAddress"
+                android:inputType="textCapWords"
                 android:lines="1"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>

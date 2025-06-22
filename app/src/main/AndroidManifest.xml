@@ -6,6 +6,9 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
 
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -16,6 +19,9 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32"
         tools:ignore="SelectedPhotoAccess" />
+
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
 
 
     <application

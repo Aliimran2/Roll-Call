@@ -202,7 +202,8 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
     private fun setupFabClickListener() {
         binding.fabAddStudent.setOnClickListener {
-            findNavController().navigate(R.id.addStudentFragment)
+            val action = StudentsFragmentDirections.actionStudentsFragmentToAddStudentFragment()
+            findNavController().navigate(action)
         }
     }
 

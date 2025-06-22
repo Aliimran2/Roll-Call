@@ -2,30 +2,21 @@ package com.miassolutions.rollcall.ui.fragments
 
 import WeekendPastDateValidatorUtil
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import coil3.load
-import coil3.request.placeholder
-import coil3.toUri
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.miassolutions.rollcall.R
-import com.miassolutions.rollcall.data.entities.StudentEntity
-import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
-import com.miassolutions.rollcall.ui.MainActivity
-import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
-import com.miassolutions.rollcall.utils.BFormTextWatcher
 import com.miassolutions.rollcall.common.Constants.DUPLICATE_REG_NUMBER
 import com.miassolutions.rollcall.common.Constants.DUPLICATE_ROLL_NUMBER
-import com.miassolutions.rollcall.utils.StudentInsertResult
+import com.miassolutions.rollcall.data.entities.StudentEntity
+import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
 import com.miassolutions.rollcall.extenstions.addMenu
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.showLongToast
@@ -33,7 +24,11 @@ import com.miassolutions.rollcall.extenstions.showMaterialDatePicker
 import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.extenstions.toFormattedDate
+import com.miassolutions.rollcall.ui.MainActivity
+import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
+import com.miassolutions.rollcall.utils.BFormTextWatcher
 import com.miassolutions.rollcall.utils.StudentImagePicker
+import com.miassolutions.rollcall.utils.StudentInsertResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -74,7 +69,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
             studentImageUriStr = uri.toString()
         }
 
-        binding.tvChangePhoto.setOnClickListener {
+        binding.ivStudentImage.setOnClickListener {
             studentImagePicker.requestAndPickImage()
         }
 
@@ -117,7 +112,6 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
             etDOA.setText(
                 student.doa?.toFormattedDate() ?: System.currentTimeMillis().toFormattedDate()
             )
-            etClass.setText(student.klass)
             etPhone.setText(student.phoneNumber)
             etAddress.setText(student.address)
 
@@ -249,7 +243,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         val dobStr = etDOB.text.toString()
         val phoneNumber = etPhone.text.toString()
         val bForm = etBForm.text.toString()
-        val klass = etClass.text.toString()
+        val klass = "8th B" //todo
         val address = etAddress.text.toString()
 
         when {

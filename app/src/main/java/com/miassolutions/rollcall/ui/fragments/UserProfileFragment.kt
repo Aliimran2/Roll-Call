@@ -59,13 +59,15 @@ class UserProfileFragment : BottomSheetDialogFragment() {
 
 
         viewModel.userName.observe(viewLifecycleOwner) { userName ->
-            val name = userName ?: "Set name"
-            binding.etUserName.setText(name)
+            userName?.let {
+
+                binding.etUserName.setText(it.uppercase())
+            }
         }
 
         viewModel.instituteName.observe(viewLifecycleOwner) { instName ->
             instName?.let {
-                binding.etInstitute.setText(it)
+                binding.etInstitute.setText(it.uppercase())
             }
         }
 

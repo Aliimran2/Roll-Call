@@ -1,11 +1,14 @@
 package com.miassolutions.rollcall.extenstions
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -52,8 +55,19 @@ fun Fragment.showSnackbar(
 }
 
 
-
-
 fun Fragment.setToolbarTitle(title: String) {
     (activity as? AppCompatActivity)?.supportActionBar?.title = title
+}
+
+fun Fragment.requestSmsPermission(onGranted: () -> Unit) {
+    if (ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.SEND_SMS
+        ) == PackageManager.PERMISSION_GRANTED
+    ) {
+        onGranted()
+
+    } else {
+        requestPermissions(arrayOf(Manifest.permission.SEND_SMS), 101)
+    }
 }
