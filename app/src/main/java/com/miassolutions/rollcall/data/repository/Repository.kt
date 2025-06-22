@@ -4,8 +4,10 @@ import android.util.Log
 import com.miassolutions.rollcall.common.Constants.DUPLICATE_REG_NUMBER
 import com.miassolutions.rollcall.common.Constants.DUPLICATE_ROLL_NUMBER
 import com.miassolutions.rollcall.data.dao.AttendanceDao
+import com.miassolutions.rollcall.data.dao.ClassDao
 import com.miassolutions.rollcall.data.dao.StudentDao
 import com.miassolutions.rollcall.data.entities.AttendanceEntity
+import com.miassolutions.rollcall.data.entities.ClassEntity
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.utils.StudentInsertResult
 import com.miassolutions.rollcall.utils.StudentResult
@@ -18,6 +20,7 @@ import javax.inject.Inject
 class Repository @Inject constructor(
     private val studentDao: StudentDao,
     private val attendanceDao: AttendanceDao,
+    private val classDao : ClassDao
 ) {
 
     // StudentEntity Operations
@@ -73,6 +76,8 @@ class Repository @Inject constructor(
             }
         }
     }
+
+
 
     fun searchStudents(query : String) = studentDao.searchStudent(query)
 
@@ -152,6 +157,18 @@ class Repository @Inject constructor(
         // Step 2: Insert updated list
         attendanceDao.insertAttendances(updatedList)
     }
+
+
+    //classEntity Operations
+
+    suspend fun insertClass(classEntity: ClassEntity) = classDao.insetClass(classEntity)
+
+    suspend fun updateClass(classEntity: ClassEntity) = classDao.updateClass(classEntity)
+
+    suspend fun deleteClass(classEntity: ClassEntity) = classDao.deleteClass(classEntity)
+
+    fun getClasses() : Flow<List<ClassEntity>> = classDao.getClasses()
+
 
 
 }

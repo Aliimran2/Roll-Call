@@ -9,4 +9,27 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+    <string-array name="class_items">
+        <item>One</item>
+        <item>2nd</item>
+        <item>3rd</item>
+        <item>4th</item>
+        <item>5th</item>
+        <item>6th</item>
+        <item>7th</item>
+        <item>8th</item>
+        <item>9th</item>
+        <item>10th</item>
+
+    </string-array>
+
+    <string-array name="sec_items">
+        <item>--None--</item>
+        <item>A</item>
+        <item>B</item>
+        <item>Green</item>
+        <item>Blue</item>
+        <item>Red</item>
+
+    </string-array>
 </resources>
