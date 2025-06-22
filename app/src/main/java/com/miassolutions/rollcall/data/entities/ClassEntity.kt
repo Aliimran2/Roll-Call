@@ -10,5 +10,5 @@ data class ClassEntity(
     val className : Int,
     val startDate : Long,
     val endDate : Long,
-    val inCharge : String
+    val teacher : String
 )
