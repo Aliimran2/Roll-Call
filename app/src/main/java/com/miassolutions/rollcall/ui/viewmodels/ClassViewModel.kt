@@ -2,7 +2,6 @@ package com.miassolutions.rollcall.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.miassolutions.rollcall.data.entities.ClassEntity
 import com.miassolutions.rollcall.data.repository.Repository
 import com.miassolutions.rollcall.ui.uicommon.ClassUiEvent
@@ -10,12 +9,10 @@ import com.miassolutions.rollcall.ui.uicommon.ClassUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,7 +23,7 @@ class ClassViewModel @Inject constructor(private val repository: Repository) : V
     private val _uiState = MutableStateFlow<ClassUiState>(ClassUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    private val _uiEvent = MutableSharedFlow<ClassUiState>()
+    private val _uiEvent = MutableSharedFlow<ClassUiEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
 
     init {

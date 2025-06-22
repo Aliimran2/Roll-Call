@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/class_form_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:id="@+id/class_form_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingBottom="24dp">
+
+        <!-- Class Name -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/class_name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Class Name"
+
+            app:boxBackgroundMode="outline"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/class_name_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Start Date -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/start_date_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Start Session Date"
+            app:endIconMode="custom"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/start_date_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- End Date -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/end_date_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="End Session Date"
+            app:endIconMode="custom"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/end_date_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Teacher -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/teacher_name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Teacher Name"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/teacher_name_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Save Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/save_class_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Class"
+            android:layout_marginTop="24dp"
+            style="@style/Widget.Material3.Button"
+            app:cornerRadius="16dp"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="@android:color/white"
+            app:icon="@android:drawable/ic_menu_save"
+            app:iconPadding="8dp"
+            app:iconTint="@android:color/white" />
+    </LinearLayout>
+</ScrollView>

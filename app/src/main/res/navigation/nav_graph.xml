@@ -90,6 +90,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_listClassFragment"
+            app:destination="@id/listClassFragment" />
     </fragment>
     <dialog
         android:id="@+id/datePickerFragment"
@@ -100,4 +103,18 @@
         tools:layout="@layout/fragment_user_profile"
         android:name="com.miassolutions.rollcall.ui.fragments.UserProfileFragment"
         android:label="UserProfileFragment" />
+    <fragment
+        android:id="@+id/listClassFragment"
+        tools:layout="@layout/fragment_list_class"
+        android:name="com.miassolutions.rollcall.ui.fragments.ListClassFragment"
+        android:label="ListClassFragment" >
+        <action
+            android:id="@+id/action_listClassFragment_to_addClassFragment"
+            app:destination="@id/addClassFragment" />
+    </fragment>
+    <dialog
+        tools:layout="@layout/fragment_add_class"
+        android:id="@+id/addClassFragment"
+        android:name="com.miassolutions.rollcall.ui.viewmodels.AddClassFragment"
+        android:label="AddClassFragment" />
 </navigation>
