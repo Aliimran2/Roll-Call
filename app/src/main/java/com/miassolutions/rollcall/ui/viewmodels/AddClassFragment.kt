@@ -43,9 +43,12 @@ class AddClassFragment : BottomSheetDialogFragment() {
 
     private fun setupObservers() {
         collectLatestFlow {
-            viewModel.uiEvent.collectLatest {event ->
-                when(event){
-                    is ClassUiEvent.ShowToast -> {showToast(event.message)}
+            viewModel.uiEvent.collectLatest { event ->
+                when (event) {
+                    is ClassUiEvent.ShowToast -> {
+                        showToast(event.message)
+                    }
+
                     is ClassUiEvent.NavigateToBack -> findNavController().popBackStack()
                     is ClassUiEvent.NavigateToEditClass -> Unit
                 }
@@ -70,10 +73,19 @@ class AddClassFragment : BottomSheetDialogFragment() {
         binding.apply {
             classNameLayout.error = null
             teacherNameLayout.error = null
+            classSecLayout.error = null
 
             if (classNameInput.text.isNullOrBlank()) {
                 classNameInput.error = "Enter class name"
                 classNameInput.requestFocus()
+                isValid = false
+
+            }
+
+
+            if (classSecInput.text.isNullOrBlank()) {
+                classSecInput.error = "Enter class name"
+                classSecInput.requestFocus()
                 isValid = false
             }
 
@@ -87,8 +99,18 @@ class AddClassFragment : BottomSheetDialogFragment() {
     }
 
     private fun createClassEntity(): ClassEntity {
+        val className = binding.classNameInput.text.toString().trim()
+        var secName = binding.classSecInput.text.toString().trim()
+        if (secName == "--None--"){
+            secName = ""
+        } else {
+            secName = "($secName)"
+        }
+
+        val classWithSec = "$className $secName"
+
         return ClassEntity(
-            className = binding.classNameInput.text.toString().trim(),
+            className = classWithSec.trim(),
             startDate = Date().time,
             endDate = Date().time,
             teacher = binding.teacherNameInput.text.toString().trim()
@@ -98,10 +120,12 @@ class AddClassFragment : BottomSheetDialogFragment() {
     private fun clearFields() {
         binding.apply {
             classNameInput.text?.clear()
+            classSecInput.text?.clear()
             teacherNameInput.text?.clear()
             startDateInput.text?.clear()
             endDateInput.text?.clear()
             classNameLayout.error = null
+            classSecLayout.error = null
             teacherNameLayout.error = null
         }
     }
