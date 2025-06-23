@@ -18,6 +18,8 @@
         android:orientation="vertical">
 
         <!-- Student Image -->
+
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivStudentImage"
             android:layout_width="100dp"
@@ -148,6 +150,22 @@
 
 
         <!-- Class -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilClass"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:hint="Class Name"
+            app:endIconMode="clear_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etClass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="textCapCharacters" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Phone Number -->
         <com.google.android.material.textfield.TextInputLayout

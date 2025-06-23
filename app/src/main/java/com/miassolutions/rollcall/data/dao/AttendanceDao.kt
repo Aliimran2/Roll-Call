@@ -32,7 +32,7 @@ interface AttendanceDao {
     suspend fun getAttendanceForDate(date: Long): List<AttendanceEntity>
 
     @Query("SELECT * FROM attendance_table WHERE date BETWEEN :startDate AND :endDate")
-    fun getAttendanceForDateRange(startDate : Long, endDate: Long)
+    fun getAttendanceForDateRange(startDate : Long, endDate: Long) : Flow<List<AttendanceEntity>>
 
     @Query("SELECT * FROM attendance_table ORDER BY date DESC")
     fun getAllAttendances(): Flow<List<AttendanceEntity>>

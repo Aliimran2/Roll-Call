@@ -59,7 +59,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAddStudentBinding.bind(view)
 
-        studentImagePicker = StudentImagePicker(this){uri ->
+        studentImagePicker = StudentImagePicker(this) { uri ->
             Glide.with(requireContext())
                 .load(uri)
                 .placeholder(R.drawable.ic_person)
@@ -243,7 +243,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         val dobStr = etDOB.text.toString()
         val phoneNumber = etPhone.text.toString()
         val bForm = etBForm.text.toString()
-        val klass = "8th B" //todo
+        val klass = etClass.text.toString()
         val address = etAddress.text.toString()
 
         when {
