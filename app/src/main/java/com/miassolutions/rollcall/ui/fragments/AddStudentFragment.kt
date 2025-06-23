@@ -243,7 +243,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         val dobStr = etDOB.text.toString()
         val phoneNumber = etPhone.text.toString()
         val bForm = etBForm.text.toString()
-        val klass = "8th B" //todo
+        val klass = args.className //todo
         val address = etAddress.text.toString()
 
         when {
@@ -278,10 +278,10 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
             }
         }
 
-        val reg = regNumberStr.toIntOrNull()
+
         val roll = rollNumberStr.toIntOrNull()
 
-        if (reg == null || roll == null) {
+        if (regNumberStr.isBlank() || roll == null) {
             showLongToast("Invalid Registration or Roll Number")
             return
         }
@@ -290,14 +290,14 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         val student = StudentEntity(
             studentImage = studentImageUriStr,
             studentId = currentStudent?.studentId ?: UUID.randomUUID().toString(),
-            regNumber = reg,
+            regNumber = regNumberStr,
             rollNumber = roll,
             studentName = studentName,
             fatherName = fatherName,
             dob = dob,
             doa = doa,
             phoneNumber = phoneNumber,
-            classId = klass,
+            classId = args.classId ,
             address = address,
             bForm = bForm
         )

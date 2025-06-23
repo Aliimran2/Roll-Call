@@ -24,7 +24,7 @@ data class StudentEntity(
     @PrimaryKey
     val studentId: String = UUID.randomUUID().toString(),
     val studentImage: String? = null,
-    val regNumber: Int,
+    val regNumber: String,
     val rollNumber: Int,
     val studentName: String,
     val fatherName: String,

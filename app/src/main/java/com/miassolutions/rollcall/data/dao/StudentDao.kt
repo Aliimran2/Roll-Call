@@ -46,7 +46,7 @@ interface StudentDao {
     //duplication check getter
 
     @Query("SELECT * FROM student_table WHERE regNumber =:regNumber LIMIT 1")
-    suspend fun getStudentByRegNum(regNumber: Int) : StudentEntity?
+    suspend fun getStudentByRegNum(regNumber: String) : StudentEntity?
 
     @Query("SELECT * FROM student_table WHERE rollNumber =:rollNumber LIMIT 1")
     suspend fun getStudentByRollNum(rollNumber: Int) : StudentEntity?

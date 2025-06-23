@@ -74,7 +74,10 @@ class ListClassFragment : Fragment(R.layout.fragment_list_class) {
         collectLatestFlow {
             viewModel.uiEvent.collectLatest { event ->
                 when (event) {
-                    ClassUiEvent.NavigateToBack -> {findNavController().popBackStack()}
+                    ClassUiEvent.NavigateToBack -> {
+                        findNavController().popBackStack()
+                    }
+
                     ClassUiEvent.NavigateToEditClass -> {}
                     is ClassUiEvent.ShowToast -> {
                         showToast(event.message)
@@ -89,7 +92,11 @@ class ListClassFragment : Fragment(R.layout.fragment_list_class) {
     }
 
     private fun onNavigation(classEntity: ClassEntity) {
-        showToast("Navigation ${classEntity.className}")
+        val action = ListClassFragmentDirections.actionListClassFragmentToStudentsFragment(
+            classEntity.classId,
+            classEntity.className
+        )
+        findNavController().navigate(action)
     }
 
 

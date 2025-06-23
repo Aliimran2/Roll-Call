@@ -23,7 +23,7 @@ class MainRepository @Inject constructor(
     override suspend fun insertStudent(student: StudentEntity): InsertResult {
 
         val duplicateReg = studentDao.getStudentByRegNum(student.regNumber)
-        val duplicateRoll = studentDao.getStudentByRegNum(student.rollNumber)
+        val duplicateRoll = studentDao.getStudentByRollNum(student.rollNumber)
 
         return when {
             duplicateReg != null -> InsertResult.Failure("Duplicate Reg No")

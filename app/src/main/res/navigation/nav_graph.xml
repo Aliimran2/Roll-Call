@@ -14,6 +14,12 @@
             app:argType="string"
             android:defaultValue="@null"
             app:nullable="true" />
+        <argument
+            android:name="classId"
+            app:argType="string" />
+        <argument
+            android:name="className"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/studentsFragment"
@@ -26,6 +32,12 @@
         <action
             android:id="@+id/action_studentsFragment_to_studentDetailFragment"
             app:destination="@id/studentDetailFragment" />
+        <argument
+            android:name="classId"
+            app:argType="string" />
+        <argument
+            android:name="className"
+            app:argType="string" />
 
     </fragment>
     <fragment
@@ -79,9 +91,6 @@
         android:name="com.miassolutions.rollcall.ui.dashboard.DashboardFragment"
         android:label="Dashboard" >
         <action
-            android:id="@+id/action_dashboardFragment_to_studentsFragment"
-            app:destination="@id/studentsFragment" />
-        <action
             android:id="@+id/action_dashboardFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
         <action
@@ -107,14 +116,17 @@
         android:id="@+id/listClassFragment"
         tools:layout="@layout/fragment_list_class"
         android:name="com.miassolutions.rollcall.ui.fragments.ListClassFragment"
-        android:label="ListClassFragment" >
+        android:label="Classes" >
         <action
             android:id="@+id/action_listClassFragment_to_addClassFragment"
             app:destination="@id/addClassFragment" />
+        <action
+            android:id="@+id/action_listClassFragment_to_studentsFragment"
+            app:destination="@id/studentsFragment" />
     </fragment>
     <dialog
         tools:layout="@layout/fragment_add_class"
         android:id="@+id/addClassFragment"
         android:name="com.miassolutions.rollcall.ui.viewmodels.AddClassFragment"
-        android:label="AddClassFragment" />
+        android:label="Add New Class" />
 </navigation>

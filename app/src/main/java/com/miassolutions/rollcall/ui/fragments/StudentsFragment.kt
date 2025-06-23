@@ -1,5 +1,6 @@
 package com.miassolutions.rollcall.ui.fragments
 
+import ImportFromExcel
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.google.android.material.appbar.MaterialToolbar
@@ -34,7 +36,6 @@ import com.miassolutions.rollcall.ui.MainActivity
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
-import com.miassolutions.rollcall.utils.ImportFromExcel
 import com.miassolutions.rollcall.utils.UiState
 import com.miassolutions.rollcall.utils.exportExcelToDownloadsWithMediaStore
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,6 +53,8 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     private val addStudentViewModel by viewModels<AddStudentViewModel>()
     private val studentDetailViewModel by viewModels<StudentDetailViewModel>()
 
+    private val args by navArgs<StudentsFragmentArgs>()
+
     private lateinit var toolbar: MaterialToolbar
 
     private lateinit var adapter: StudentListAdapter
@@ -62,10 +65,12 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         _binding = FragmentStudentsBinding.bind(view)
 
 
+
+
         toolbar = (activity as MainActivity).findViewById<MaterialToolbar>(R.id.toolbar)
 
 
-//        setupRecyclerView()
+        setupRecyclerView()
         setupFabClickListener()
         setupMenuProvider()
         observeViewModel()
@@ -202,7 +207,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
     private fun setupFabClickListener() {
         binding.fabAddStudent.setOnClickListener {
-            val action = StudentsFragmentDirections.actionStudentsFragmentToAddStudentFragment()
+            val action = StudentsFragmentDirections.actionStudentsFragmentToAddStudentFragment(args.classId, args.className)
             findNavController().navigate(action)
         }
     }
@@ -229,46 +234,50 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
     private fun navToEdit(studentId: String) {
         val action =
-            StudentsFragmentDirections.actionStudentsFragmentToAddStudentFragment(studentId)
+            StudentsFragmentDirections.actionStudentsFragmentToAddStudentFragment(
+                studentId = studentId,
+                classId = args.classId,
+                className = args.className
+            )
         findNavController().navigate(action)
     }
 
 
-//    private fun setupRecyclerView() {
-//        adapter = StudentListAdapter(
-//            onPhoneClick = ::dialPhoneNumber,
-//            onProfileClick = ::navToDetail,
-//            onReportClick = ::reportClickListener,
-//            onEditClick = ::navToEdit,
-//            onDeleteClick = ::deleteClickListener
-//        )
-//
-//        binding.rvStudents.adapter = adapter
-//
-//        binding.rvStudents.addOnScrollListener(object : OnScrollListener() {
-//            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(rv, dx, dy)
-//                if (dy > 0) binding.fabAddStudent.hide()
-//                else if (dy < 0) binding.fabAddStudent.show()
-//            }
-//        })
-//    }
+    private fun setupRecyclerView() {
+        adapter = StudentListAdapter(
+            onPhoneClick = ::dialPhoneNumber,
+            onProfileClick = ::navToDetail,
+            onReportClick = ::reportClickListener,
+            onEditClick = ::navToEdit,
+            onDeleteClick = ::deleteClickListener
+        )
 
-//    private fun deleteClickListener(studentId: String) {
-//        MaterialAlertDialogBuilder(requireContext())
-//
-//            .setTitle("Confirm Deletion!!")
-//            .setMessage("Are you sure?")
-//            .setPositiveButton("Yes, Delete") { dialog, _ ->
+        binding.rvStudents.adapter = adapter
+
+        binding.rvStudents.addOnScrollListener(object : OnScrollListener() {
+            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(rv, dx, dy)
+                if (dy > 0) binding.fabAddStudent.hide()
+                else if (dy < 0) binding.fabAddStudent.show()
+            }
+        })
+    }
+
+    private fun deleteClickListener(studentId: String) {
+        MaterialAlertDialogBuilder(requireContext())
+
+            .setTitle("Confirm Deletion!!")
+            .setMessage("Are you sure?")
+            .setPositiveButton("Yes, Delete") { dialog, _ ->
 //                studentDetailViewModel.deleteStudentById(studentId)
-//                Snackbar.make(binding.root, "Deleted", Snackbar.LENGTH_LONG)
-//                    .show()
-//                dialog.dismiss()
-//
-//            }
-//            .setNegativeButton("Cancel", null)
-//            .show()
-//    }
+                Snackbar.make(binding.root, "Deleted", Snackbar.LENGTH_LONG)
+                    .show()
+                dialog.dismiss()
+
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
 
 
     private fun reportClickListener(studentId: String) {

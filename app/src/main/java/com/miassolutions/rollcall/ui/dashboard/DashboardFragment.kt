@@ -87,7 +87,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             }
 
             DashBoardUiEvent.NavigationToClasses -> {
-                showToast(uiEvent.toString())
+                val action = DashboardFragmentDirections.actionDashboardFragmentToListClassFragment()
+                findNavController().navigate(action)
             }
 
             DashBoardUiEvent.NavigationToProfile -> {

@@ -1,16 +1,11 @@
-package com.miassolutions.rollcall.utils
-
 import android.content.Context
 import android.net.Uri
 import com.miassolutions.rollcall.data.entities.StudentEntity
-import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.DateUtil
 import org.apache.poi.ss.usermodel.WorkbookFactory
-import java.util.Date
 
 object ImportFromExcel {
-
 
     fun readStudentsFromExcel(context: Context, uri: Uri): List<StudentEntity> {
         val studentEntities = mutableListOf<StudentEntity>()
@@ -24,31 +19,51 @@ object ImportFromExcel {
                     val row = sheet.getRow(rowIndex) ?: continue
 
                     try {
-                        val regNumber = row.getCell(0)?.let {
-                            if (it.cellType == CellType.NUMERIC) it.numericCellValue.toInt()
-                            else it.stringCellValue.toInt()
-                        } ?: continue
+                        // Required fields
+                        val regNumber = row.getCell(0)?.toString()?.trim() ?: continue
 
                         val rollNumber = row.getCell(1)?.let {
-                            if (it.cellType == CellType.NUMERIC) it.numericCellValue.toInt()
-                            else it.stringCellValue.toInt()
+                            when (it.cellType) {
+                                CellType.NUMERIC -> it.numericCellValue.toInt()
+                                else -> it.stringCellValue.trim().toInt()
+                            }
                         } ?: continue
 
-                        val studentName = row.getCell(2)?.toString()?.trim() ?: ""
-                        val fatherName = row.getCell(3)?.toString()?.trim() ?: ""
-                        val bForm = row.getCell(4)?.let { cell ->
-                            when (cell.cellType) {
-                                CellType.STRING -> cell.stringCellValue.trim()
-                                CellType.NUMERIC -> cell.numericCellValue.toLong().toString().padStart(13, '0')
-                                    .let { "${it.substring(0,5)}-${it.substring(5,12)}-${it.substring(12)}" }
-                                else -> null
-                            }
-                        }
+                        val studentName = row.getCell(2)?.toString()?.trim()
+                            ?: continue  // name is mandatory
+
+                        val fatherName = row.getCell(3)?.toString()?.trim()
+                            ?: continue  // father name is mandatory
+
                         val dobMillis = row.getCell(5)?.let {
                             if (it.cellType == CellType.NUMERIC && DateUtil.isCellDateFormatted(it)) {
                                 it.dateCellValue.time
                             } else null
-                        } ?: continue // dob is mandatory
+                        } ?: continue  // dob is mandatory
+
+                        val classId = row.getCell(7)?.toString()?.trim()
+                            ?: continue  // classId is mandatory
+
+                        // Optional fields
+                        val bForm = row.getCell(4)?.let { cell ->
+                            when (cell.cellType) {
+                                CellType.STRING -> cell.stringCellValue.trim()
+                                    .takeIf { it.isNotBlank() }
+
+                                CellType.NUMERIC -> cell.numericCellValue.toLong().toString()
+                                    .padStart(13, '0')
+                                    .let {
+                                        "${it.substring(0, 5)}-${
+                                            it.substring(
+                                                5,
+                                                12
+                                            )
+                                        }-${it.substring(12)}"
+                                    }
+
+                                else -> null
+                            }
+                        }
 
                         val doaMillis = row.getCell(6)?.let {
                             if (it.cellType == CellType.NUMERIC && DateUtil.isCellDateFormatted(it)) {
@@ -56,9 +71,9 @@ object ImportFromExcel {
                             } else null
                         }
 
-                        val klass = row.getCell(7)?.toString()?.trim()
-                        val phoneNumber = row.getCell(8)?.toString()?.trim()
-                        val address = row.getCell(9)?.toString()?.trim()
+                        val phoneNumber =
+                            row.getCell(8)?.toString()?.trim()?.takeIf { it.isNotBlank() }
+                        val address = row.getCell(9)?.toString()?.trim()?.takeIf { it.isNotBlank() }
 
                         studentEntities.add(
                             StudentEntity(
@@ -69,13 +84,15 @@ object ImportFromExcel {
                                 bForm = bForm,
                                 dob = dobMillis,
                                 doa = doaMillis,
-                                classId = klass!!,
+                                classId = classId,
                                 phoneNumber = phoneNumber,
                                 address = address
+                                // studentId is auto-generated by default
+                                // studentImage remains null unless set later
                             )
                         )
                     } catch (e: Exception) {
-                        // Optionally log or collect skipped rows
+                        // Log or collect error information if needed
                         continue
                     }
                 }
@@ -84,11 +101,9 @@ object ImportFromExcel {
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            return emptyList() // gracefully return empty if file is bad
+            return emptyList()
         }
 
         return studentEntities
     }
-
-
 }
