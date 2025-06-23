@@ -5,48 +5,104 @@ import androidx.lifecycle.viewModelScope
 import com.miassolutions.rollcall.data.datastore.UserPrefsManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.truncate
 
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
-    private val prefs: UserPrefsManager
+    private val prefs: UserPrefsManager,
 ) : ViewModel() {
 
+    private val _uiEvent = Channel<UserProfileUiEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
 
-    private val _messageEvent = MutableSharedFlow<String>()
-    val messageEvent: SharedFlow<String> = _messageEvent
+    private val _uiState = MutableStateFlow(UserProfileUiState())
+    val uiState = _uiState.asStateFlow()
 
+    init {
+        loadUserData()
+    }
 
-    val userName = prefs.userName.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
-    val instituteName = prefs.instituteName.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
-    val userProfileImage = prefs.userProfileImage.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+    private fun loadUserData() {
+        combine(
+            prefs.userProfileImage,
+            prefs.userName,
+            prefs.instituteName
+        ) { imagePath, userName, instituteName ->
+            _uiState.update {
+                it.copy(
+                    userName = userName ?: "",
+                    instituteName = instituteName ?: "",
+                    userProfileImage = imagePath,
+                    isLoading = false
+                )
+            }
+        }.launchIn(viewModelScope)
+    }
 
-    fun saveImageUriStr(imagePath : String){
+    fun saveImageUrlStr(imagePath: String) {
         viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
             prefs.saveUserImage(imagePath)
+            _uiState.update { it.copy(isLoading = false) }
         }
     }
 
-    private fun saveUserName(userName: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            prefs.saveUserName(userName)
+    fun validateAndSaveProfile(userName: String, instituteName: String) {
+        when {
+            userName.isBlank() -> {
+                viewModelScope.launch {
+                    _uiEvent.send(
+                        UserProfileUiEvent.ShowValidationError(
+                            Field.USER_NAME,
+                            "Enter name"
+                        )
+                    )
+                }
+            }
+
+            instituteName.isBlank() -> {
+                viewModelScope.launch {
+                    _uiEvent.send(
+                        UserProfileUiEvent.ShowValidationError(
+                            Field.INSTITUTE_NAME,
+                            "Enter institute name"
+                        )
+                    )
+                }
+            }
+
+            else -> saveUserProfile(userName, instituteName)
         }
     }
 
-    private fun saveInstituteName(instName: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            prefs.saveInstituteName(instName)
+    private fun saveUserProfile(userName: String, instituteName: String) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+
+            try {
+                prefs.saveUserName(userName)
+                prefs.saveInstituteName(instituteName)
+                _uiEvent.send(UserProfileUiEvent.NavigateUp)
+
+            } catch (e: Exception) {
+                _uiEvent.send(UserProfileUiEvent.ShowToast("Error saving profile : ${e.localizedMessage}"))
+            } finally {
+                _uiState.update { it.copy(isLoading = false) }
+            }
 
         }
-    }
-
-    fun saveUserProfile(userName: String, instituteName: String) {
-        saveUserName(userName)
-        saveInstituteName(instituteName)
     }
 }

@@ -1,15 +1,14 @@
 package com.miassolutions.rollcall.ui.dashboard
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import coil3.load
-import coil3.request.crossfade
-import coil3.request.error
-import coil3.request.placeholder
+import com.bumptech.glide.Glide
 import com.miassolutions.rollcall.R
+import com.miassolutions.rollcall.common.Constants.TAG
 import com.miassolutions.rollcall.databinding.FragmentDashboardBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.showToast
@@ -50,16 +49,20 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             }
         }
     }
+    private fun loadImage(imagePath : String){
+        Glide.with(requireContext())
+            .load(imagePath)
+            .placeholder(R.drawable.ic_person)
+            .error(R.drawable.ic_error_image)
+            .into(binding.topLayout.ivUserProfile)
+    }
 
     private fun renderUiState(uiState: DashboardUiState) {
 
         binding.topLayout.apply {
             uiState.userProfileImageUri?.let {
-                ivUserProfile.load(it) {
-                    placeholder(R.drawable.ic_person)
-                    error(R.drawable.ic_error_image)
-
-                }
+                Log.d(TAG, it)
+                loadImage(it)
             }
 
             tvTitle.text = getString(R.string.welcome, uiState.userName)
@@ -88,7 +91,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             }
 
             DashBoardUiEvent.NavigationToProfile -> {
-                showToast(uiEvent.toString())
+                val action =
+                    DashboardFragmentDirections.actionDashboardFragmentToUserProfileFragment()
+                findNavController().navigate(action)
             }
         }
 

@@ -5,13 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentUserProfileBinding
+import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.utils.StudentImagePicker
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class UserProfileFragment : BottomSheetDialogFragment() {
@@ -23,7 +27,6 @@ class UserProfileFragment : BottomSheetDialogFragment() {
 
     private lateinit var userImagePicker: StudentImagePicker
 
-    private var userImageUriStr = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,76 +40,99 @@ class UserProfileFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userImagePicker = StudentImagePicker(this) {
-            Glide.with(requireContext())
-                .load(it)
-                .placeholder(R.drawable.ic_person)
-                .error(R.drawable.ic_error_image)
-                .into(binding.ivUserProfile)
+        initViews()
+        observeViewModels()
 
-            userImageUriStr = it.toString()
-            viewModel.saveImageUriStr(userImageUriStr)
+    }
+
+    private fun observeViewModels() {
+
+        viewModel.uiState
+            .onEach { handleUiState(it) }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+
+
+        viewModel.uiEvent
+            .onEach { handleUiEvent(it) }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun handleUiState(uiState: UserProfileUiState) {
+        binding.apply {
+            etUserName.setText(uiState.userName.uppercase())
+            etInstitute.setText(uiState.instituteName.uppercase())
         }
 
-        binding.ivUserProfile.setOnClickListener {
-
-            userImagePicker.requestAndPickImage()
-
-        }
-
-
-//        viewModel.userName.observe(viewLifecycleOwner) { userName ->
-//            userName?.let {
-//
-//                binding.etUserName.setText(it.uppercase())
-//            }
-//        }
-//
-//        viewModel.instituteName.observe(viewLifecycleOwner) { instName ->
-//            instName?.let {
-//                binding.etInstitute.setText(it.uppercase())
-//            }
-//        }
-//
-//        viewModel.userProfileImage.observe(viewLifecycleOwner) { imagePath ->
-//            imagePath?.let {
-//                Glide.with(requireContext())
-//                    .load(it)
-//                    .placeholder(R.drawable.ic_person)
-//                    .error(R.drawable.ic_error_image)
-//                    .into(binding.ivUserProfile)
-//            }
-//
-//        }
-
-
-
-
-        binding.btnSaveProfile.setOnClickListener {
-            val userName = binding.etUserName.text.toString().trim()
-            val instituteName = binding.etInstitute.text.toString().trim()
-
-            when {
-                userName.isBlank() -> {
-                    binding.etUserName.apply {
-                        requestFocus()
-                        error = "Enter name"
-                    }
-                }
-
-                instituteName.isBlank() -> {
-                    binding.etInstitute.apply {
-                        requestFocus()
-                        error = "Enter institute name"
-                    }
-                }
-
-                else -> {
-                    viewModel.saveUserProfile(userName, instituteName)
-                    findNavController().navigateUp()
-                }
+        uiState.userProfileImage?.let {uri ->
+            if (uri.isNotEmpty()){
+                loadImage(uri)
+            } else {
+                binding.ivUserProfile.setImageResource(R.drawable.ic_person)
             }
+
         }
+
+        binding.btnSaveProfile.isEnabled = !uiState.isLoading
+    }
+
+    private fun handleUiEvent(uiEvent: UserProfileUiEvent) {
+
+        when (uiEvent) {
+            UserProfileUiEvent.NavigateUp -> {
+                findNavController().navigateUp()
+            }
+
+            is UserProfileUiEvent.ShowToast -> {
+                showToast(uiEvent.message)
+            }
+
+            is UserProfileUiEvent.ShowValidationError -> showValidatorError(uiEvent)
+        }
+
+    }
+
+    private fun showValidatorError(event: UserProfileUiEvent.ShowValidationError) {
+        val targetView = when (event.field) {
+            Field.USER_NAME -> binding.etUserName
+            Field.INSTITUTE_NAME -> binding.etInstitute
+        }
+
+        targetView.apply {
+            requestFocus()
+            error = event.message
+        }
+    }
+
+
+    private fun initViews() {
+        userImagePicker = StudentImagePicker(this) { uri ->
+            loadImage(uri.toString())
+            viewModel.saveImageUrlStr(uri.toString())
+        }
+
+        binding.apply {
+            ivUserProfile.setOnClickListener { userImagePicker.requestAndPickImage() }
+            btnSaveProfile.setOnClickListener { saveProfile() }
+        }
+    }
+
+    private fun saveProfile() {
+        val userName = binding.etUserName.text.toString().trim()
+        val instituteName = binding.etInstitute.text.toString().trim()
+
+        viewModel.validateAndSaveProfile(userName, instituteName)
+
+    }
+
+    private fun loadImage(uri: String) {
+
+        Glide.with(requireContext())
+            .load(uri)
+            .placeholder(R.drawable.ic_person)
+            .error(R.drawable.ic_error_image)
+            .into(binding.ivUserProfile)
+
+
 
 
     }
