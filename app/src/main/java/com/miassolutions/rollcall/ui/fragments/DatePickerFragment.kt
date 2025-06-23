@@ -8,16 +8,15 @@ import android.widget.DatePicker
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
+import com.miassolutions.rollcall.ui.userprofile.UserProfileViewModel
 import com.miassolutions.rollcall.common.Constants.DATE_REQUEST_KEY
 import com.miassolutions.rollcall.common.Constants.SELECTED_DATE
-import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
-    private val viewModel by viewModels<SettingsViewModel>()
+    private val viewModel by viewModels<UserProfileViewModel>()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
@@ -30,14 +29,14 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
         val datePickerDialog =
             DatePickerDialog(requireContext(), this, initYear, initMonth, initDay)
         datePickerDialog.datePicker.maxDate = calendar.timeInMillis
-        collectLatestFlow {
-            viewModel.minDate.collect { minDate ->
-                minDate?.let {
-                    datePickerDialog.datePicker.minDate = it
-
-                }
-            }
-        }
+//        collectLatestFlow {
+//            viewModel.minDate.collect { minDate ->
+//                minDate?.let {
+//                    datePickerDialog.datePicker.minDate = it
+//
+//                }
+//            }
+//        }
         return datePickerDialog
     }
 

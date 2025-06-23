@@ -55,7 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.miassolutions.rollcall.ui.fragments.SettingsFragment"
+        android:name="com.miassolutions.rollcall.ui.settings.SettingsFragment"
         tools:layout="@layout/fragment_settings"
         android:label="Settings" >
         <action
@@ -101,7 +101,7 @@
     <dialog
         android:id="@+id/userProfileFragment"
         tools:layout="@layout/fragment_user_profile"
-        android:name="com.miassolutions.rollcall.ui.fragments.UserProfileFragment"
+        android:name="com.miassolutions.rollcall.ui.userprofile.UserProfileFragment"
         android:label="UserProfileFragment" />
     <fragment
         android:id="@+id/listClassFragment"

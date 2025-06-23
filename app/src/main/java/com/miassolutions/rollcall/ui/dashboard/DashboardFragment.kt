@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import coil3.load
 import coil3.request.crossfade
 import coil3.request.error
@@ -28,11 +29,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentDashboardBinding.bind(view)
 
-
         setupStaticCardContent()
         setupClickListeners()
         observeViewModel()
-
 
     }
 
@@ -80,7 +79,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             }
 
             DashBoardUiEvent.NavigateToSettings -> {
-                showToast(uiEvent.toString())
+                val action = DashboardFragmentDirections.actionDashboardFragmentToSettingsFragment()
+                findNavController().navigate(action)
             }
 
             DashBoardUiEvent.NavigationToClasses -> {

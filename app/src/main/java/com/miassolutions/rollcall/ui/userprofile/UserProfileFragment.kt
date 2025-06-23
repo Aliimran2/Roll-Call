@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.fragments
+package com.miassolutions.rollcall.ui.userprofile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,13 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import coil3.load
-import coil3.request.placeholder
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentUserProfileBinding
-import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
 import com.miassolutions.rollcall.utils.StudentImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,7 +19,7 @@ class UserProfileFragment : BottomSheetDialogFragment() {
     private var _binding: FragmentUserProfileBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by viewModels<SettingsViewModel>()
+    private val viewModel by viewModels<UserProfileViewModel>()
 
     private lateinit var userImagePicker: StudentImagePicker
 
@@ -58,29 +55,29 @@ class UserProfileFragment : BottomSheetDialogFragment() {
         }
 
 
-        viewModel.userName.observe(viewLifecycleOwner) { userName ->
-            userName?.let {
-
-                binding.etUserName.setText(it.uppercase())
-            }
-        }
-
-        viewModel.instituteName.observe(viewLifecycleOwner) { instName ->
-            instName?.let {
-                binding.etInstitute.setText(it.uppercase())
-            }
-        }
-
-        viewModel.userProfileImage.observe(viewLifecycleOwner) { imagePath ->
-            imagePath?.let {
-                Glide.with(requireContext())
-                    .load(it)
-                    .placeholder(R.drawable.ic_person)
-                    .error(R.drawable.ic_error_image)
-                    .into(binding.ivUserProfile)
-            }
-
-        }
+//        viewModel.userName.observe(viewLifecycleOwner) { userName ->
+//            userName?.let {
+//
+//                binding.etUserName.setText(it.uppercase())
+//            }
+//        }
+//
+//        viewModel.instituteName.observe(viewLifecycleOwner) { instName ->
+//            instName?.let {
+//                binding.etInstitute.setText(it.uppercase())
+//            }
+//        }
+//
+//        viewModel.userProfileImage.observe(viewLifecycleOwner) { imagePath ->
+//            imagePath?.let {
+//                Glide.with(requireContext())
+//                    .load(it)
+//                    .placeholder(R.drawable.ic_person)
+//                    .error(R.drawable.ic_error_image)
+//                    .into(binding.ivUserProfile)
+//            }
+//
+//        }
 
 
 
