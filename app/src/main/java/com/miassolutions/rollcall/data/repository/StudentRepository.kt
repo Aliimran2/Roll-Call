@@ -8,11 +8,20 @@ import kotlinx.coroutines.flow.Flow
 
 interface StudentRepository {
     val allStudentsFlow: Flow<List<StudentEntity>>
+
     suspend fun insertStudent(student: StudentEntity): InsertResult
+
     suspend fun insertStudentsBulk(students: List<StudentEntity>): Pair<Int, Int>
+
     suspend fun getStudentById(id: String): OperationResult<StudentEntity>
+
     suspend fun updateStudent(student: StudentEntity)
+
     fun searchStudents(query: String): Flow<List<StudentEntity>>
+
     suspend fun clearAllStudents()
+
     suspend fun deleteStudentById(id: String)
+
+    suspend fun getStudentsByClassId(classId: String): Flow<List<StudentEntity>>
 }

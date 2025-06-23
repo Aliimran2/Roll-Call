@@ -7,11 +7,13 @@ interface AttendanceRepository {
 
     suspend fun insertAttendances(list: List<AttendanceEntity>)
 
-    suspend fun isAttendanceTakenForClassAndDate(classId: String, date: Long) : Boolean
+    suspend fun isAttendanceTaken(date: Long) : Boolean
 
-    suspend fun getAttendanceCountForClassAndDate(classId : String, date :Long)
+//    suspend fun getAttendanceCountForClassAndDate(classId : String, date :Long)
 
     suspend fun getClassAttendanceGroupedByDate(classId: String) : Flow<Map<Long, List<AttendanceEntity>>>
+
+    suspend fun getClassAttendanceForDate(date: Long) : List<AttendanceEntity>
 
     suspend fun getAttendanceByStudent(studentId : String) : Flow<List<AttendanceEntity>>
 

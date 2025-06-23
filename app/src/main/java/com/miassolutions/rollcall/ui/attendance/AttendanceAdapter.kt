@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.adapters
+package com.miassolutions.rollcall.ui.attendance
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

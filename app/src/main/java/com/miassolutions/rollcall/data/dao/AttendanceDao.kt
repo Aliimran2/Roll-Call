@@ -18,8 +18,8 @@ interface AttendanceDao {
 
     // --- Get Attendance Data ---
     // for prevent duplication
-    @Query("SELECT COUNT(*) FROM attendance_table WHERE classId =:classId AND date = :date")
-    suspend fun getAttendanceCountForClassAndDate(classId: String, date: Long): Int
+    @Query("SELECT COUNT(*) FROM attendance_table WHERE date = :date")
+    suspend fun getAttendanceCount(date: Long): Int
 
     @Query("SELECT * FROM attendance_table WHERE studentId = :studentId ORDER BY date DESC")
     fun getAttendanceByStudent(studentId: String): Flow<List<AttendanceEntity>>
@@ -27,15 +27,15 @@ interface AttendanceDao {
     @Query("SELECT * FROM attendance_table WHERE classId = :classId ORDER BY date DESC")
     fun getClassAttendances(classId: String): Flow<List<AttendanceEntity>>
 
-    @Query("SELECT * FROM attendance_table WHERE classId = :classId ORDER BY studentId ASC")
-    suspend fun getClassAttendanceForDate(classId: String): List<AttendanceEntity>
+    @Query("SELECT * FROM attendance_table WHERE date = :date ORDER BY studentId ASC")
+    suspend fun getClassAttendanceForDate(date: Long): List<AttendanceEntity>
 
 //    @Query("SELECT * FROM attendance_table WHERE classId =:classId AND date BETWEEN :startDate AND :endDate")
 //    fun getClassAttendanceForDateRange(classId : String,startDate: Long, endDate: Long): Flow<List<AttendanceEntity>>
 
 
     @Query("SELECT COUNT(*) FROM attendance_table WHERE date = :date AND attendanceStatus = :status")
-    fun getAttendanceCountForDateAndStatus(date: Long, status: AttendanceStatus): Flow<Int>
+    fun getAttendanceCountForDate(date: Long, status: AttendanceStatus): Flow<Int>
 
 
     @Update

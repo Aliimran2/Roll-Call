@@ -40,6 +40,9 @@ interface StudentDao {
     @Query("SELECT * FROM student_table ORDER BY rollNumber ASC")
     fun getAllStudents(): Flow<List<StudentEntity>>
 
+    @Query("SELECT * FROM student_table WHERE classId ORDER BY rollNumber ASC")
+    fun getAllStudentsByClassId(classId : String): Flow<List<StudentEntity>>
+
     //duplication check getter
 
     @Query("SELECT * FROM student_table WHERE regNumber =:regNumber LIMIT 1")

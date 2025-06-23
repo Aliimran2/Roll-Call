@@ -3,7 +3,6 @@ package com.miassolutions.rollcall.ui.fragments
 import WeekendPastDateValidatorUtil
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -14,9 +13,9 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
-import com.miassolutions.rollcall.ui.adapters.AttendanceAdapter
+import com.miassolutions.rollcall.ui.attendance.AttendanceAdapter
 
-import com.miassolutions.rollcall.ui.viewmodels.AttendanceViewModel
+import com.miassolutions.rollcall.ui.attendance.AttendanceViewModel
 import com.miassolutions.rollcall.common.AttendanceFilter
 import com.miassolutions.rollcall.common.Constants
 import com.miassolutions.rollcall.common.Constants.DATE_REQUEST_KEY

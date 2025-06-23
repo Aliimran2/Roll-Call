@@ -31,6 +31,7 @@ import com.miassolutions.rollcall.common.AttendanceStatus
 
 )
 data class AttendanceEntity(
+
     val classId : String,
     val studentId: String,
     val date: Long,
