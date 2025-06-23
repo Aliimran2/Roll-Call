@@ -4,6 +4,7 @@ import com.miassolutions.rollcall.common.AttendanceFilter
 import com.miassolutions.rollcall.common.AttendanceStatus
 
 data class AttendanceUiState(
+    val classId: String = "",
     val isLoading: Boolean = false,
     val isSaving: Boolean = false,
     val error: String? = null,
@@ -15,7 +16,6 @@ data class AttendanceUiState(
     val counts: AttendanceCounts = AttendanceCounts(),
 ) {
     data class StudentAttendance(
-        val classId : String,
         val studentId: String,
         val name: String,
         val rollNumber: String,
