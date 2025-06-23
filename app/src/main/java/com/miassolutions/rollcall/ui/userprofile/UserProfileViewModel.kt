@@ -4,21 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.miassolutions.rollcall.data.datastore.UserPrefsManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.math.truncate
 
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
@@ -54,9 +48,7 @@ class UserProfileViewModel @Inject constructor(
 
     fun saveImageUrlStr(imagePath: String) {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
             prefs.saveUserImage(imagePath)
-            _uiState.update { it.copy(isLoading = false) }
         }
     }
 

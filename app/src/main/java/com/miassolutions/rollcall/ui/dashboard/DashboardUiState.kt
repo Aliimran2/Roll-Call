@@ -6,7 +6,7 @@ data class DashboardUiState(
     val userProfileImageUri : String? = null,
     val userName : String = "User",
     val instituteName : String = "Your Institute",
-    val isLoading : Boolean = false,
+    val isLoading : Boolean = false, //future use
     val errorMessage : String? = null
 )
 

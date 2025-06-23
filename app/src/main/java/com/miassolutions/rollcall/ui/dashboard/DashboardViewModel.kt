@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +20,7 @@ class DashboardViewModel @Inject constructor(
     private val prefs: UserPrefsManager,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<DashboardUiState>(DashboardUiState())
+    private val _uiState = MutableStateFlow(DashboardUiState())
     val uiState = _uiState.asStateFlow()
 
     private val _uiEvent = Channel<DashBoardUiEvent>()
@@ -36,18 +37,18 @@ class DashboardViewModel @Inject constructor(
             prefs.userName,
             prefs.instituteName,
             prefs.userProfileImage
-        ){ userName, instName, userImage ->
-            _uiState.value.copy(
-                userName = userName ?: "User Name",
-                userProfileImageUri = userImage,
-                instituteName = instName ?: "Institute Name"
-            )
-        }.onEach { newState ->
-            _uiState.value = newState
+        ) { userName, instName, userImage ->
+            _uiState.update {
+                it.copy(
+                    userName = userName?.uppercase() ?: "User Name",
+                    userProfileImageUri = userImage,
+                    instituteName = instName?.uppercase() ?: "Institute Name"
+                )
+            }
         }.launchIn(viewModelScope)
     }
 
-    fun onAttendanceCardClicked(){
+    fun onAttendanceCardClicked() {
         viewModelScope.launch {
             _uiEvent.send(DashBoardUiEvent.NavigateToAttendance)
         }

@@ -1,14 +1,12 @@
 package com.miassolutions.rollcall.ui.dashboard
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.miassolutions.rollcall.R
-import com.miassolutions.rollcall.common.Constants.TAG
 import com.miassolutions.rollcall.databinding.FragmentDashboardBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.showToast
@@ -34,21 +32,21 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     }
 
-    private fun observeViewModel() {
-        collectLatestFlow {
-            launch {
-                viewModel.uiState.collectLatest { uiState ->
-                    renderUiState(uiState)
+    private fun observeViewModel() = collectLatestFlow {
 
-                }
+        launch {
+            viewModel.uiState.collectLatest { uiState ->
+                renderUiState(uiState)
             }
-            launch {
-                viewModel.uiEvent.collectLatest { uiEvent ->
-                    handleEvent(uiEvent)
-                }
+        }
+
+        launch {
+            viewModel.uiEvent.collectLatest { uiEvent ->
+                handleEvent(uiEvent)
             }
         }
     }
+
     private fun loadImage(imagePath : String){
         Glide.with(requireContext())
             .load(imagePath)
@@ -61,7 +59,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
         binding.topLayout.apply {
             uiState.userProfileImageUri?.let {
-                Log.d(TAG, it)
+
                 loadImage(it)
             }
 
@@ -77,11 +75,13 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private fun handleEvent(uiEvent: DashBoardUiEvent) {
         when (uiEvent) {
             DashBoardUiEvent.NavigateToAttendance -> {
+
                 showToast(uiEvent.toString())
 
             }
 
             DashBoardUiEvent.NavigateToSettings -> {
+
                 val action = DashboardFragmentDirections.actionDashboardFragmentToSettingsFragment()
                 findNavController().navigate(action)
             }
