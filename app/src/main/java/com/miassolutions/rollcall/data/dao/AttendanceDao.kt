@@ -13,38 +13,30 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface AttendanceDao {
     // --- Insert Operations ---
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAttendance(attendanceEntity: AttendanceEntity)
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAttendances(attendanceEntityList: List<AttendanceEntity>)
 
     // --- Get Attendance Data ---
-
-    @Query("SELECT COUNT(*) FROM attendance_table WHERE date = :date")
-    suspend fun getAttendanceCountForDate(date: Long): Int
+    // for prevent duplication
+    @Query("SELECT COUNT(*) FROM attendance_table WHERE classId =:classId AND date = :date")
+    suspend fun getAttendanceCountForClassAndDate(classId: String, date: Long): Int
 
     @Query("SELECT * FROM attendance_table WHERE studentId = :studentId ORDER BY date DESC")
     fun getAttendanceByStudent(studentId: String): Flow<List<AttendanceEntity>>
 
-    @Query("SELECT * FROM attendance_table WHERE date = :date ORDER BY studentId ASC")
-    suspend fun getAttendanceForDate(date: Long): List<AttendanceEntity>
+    @Query("SELECT * FROM attendance_table WHERE classId = :classId ORDER BY date DESC")
+    fun getClassAttendances(classId: String): Flow<List<AttendanceEntity>>
 
-    @Query("SELECT * FROM attendance_table WHERE date BETWEEN :startDate AND :endDate")
-    fun getAttendanceForDateRange(startDate : Long, endDate: Long) : Flow<List<AttendanceEntity>>
+    @Query("SELECT * FROM attendance_table WHERE classId = :classId ORDER BY studentId ASC")
+    suspend fun getClassAttendanceForDate(classId: String): List<AttendanceEntity>
 
-    @Query("SELECT * FROM attendance_table ORDER BY date DESC")
-    fun getAllAttendances(): Flow<List<AttendanceEntity>>
+//    @Query("SELECT * FROM attendance_table WHERE classId =:classId AND date BETWEEN :startDate AND :endDate")
+//    fun getClassAttendanceForDateRange(classId : String,startDate: Long, endDate: Long): Flow<List<AttendanceEntity>>
 
-    @Query("SELECT COUNT(*) FROM attendance_table WHERE date = :date")
-    fun getMarkedStudentsCountForDate(date: Long): Flow<Int>
 
     @Query("SELECT COUNT(*) FROM attendance_table WHERE date = :date AND attendanceStatus = :status")
     fun getAttendanceCountForDateAndStatus(date: Long, status: AttendanceStatus): Flow<Int>
 
-    @Query("SELECT COUNT(*) FROM student_table")
-    fun getTotalStudentsCount(): Flow<Int>
 
     @Update
     suspend fun updateAttendance(attendance: AttendanceEntity)
@@ -54,8 +46,8 @@ interface AttendanceDao {
 
     //     --- Delete Operations ---
 
-    @Query("DELETE FROM attendance_table WHERE date =:date")
-    suspend fun deleteAttendanceForDate(date: Long)
+    @Query("DELETE FROM attendance_table WHERE classId =:classId AND date =:date")
+    suspend fun deleteAttendanceForClassAndDate(classId : String,date: Long)
 
     @Query("DELETE FROM attendance_table WHERE studentId = :studentId")
     suspend fun deleteAttendanceForStudent(studentId: String)

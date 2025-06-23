@@ -76,43 +76,49 @@ class MainRepository @Inject constructor(
 
     // region Attendance
 
-
-    override suspend fun insertAttendance(attendance: AttendanceEntity) = attendanceDao.insertAttendance(attendance)
-
-    override suspend fun insertAttendances(list: List<AttendanceEntity>) = attendanceDao.insertAttendances(list)
-
-    override suspend fun isAttendanceTaken(date: Long): Boolean = attendanceDao.getAttendanceCountForDate(date) > 0
-
-    override fun getAttendanceGroupedByDate(): Flow<Map<Long, List<AttendanceEntity>>> =
-        attendanceDao.getAllAttendances().map { it.groupBy { att -> att.date } }
-
-    override fun getAttendanceForStudent(studentId: String): Flow<List<AttendanceEntity>> =
-        attendanceDao.getAttendanceByStudent(studentId)
-
-    override suspend fun getAttendanceForDate(date: Long): List<AttendanceEntity> =
-        attendanceDao.getAttendanceForDate(date)
-
-    override suspend fun getAttendanceForDateRange(startDate: Long, endDate: Long) {
-        attendanceDao.getAttendanceForDateRange(startDate, endDate)
-    }
-
-    override suspend fun updateAttendance(attendance: AttendanceEntity) =
-        attendanceDao.updateAttendance(attendance)
-
-    override suspend fun updateAttendances(list: List<AttendanceEntity>) =
-        attendanceDao.updateAttendances(list)
-
-    override suspend fun deleteAttendanceForStudent(studentId: String) =
-        attendanceDao.deleteAttendanceForStudent(studentId)
-
-    override suspend fun deleteAttendanceForDate(date: Long) = attendanceDao.deleteAttendanceForDate(date)
-
-    override suspend fun deleteAllAttendance() = attendanceDao.deleteAllAttendance()
-
-    override suspend fun replaceAttendanceForDate(date: Long, list: List<AttendanceEntity>) {
-        attendanceDao.deleteAttendanceForDate(date)
+    override suspend fun insertAttendances(list: List<AttendanceEntity>) {
         attendanceDao.insertAttendances(list)
     }
+
+    override suspend fun isAttendanceTakenForClassAndDate(classId: String, date: Long): Boolean {
+        return attendanceDao.getAttendanceCountForClassAndDate(classId, date) > 0
+    }
+
+    override suspend fun getAttendanceCountForClassAndDate(classId: String, date: Long) {
+        attendanceDao.getAttendanceCountForClassAndDate(classId, date)
+    }
+
+    override suspend fun getClassAttendanceGroupedByDate(classId: String): Flow<Map<Long, List<AttendanceEntity>>> {
+        return attendanceDao.getClassAttendances(classId).map { it.groupBy { att -> att.date } }
+    }
+
+    override suspend fun getAttendanceByStudent(studentId: String): Flow<List<AttendanceEntity>> {
+        return attendanceDao.getAttendanceByStudent(studentId)
+    }
+
+    override suspend fun updateAttendanceList(list: List<AttendanceEntity>) {
+        attendanceDao.updateAttendances(list)
+    }
+
+    override suspend fun deleteAttendanceForStudent(studentId: String) {
+        attendanceDao.deleteAttendanceForStudent(studentId)
+    }
+
+    override suspend fun deleteAttendancesForClassAndDate(classId: String, date: Long) {
+        attendanceDao.deleteAttendanceForClassAndDate(classId, date)
+    }
+
+    override suspend fun replaceAttendanceForDate(
+        classId: String,
+        date: Long,
+        list: List<AttendanceEntity>,
+    ) {
+        attendanceDao.deleteAttendanceForClassAndDate(classId, date)
+        attendanceDao.insertAttendances(list)
+    }
+
+
+
     // endregion
 
 
@@ -128,6 +134,8 @@ class MainRepository @Inject constructor(
 
     override fun getClasses(): Flow<List<ClassEntity>> =
         classDao.getClasses()
+
+
     // endregion
 
 }

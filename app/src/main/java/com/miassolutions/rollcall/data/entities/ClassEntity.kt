@@ -2,13 +2,15 @@ package com.miassolutions.rollcall.data.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.UUID
 
 @Entity(tableName = "class_table")
 data class ClassEntity(
     @PrimaryKey(autoGenerate = true)
-    val classId : Int = 0,
+    val classId : String = UUID.randomUUID().toString(),
     val className : String,
-    val startDate : Long,
-    val endDate : Long,
+    val sectionName : String? = null,
+    val startDate : Long = System.currentTimeMillis(),
+    val endDate : Long = System.currentTimeMillis(),
     val teacher : String
 )

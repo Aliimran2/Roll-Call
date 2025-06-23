@@ -58,8 +58,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             }
 
             studentsCard.apply {
-                ivCard.setImageResource(R.drawable.ic_students_m)
-                tvCard.text = "Students"
+                ivCard.setImageResource(R.drawable.ic_class)
+                tvCard.text = "Classes"
             }.root.setOnClickListener {
 //                val action = DashboardFragmentDirections.actionDashboardFragmentToStudentsFragment()
                 val action = DashboardFragmentDirections.actionDashboardFragmentToListClassFragment()
