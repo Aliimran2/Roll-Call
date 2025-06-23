@@ -69,7 +69,7 @@ object ImportFromExcel {
                                 bForm = bForm,
                                 dob = dobMillis,
                                 doa = doaMillis,
-                                klass = klass,
+                                classId = klass!!,
                                 phoneNumber = phoneNumber,
                                 address = address
                             )

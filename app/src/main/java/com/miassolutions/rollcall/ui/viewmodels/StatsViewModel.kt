@@ -17,31 +17,31 @@ import javax.inject.Inject
 class StatsViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
 
-    val attendanceSummary =
-        repository.getAttendanceGroupedByDate()
-            .map { groupedMap ->
-                groupedMap.map { (dateMillis, attendanceList) ->
-                    val presentCount =
-                        attendanceList.count { it.attendanceStatus == AttendanceStatus.PRESENT }
-                    val totalCount = attendanceList.size
-                    StatsUiModel(
-                        dateMillis,
-                        presentCount,
-                        totalCount
-                    )
-                }
-            }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = emptyList()
-            )
-
-    fun deleteAttendance(date: Long) {
-        viewModelScope.launch {
-            repository.deleteAttendanceForDate(date)
-        }
-    }
+//    val attendanceSummary =
+//        repository.getAttendanceGroupedByDate()
+//            .map { groupedMap ->
+//                groupedMap.map { (dateMillis, attendanceList) ->
+//                    val presentCount =
+//                        attendanceList.count { it.attendanceStatus == AttendanceStatus.PRESENT }
+//                    val totalCount = attendanceList.size
+//                    StatsUiModel(
+//                        dateMillis,
+//                        presentCount,
+//                        totalCount
+//                    )
+//                }
+//            }
+//            .stateIn(
+//                scope = viewModelScope,
+//                started = SharingStarted.WhileSubscribed(5000),
+//                initialValue = emptyList()
+//            )
+//
+//    fun deleteAttendance(date: Long) {
+//        viewModelScope.launch {
+//            repository.deleteAttendanceForDate(date)
+//        }
+//    }
 
     fun updateStudentsAttendanceForDate(updatedList: List<AttendanceEntity>) {
         viewModelScope.launch {

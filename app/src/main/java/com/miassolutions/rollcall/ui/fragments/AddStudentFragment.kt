@@ -297,7 +297,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
             dob = dob,
             doa = doa,
             phoneNumber = phoneNumber,
-            klass = klass,
+            classId = klass,
             address = address,
             bForm = bForm
         )

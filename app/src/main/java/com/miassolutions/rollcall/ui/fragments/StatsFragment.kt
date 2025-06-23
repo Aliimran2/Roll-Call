@@ -28,15 +28,15 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentStatsBinding.bind(view)
 
-        val adapter = StatsListAdapter(::deleteAttendance, ::editAttendance, ::reportAttendance)
+//        val adapter = StatsListAdapter(::deleteAttendance, ::editAttendance, ::reportAttendance)
 
         collectLatestFlow {
-            viewModel.attendanceSummary.collectLatest {
-                adapter.submitList(it)
-            }
+//            viewModel.attendanceSummary.collectLatest {
+//                adapter.submitList(it)
+//            }
         }
 
-        binding.rvStats.adapter = adapter
+//        binding.rvStats.adapter = adapter
 
 
 
@@ -67,17 +67,17 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
         findNavController().navigate(action)
     }
 
-    private fun deleteAttendance(date: Long) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Delete Confirmation!!")
-            .setMessage("Are you suer?")
-            .setPositiveButton("Yes, Delete") { _, _ ->
-                viewModel.deleteAttendance(date)
-                showSnackbar("Attendance record deleted for ${date.toFormattedDate()}")
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
+//    private fun deleteAttendance(date: Long) {
+//        MaterialAlertDialogBuilder(requireContext())
+//            .setTitle("Delete Confirmation!!")
+//            .setMessage("Are you suer?")
+//            .setPositiveButton("Yes, Delete") { _, _ ->
+//                viewModel.deleteAttendance(date)
+//                showSnackbar("Attendance record deleted for ${date.toFormattedDate()}")
+//            }
+//            .setNegativeButton("Cancel", null)
+//            .show()
+//    }
 
 
 //    private fun menuProvider() {

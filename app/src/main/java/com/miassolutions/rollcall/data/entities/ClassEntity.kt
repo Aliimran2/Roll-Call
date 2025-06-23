@@ -6,7 +6,7 @@ import java.util.UUID
 
 @Entity(tableName = "class_table")
 data class ClassEntity(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     val classId : String = UUID.randomUUID().toString(),
     val className : String,
     val sectionName : String? = null,

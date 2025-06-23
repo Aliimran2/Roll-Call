@@ -65,7 +65,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         toolbar = (activity as MainActivity).findViewById<MaterialToolbar>(R.id.toolbar)
 
 
-        setupRecyclerView()
+//        setupRecyclerView()
         setupFabClickListener()
         setupMenuProvider()
         observeViewModel()
@@ -234,41 +234,41 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     }
 
 
-    private fun setupRecyclerView() {
-        adapter = StudentListAdapter(
-            onPhoneClick = ::dialPhoneNumber,
-            onProfileClick = ::navToDetail,
-            onReportClick = ::reportClickListener,
-            onEditClick = ::navToEdit,
-            onDeleteClick = ::deleteClickListener
-        )
+//    private fun setupRecyclerView() {
+//        adapter = StudentListAdapter(
+//            onPhoneClick = ::dialPhoneNumber,
+//            onProfileClick = ::navToDetail,
+//            onReportClick = ::reportClickListener,
+//            onEditClick = ::navToEdit,
+//            onDeleteClick = ::deleteClickListener
+//        )
+//
+//        binding.rvStudents.adapter = adapter
+//
+//        binding.rvStudents.addOnScrollListener(object : OnScrollListener() {
+//            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(rv, dx, dy)
+//                if (dy > 0) binding.fabAddStudent.hide()
+//                else if (dy < 0) binding.fabAddStudent.show()
+//            }
+//        })
+//    }
 
-        binding.rvStudents.adapter = adapter
-
-        binding.rvStudents.addOnScrollListener(object : OnScrollListener() {
-            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(rv, dx, dy)
-                if (dy > 0) binding.fabAddStudent.hide()
-                else if (dy < 0) binding.fabAddStudent.show()
-            }
-        })
-    }
-
-    private fun deleteClickListener(studentId: String) {
-        MaterialAlertDialogBuilder(requireContext())
-
-            .setTitle("Confirm Deletion!!")
-            .setMessage("Are you sure?")
-            .setPositiveButton("Yes, Delete") { dialog, _ ->
-                studentDetailViewModel.deleteStudentById(studentId)
-                Snackbar.make(binding.root, "Deleted", Snackbar.LENGTH_LONG)
-                    .show()
-                dialog.dismiss()
-
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
+//    private fun deleteClickListener(studentId: String) {
+//        MaterialAlertDialogBuilder(requireContext())
+//
+//            .setTitle("Confirm Deletion!!")
+//            .setMessage("Are you sure?")
+//            .setPositiveButton("Yes, Delete") { dialog, _ ->
+//                studentDetailViewModel.deleteStudentById(studentId)
+//                Snackbar.make(binding.root, "Deleted", Snackbar.LENGTH_LONG)
+//                    .show()
+//                dialog.dismiss()
+//
+//            }
+//            .setNegativeButton("Cancel", null)
+//            .show()
+//    }
 
 
     private fun reportClickListener(studentId: String) {

@@ -73,7 +73,7 @@ fun exportExcelToDownloadsWithMediaStore(context: Context, students: List<Studen
                         doaCell.cellStyle = dateCellStyle
                     }
 
-                    row.createCell(9).setCellValue(student.klass ?: "")
+                    row.createCell(9).setCellValue(student.classId ?: "")
                     row.createCell(10).setCellValue(student.phoneNumber ?: "")
                     row.createCell(11).setCellValue(student.address ?: "")
                 }

@@ -101,31 +101,29 @@ class Repository @Inject constructor(
 
     //attendance operations
 
-    suspend fun insertAttendance(attendanceEntity: AttendanceEntity) {
-        attendanceDao.insertAttendance(attendanceEntity)
-    }
+
 
     suspend fun insertAttendances(attendanceEntityList: List<AttendanceEntity>) {
         attendanceDao.insertAttendances(attendanceEntityList)
     }
-
-    suspend fun isAttendanceTaken(date: Long): Boolean {
-        return attendanceDao.getAttendanceCountForDate(date) > 0
-    }
-
-    fun getAttendanceGroupedByDate(): Flow<Map<Long, List<AttendanceEntity>>> {
-        return attendanceDao.getAllAttendances().map { attendList ->
-            attendList.groupBy { it.date }
-        }
-    }
-
-    fun getAttendanceForStudent(studentId: String): Flow<List<AttendanceEntity>> {
-        return attendanceDao.getAttendanceByStudent(studentId)
-    }
-
-    suspend fun getAttendanceForDate(date: Long): List<AttendanceEntity> {
-        return attendanceDao.getAttendanceForDate(date)
-    }
+//
+//    suspend fun isAttendanceTaken(date: Long): Boolean {
+//        return attendanceDao.getAttendanceCountForDate(date) > 0
+//    }
+//
+//    fun getAttendanceGroupedByDate(): Flow<Map<Long, List<AttendanceEntity>>> {
+//        return attendanceDao.getAllAttendances().map { attendList ->
+//            attendList.groupBy { it.date }
+//        }
+//    }
+//
+//    fun getAttendanceForStudent(studentId: String): Flow<List<AttendanceEntity>> {
+//        return attendanceDao.getAttendanceByStudent(studentId)
+//    }
+//
+//    suspend fun getAttendanceForDate(date: Long): List<AttendanceEntity> {
+//        return attendanceDao.getAttendanceForDate(date)
+//    }
 
     suspend fun updateAttendance(attendance: AttendanceEntity) {
         attendanceDao.updateAttendance(attendance)
@@ -141,22 +139,22 @@ class Repository @Inject constructor(
         attendanceDao.deleteAttendanceForStudent(studentId)
     }
 
-    suspend fun deleteAttendanceForDate(date: Long) {
-        attendanceDao.deleteAttendanceForDate(date)
-    }
+//    suspend fun deleteAttendanceForDate(date: Long) {
+//        attendanceDao.deleteAttendanceForDate(date)
+//    }
 
     suspend fun deleteAllAttendance() {
         attendanceDao.deleteAllAttendance()
     }
 
-
-    suspend fun replaceAttendanceForDate(date: Long, updatedList: List<AttendanceEntity>) {
-        // Step 1: Delete old attendance for that date
-        attendanceDao.deleteAttendanceForDate(date)
-
-        // Step 2: Insert updated list
-        attendanceDao.insertAttendances(updatedList)
-    }
+//
+//    suspend fun replaceAttendanceForDate(date: Long, updatedList: List<AttendanceEntity>) {
+//        // Step 1: Delete old attendance for that date
+//        attendanceDao.deleteAttendanceForDate(date)
+//
+//        // Step 2: Insert updated list
+//        attendanceDao.insertAttendances(updatedList)
+//    }
 
 
     //classEntity Operations

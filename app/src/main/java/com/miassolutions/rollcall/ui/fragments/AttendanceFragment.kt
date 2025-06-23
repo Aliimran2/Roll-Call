@@ -48,263 +48,263 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAttendanceBinding.bind(view)
-
-
-        attendanceMode = navArgs.attendanceMode
-        selectedDate = navArgs.selectedDate
-
-        if (attendanceMode == "update" && selectedDate != -1L) {
-            setToolbarTitle("Update Attendance")
-            binding.attendanceToggleGroup.show()
-            // Pre-fill date and disable picker
-            binding.etDatePicker.setText(selectedDate.toFormattedDate())
-            binding.etDatePicker.isEnabled = false
-            binding.saveBtn.text = "Update"
-
-
-            // Load attendance from DB
-            viewModel.setDate(selectedDate)
-
-        } else if (attendanceMode == "report" && selectedDate != -1L) {
-            setToolbarTitle("Report ${selectedDate.toFormattedDate()}")
-            binding.attendanceToggleGroup.show()
-            binding.etDatePicker.setText(selectedDate.toFormattedDate())
-            binding.etDatePicker.isEnabled = false
-            binding.saveBtn.hide()
-            binding.etDatePicker.hide()
-
-            // Load attendance from DB
-            viewModel.setDate(selectedDate)
-        }
-
-
-
-
-        setupDateChangeListener()
-        setupRecyclerView()
-        collectFlows()
-        clickListener()
-        filterAttendance()
-        searchStudent()
-
-    }
-
-    private fun searchStudent() {
-        binding.etSearch.addTextChangedListener { searchText ->
-            viewModel.updateSearchQuery(searchText.toString())
-
-        }
-    }
-
-
-    private fun setupDateChangeListener() {
-        parentFragmentManager.setFragmentResultListener(
-            DATE_REQUEST_KEY,
-            viewLifecycleOwner
-        ) { _, bundle ->
-            val selectedDate = bundle.getLong(Constants.SELECTED_DATE)
-            binding.etDatePicker.setText(selectedDate.toFormattedDate())
-        }
-    }
-
-    private fun clickListener() {
-
-        binding.apply {
-            etDatePicker.setOnClickListener {
-                showDatePicker {
-                    etDatePicker.setText(it.toFormattedDate())
-                    viewModel.setDate(it)
-                }
-
-            }
-
-            saveBtn.setOnClickListener {
-                val dateStr = binding.etDatePicker.text.toString()
-
-                when {
-                    dateStr.isEmpty() -> {
-                        showSnackbar("Select date first")
-                        return@setOnClickListener
-                    }
-
-                    studentsCount == 0 -> {
-                        showSnackbar("No students for attendance")
-                        return@setOnClickListener
-                    }
-                }
-
-
-                val date = viewModel.selectedDate.value
-                if (date == null) {
-                    showSnackbar("Date not selected")
-                    return@setOnClickListener
-                }
-
-                when (attendanceMode) {
-                    "update" -> {
-
-
-                        viewModel.updateAttendanceForDate(date) { success ->
-                            if (success) {
-                                showSnackbar("Attendance updated for $dateStr")
-                                findNavController().navigateUp()
-                            } else {
-                                showSnackbar("Failed to update attendance for $dateStr")
-                            }
-                        }
-                    }
-
-                    "report" -> {
-
-                        filterAttendance()
-                    }
-
-                    else -> {
-
-                        viewModel.saveAttendance { success ->
-                            if (success) {
-                                showSnackbar("Attendance saved for $dateStr")
-                                findNavController().navigateUp()
-                            } else {
-                                showSnackbar("Attendance already exists for $dateStr")
-                            }
-                        }
-
-                    }
-                }
-            }
-
-        }
-
-
-    }
-
-    private fun filterAttendance() {
-
-
-        binding.attendanceToggleGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
-            if (isChecked) {
-                when (checkedId) {
-                    R.id.btnAll -> {
-                        viewModel.setFilter(AttendanceFilter.ALL)
-
-                    }
-
-                    R.id.btnPresent -> {
-                        viewModel.setFilter(AttendanceFilter.PRESENT)
-                    }
-
-                    R.id.btnAbsent -> {
-                        viewModel.setFilter(AttendanceFilter.ABSENT)
-                    }
-                }
-            }
-        }
 //
-//        val popupMenu = PopupMenu(requireContext(), binding.saveBtn)
-//        popupMenu.apply {
-//            menuInflater.inflate(R.menu.popup_menu_filter_attendance, menu)
-//            setOnMenuItemClickListener { menuItem ->
-//                when (menuItem.itemId) {
-//                    R.id.menu_all -> {
-//                        viewModel.setFilter(AttendanceFilter.ALL)
-//                        true
+//
+//        attendanceMode = navArgs.attendanceMode
+//        selectedDate = navArgs.selectedDate
+//
+//        if (attendanceMode == "update" && selectedDate != -1L) {
+//            setToolbarTitle("Update Attendance")
+//            binding.attendanceToggleGroup.show()
+//            // Pre-fill date and disable picker
+//            binding.etDatePicker.setText(selectedDate.toFormattedDate())
+//            binding.etDatePicker.isEnabled = false
+//            binding.saveBtn.text = "Update"
+//
+//
+//            // Load attendance from DB
+//            viewModel.setDate(selectedDate)
+//
+//        } else if (attendanceMode == "report" && selectedDate != -1L) {
+//            setToolbarTitle("Report ${selectedDate.toFormattedDate()}")
+//            binding.attendanceToggleGroup.show()
+//            binding.etDatePicker.setText(selectedDate.toFormattedDate())
+//            binding.etDatePicker.isEnabled = false
+//            binding.saveBtn.hide()
+//            binding.etDatePicker.hide()
+//
+//            // Load attendance from DB
+//            viewModel.setDate(selectedDate)
+//        }
+//
+//
+//
+//
+//        setupDateChangeListener()
+//        setupRecyclerView()
+//        collectFlows()
+//        clickListener()
+//        filterAttendance()
+//        searchStudent()
+//
+//    }
+//
+//    private fun searchStudent() {
+//        binding.etSearch.addTextChangedListener { searchText ->
+//            viewModel.updateSearchQuery(searchText.toString())
+//
+//        }
+//    }
+//
+//
+//    private fun setupDateChangeListener() {
+//        parentFragmentManager.setFragmentResultListener(
+//            DATE_REQUEST_KEY,
+//            viewLifecycleOwner
+//        ) { _, bundle ->
+//            val selectedDate = bundle.getLong(Constants.SELECTED_DATE)
+//            binding.etDatePicker.setText(selectedDate.toFormattedDate())
+//        }
+//    }
+//
+//    private fun clickListener() {
+//
+//        binding.apply {
+//            etDatePicker.setOnClickListener {
+//                showDatePicker {
+//                    etDatePicker.setText(it.toFormattedDate())
+//                    viewModel.setDate(it)
+//                }
+//
+//            }
+//
+//            saveBtn.setOnClickListener {
+//                val dateStr = binding.etDatePicker.text.toString()
+//
+//                when {
+//                    dateStr.isEmpty() -> {
+//                        showSnackbar("Select date first")
+//                        return@setOnClickListener
 //                    }
 //
-//                    R.id.menu_present -> {
-//                        viewModel.setFilter(AttendanceFilter.PRESENT)
-//                        true
+//                    studentsCount == 0 -> {
+//                        showSnackbar("No students for attendance")
+//                        return@setOnClickListener
+//                    }
+//                }
+//
+//
+//                val date = viewModel.selectedDate.value
+//                if (date == null) {
+//                    showSnackbar("Date not selected")
+//                    return@setOnClickListener
+//                }
+//
+//                when (attendanceMode) {
+//                    "update" -> {
+//
+//
+//                        viewModel.updateAttendanceForDate(date) { success ->
+//                            if (success) {
+//                                showSnackbar("Attendance updated for $dateStr")
+//                                findNavController().navigateUp()
+//                            } else {
+//                                showSnackbar("Failed to update attendance for $dateStr")
+//                            }
+//                        }
 //                    }
 //
-//                    R.id.menu_absent -> {
-//                        viewModel.setFilter(AttendanceFilter.ABSENT)
-//                        true
+//                    "report" -> {
+//
+//                        filterAttendance()
 //                    }
 //
-//                    else -> false
+//                    else -> {
+//
+//                        viewModel.saveAttendance { success ->
+//                            if (success) {
+//                                showSnackbar("Attendance saved for $dateStr")
+//                                findNavController().navigateUp()
+//                            } else {
+//                                showSnackbar("Attendance already exists for $dateStr")
+//                            }
+//                        }
+//
+//                    }
 //                }
 //            }
 //
 //        }
 //
 //
-//        popupMenu.show()
-    }
-
-
-    private fun showDatePicker(onDateSelected: (Long) -> Unit) {
-
-        if (attendanceMode == "update") return  // Prevent interaction
-        if (attendanceMode == "report") return
-
-        val constraintsBuilder = CalendarConstraints.Builder()
-            .setFirstDayOfWeek(Calendar.MONDAY)
-            .setValidator(WeekendPastDateValidatorUtil())
-
-        showMaterialDatePicker(
-            title = "Select Attendance Date",
-            selection = MaterialDatePicker.todayInUtcMilliseconds(),
-            constraints = constraintsBuilder.build(),
-        ) {
-            onDateSelected(it)
-            viewModel.setDate(it)
-        }
-
-
-    }
-
-
-    private fun collectFlows() {
-        collectLatestFlow {
-
-            launch {
-                viewModel.filteredAttendanceUI.collectLatest { adapter.submitList(it) }
-            }
-
-            launch {
-                viewModel.totalCount.collectLatest {
-                    binding.totalCard.tvCount.text = it.toString()
-                    studentsCount = it
-                }
-            }
-            launch {
-                viewModel.presentCount.collectLatest {
-                    binding.presentCard.tvCount.text = it.toString()
-                    binding.presentCard.tvCountTitle.text = "Present"
-                    binding.presentCard.tvCount.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.green_present
-                        )
-                    )
-                }
-            }
-            launch {
-                viewModel.absentCount.collectLatest {
-                    binding.absentCard.tvCount.text = it.toString()
-                    binding.absentCard.tvCountTitle.text = "Absent"
-                    binding.absentCard.tvCount.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.red_absent
-                        )
-                    )
-                }
-            }
-            launch {
-                viewModel.attendanceUI.collectLatest { adapter.submitList(it) }
-            }
-        }
-    }
-
-    private fun setupRecyclerView() {
-        val readOnly = attendanceMode == "report"
-
-        adapter = AttendanceAdapter(readOnly) { student, newStatus ->
-            viewModel.updateAttendanceStatus(student, newStatus)
-        }
-        binding.rvAttendance.adapter = adapter
-
+//    }
+//
+//    private fun filterAttendance() {
+//
+//
+//        binding.attendanceToggleGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
+//            if (isChecked) {
+//                when (checkedId) {
+//                    R.id.btnAll -> {
+//                        viewModel.setFilter(AttendanceFilter.ALL)
+//
+//                    }
+//
+//                    R.id.btnPresent -> {
+//                        viewModel.setFilter(AttendanceFilter.PRESENT)
+//                    }
+//
+//                    R.id.btnAbsent -> {
+//                        viewModel.setFilter(AttendanceFilter.ABSENT)
+//                    }
+//                }
+//            }
+//        }
+////
+////        val popupMenu = PopupMenu(requireContext(), binding.saveBtn)
+////        popupMenu.apply {
+////            menuInflater.inflate(R.menu.popup_menu_filter_attendance, menu)
+////            setOnMenuItemClickListener { menuItem ->
+////                when (menuItem.itemId) {
+////                    R.id.menu_all -> {
+////                        viewModel.setFilter(AttendanceFilter.ALL)
+////                        true
+////                    }
+////
+////                    R.id.menu_present -> {
+////                        viewModel.setFilter(AttendanceFilter.PRESENT)
+////                        true
+////                    }
+////
+////                    R.id.menu_absent -> {
+////                        viewModel.setFilter(AttendanceFilter.ABSENT)
+////                        true
+////                    }
+////
+////                    else -> false
+////                }
+////            }
+////
+////        }
+////
+////
+////        popupMenu.show()
+//    }
+//
+//
+//    private fun showDatePicker(onDateSelected: (Long) -> Unit) {
+//
+//        if (attendanceMode == "update") return  // Prevent interaction
+//        if (attendanceMode == "report") return
+//
+//        val constraintsBuilder = CalendarConstraints.Builder()
+//            .setFirstDayOfWeek(Calendar.MONDAY)
+//            .setValidator(WeekendPastDateValidatorUtil())
+//
+//        showMaterialDatePicker(
+//            title = "Select Attendance Date",
+//            selection = MaterialDatePicker.todayInUtcMilliseconds(),
+//            constraints = constraintsBuilder.build(),
+//        ) {
+//            onDateSelected(it)
+//            viewModel.setDate(it)
+//        }
+//
+//
+//    }
+//
+//
+//    private fun collectFlows() {
+//        collectLatestFlow {
+//
+//            launch {
+//                viewModel.filteredAttendanceUI.collectLatest { adapter.submitList(it) }
+//            }
+//
+//            launch {
+//                viewModel.totalCount.collectLatest {
+//                    binding.totalCard.tvCount.text = it.toString()
+//                    studentsCount = it
+//                }
+//            }
+//            launch {
+//                viewModel.presentCount.collectLatest {
+//                    binding.presentCard.tvCount.text = it.toString()
+//                    binding.presentCard.tvCountTitle.text = "Present"
+//                    binding.presentCard.tvCount.setTextColor(
+//                        ContextCompat.getColor(
+//                            requireContext(),
+//                            R.color.green_present
+//                        )
+//                    )
+//                }
+//            }
+//            launch {
+//                viewModel.absentCount.collectLatest {
+//                    binding.absentCard.tvCount.text = it.toString()
+//                    binding.absentCard.tvCountTitle.text = "Absent"
+//                    binding.absentCard.tvCount.setTextColor(
+//                        ContextCompat.getColor(
+//                            requireContext(),
+//                            R.color.red_absent
+//                        )
+//                    )
+//                }
+//            }
+//            launch {
+//                viewModel.attendanceUI.collectLatest { adapter.submitList(it) }
+//            }
+//        }
+//    }
+//
+//    private fun setupRecyclerView() {
+//        val readOnly = attendanceMode == "report"
+//
+//        adapter = AttendanceAdapter(readOnly) { student, newStatus ->
+//            viewModel.updateAttendanceStatus(student, newStatus)
+//        }
+//        binding.rvAttendance.adapter = adapter
+//
 
     }
 

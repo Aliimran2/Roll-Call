@@ -25,7 +25,7 @@ import com.miassolutions.rollcall.common.AttendanceStatus
     ],
     indices = [
         Index(value = ["studentId"]),
-        Index(value = ["studentId"]),
+        Index(value = ["classId"]),
         Index(value = ["date"])
     ]
 

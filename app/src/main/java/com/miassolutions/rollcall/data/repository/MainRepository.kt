@@ -71,6 +71,9 @@ class MainRepository @Inject constructor(
     override suspend fun clearAllStudents() = studentDao.clearAllStudents()
 
     override suspend fun deleteStudentById(id: String) =studentDao.deleteStudentById(id)
+    override suspend fun getStudentsByClassId(classId: String): Flow<List<StudentEntity>> {
+        TODO("Not yet implemented")
+    }
 
     //end student region
 
@@ -80,16 +83,20 @@ class MainRepository @Inject constructor(
         attendanceDao.insertAttendances(list)
     }
 
-    override suspend fun isAttendanceTakenForClassAndDate(classId: String, date: Long): Boolean {
-        return attendanceDao.getAttendanceCountForClassAndDate(classId, date) > 0
+    override suspend fun isAttendanceTaken(date: Long): Boolean {
+        return attendanceDao.getAttendanceCount(date) > 0
     }
 
-    override suspend fun getAttendanceCountForClassAndDate(classId: String, date: Long) {
-        attendanceDao.getAttendanceCountForClassAndDate(classId, date)
-    }
+
+
+
 
     override suspend fun getClassAttendanceGroupedByDate(classId: String): Flow<Map<Long, List<AttendanceEntity>>> {
         return attendanceDao.getClassAttendances(classId).map { it.groupBy { att -> att.date } }
+    }
+
+    override suspend fun getClassAttendanceForDate(date: Long): List<AttendanceEntity> {
+        return attendanceDao.getClassAttendanceForDate(date)
     }
 
     override suspend fun getAttendanceByStudent(studentId: String): Flow<List<AttendanceEntity>> {

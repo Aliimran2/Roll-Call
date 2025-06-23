@@ -48,33 +48,33 @@ class StudentDetailViewModel @Inject constructor(private val repository: Reposit
         _studentId.value = studentId
     }
 
-    val attendanceOfStudent: StateFlow<List<AttendanceEntity>> = _studentId
-        .filterNotNull()
-        .flatMapLatest { id -> repository.getAttendanceForStudent(id) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
-
-    val presentCount = attendanceOfStudent
-        .map { list -> list.count() { it.attendanceStatus == AttendanceStatus.PRESENT } }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
-
-    val absentCount = attendanceOfStudent
-        .map { list -> list.count { it.attendanceStatus == AttendanceStatus.ABSENT } }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
-
-    val attendancePercentage = attendanceOfStudent
-        .map { list ->
-            val total = list.size
-            val present = list.count { it.attendanceStatus == AttendanceStatus.PRESENT }
-            if (total == 0) 0 else (present * 100) / total
-        }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
-
-    fun deleteStudentById(studentId: String) {
-        viewModelScope.launch {
-
-            repository.deleteStudentById(studentId)
-        }
-    }
-
+//    val attendanceOfStudent: StateFlow<List<AttendanceEntity>> = _studentId
+//        .filterNotNull()
+//        .flatMapLatest { id -> repository.getAttendanceForStudent(id) }
+//        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+//
+//    val presentCount = attendanceOfStudent
+//        .map { list -> list.count() { it.attendanceStatus == AttendanceStatus.PRESENT } }
+//        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+//
+//    val absentCount = attendanceOfStudent
+//        .map { list -> list.count { it.attendanceStatus == AttendanceStatus.ABSENT } }
+//        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+//
+//    val attendancePercentage = attendanceOfStudent
+//        .map { list ->
+//            val total = list.size
+//            val present = list.count { it.attendanceStatus == AttendanceStatus.PRESENT }
+//            if (total == 0) 0 else (present * 100) / total
+//        }
+//        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+//
+//    fun deleteStudentById(studentId: String) {
+//        viewModelScope.launch {
+//
+//            repository.deleteStudentById(studentId)
+//        }
+//    }
+//
 
 }
