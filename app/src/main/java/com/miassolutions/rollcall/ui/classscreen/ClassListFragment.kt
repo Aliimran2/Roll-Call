@@ -7,7 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.ClassEntity
-import com.miassolutions.rollcall.databinding.FragmentListClassBinding
+import com.miassolutions.rollcall.databinding.FragmentClassListBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.ui.adapters.ClassListAdapter
@@ -16,18 +16,25 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
-class ListClassFragment : Fragment(R.layout.fragment_list_class) {
+class ClassListFragment : Fragment(R.layout.fragment_class_list) {
 
-    private var _binding: FragmentListClassBinding? = null
+    private var _binding: FragmentClassListBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<ClassViewModel>()
-    private val adapter by lazy { ClassListAdapter(onNavigationClick = ::onNavigation) }
+    private val adapter by lazy {
+        ClassListAdapter(
+            onStudentsClick = ::onStudentsNavigation,
+            onAttendanceClick = ::onAttendanceNavigation,
+            onReportClick = ::onReportNavigation,
+            onMoreClick = ::onMoreClick
+        )
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentListClassBinding.bind(view)
+        _binding = FragmentClassListBinding.bind(view)
 
         setupRecyclerView()
         observeUiEvent()
@@ -36,9 +43,33 @@ class ListClassFragment : Fragment(R.layout.fragment_list_class) {
 
     }
 
+    private fun onStudentsNavigation(classEntity: ClassEntity) {
+        val action = ClassListFragmentDirections.toStudentListFragment(
+            classEntity.classId,
+            classEntity.className
+        )
+        findNavController().navigate(action)
+    }
+
+    private fun onAttendanceNavigation(classEntity: ClassEntity){
+        val action = ClassListFragmentDirections.toAttendanceListFragment()
+        findNavController().navigate(action)
+    }
+
+
+    private fun onReportNavigation(classEntity: ClassEntity) {
+        val action = ClassListFragmentDirections.toAttendanceFragment("Report")
+        findNavController().navigate(action)
+    }
+
+    private fun onMoreClick(classEntity: ClassEntity){
+        //todo
+    }
+
+
     private fun setupListeners() {
         binding.addClassFab.setOnClickListener {
-            val action = ListClassFragmentDirections.actionListClassFragmentToAddClassFragment()
+            val action = ClassListFragmentDirections.toAddClassFragment()
             findNavController().navigate(action)
         }
     }
@@ -87,14 +118,6 @@ class ListClassFragment : Fragment(R.layout.fragment_list_class) {
 
     private fun setupRecyclerView() {
         binding.rvClass.adapter = adapter
-    }
-
-    private fun onNavigation(classEntity: ClassEntity) {
-        val action = ListClassFragmentDirections.actionListClassFragmentToStudentsFragment(
-            classEntity.classId,
-            classEntity.className
-        )
-        findNavController().navigate(action)
     }
 
 

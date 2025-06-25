@@ -6,11 +6,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.miassolutions.rollcall.data.entities.ClassEntity
-import com.miassolutions.rollcall.databinding.FragmentListClassBinding
 import com.miassolutions.rollcall.databinding.ItemClassBinding
 
 class ClassListAdapter(
-    private val onNavigationClick: (ClassEntity) -> Unit,
+    private val onStudentsClick: (ClassEntity) -> Unit,
+    private val onAttendanceClick: (ClassEntity) -> Unit,
+    private val onReportClick: (ClassEntity) -> Unit,
+    private val onMoreClick: (ClassEntity) -> Unit,
 ) : ListAdapter<ClassEntity, ClassListAdapter.ClassViewHolder>(ClassDiffUtil) {
 
 
@@ -35,7 +37,10 @@ class ClassListAdapter(
                 tvClassName.text = item.className
                 tvTeacherName.text = item.teacher
 
-                root.setOnClickListener { onNavigationClick(item) }
+                ivStudents.setOnClickListener { onStudentsClick(item) }
+                ivAttendance.setOnClickListener { onAttendanceClick(item) }
+                ivReport.setOnClickListener { onReportClick(item) }
+                ivMore.setOnClickListener { onMoreClick(item) }
 
             }
 
