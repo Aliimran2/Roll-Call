@@ -46,6 +46,12 @@ class ClassViewModel @Inject constructor(private val repository: Repository) : V
         }
     }
 
+    fun copyClass(classEntity: ClassEntity) {
+        viewModelScope.launch {
+            repository.copyClass(classEntity)
+        }
+    }
+
     fun insertClass(classEntity: ClassEntity) {
         viewModelScope.launch {
             try {

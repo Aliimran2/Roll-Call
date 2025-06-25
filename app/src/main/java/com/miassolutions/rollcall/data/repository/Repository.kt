@@ -20,7 +20,7 @@ import javax.inject.Inject
 class Repository @Inject constructor(
     private val studentDao: StudentDao,
     private val attendanceDao: AttendanceDao,
-    private val classDao : ClassDao
+    private val classDao: ClassDao,
 ) {
 
     // StudentEntity Operations
@@ -64,7 +64,6 @@ class Repository @Inject constructor(
         studentDao.updateStudent(studentEntity)
 
 
-
     suspend fun insertStudents(studentEntities: List<StudentEntity>): Boolean {
         return withContext(Dispatchers.IO) {
             try {
@@ -78,19 +77,18 @@ class Repository @Inject constructor(
     }
 
 
-
-    fun searchStudents(query : String) = studentDao.searchStudent(query)
+    fun searchStudents(query: String) = studentDao.searchStudent(query)
 
     suspend fun clearAllStudents() = studentDao.clearAllStudents()
 
     suspend fun deleteStudentById(studentId: String) = studentDao.deleteStudentById(studentId)
 
-    suspend fun insertStudentsBulk(students : List<StudentEntity>) : Pair<Int, Int> {
+    suspend fun insertStudentsBulk(students: List<StudentEntity>): Pair<Int, Int> {
         var success = 0
         var failure = 0
 
-        for (student in students){
-            when(insertStudent(student)){
+        for (student in students) {
+            when (insertStudent(student)) {
                 is StudentInsertResult.Success -> success++
                 is StudentInsertResult.Failure -> failure++
             }
@@ -100,7 +98,6 @@ class Repository @Inject constructor(
     }
 
     //attendance operations
-
 
 
     suspend fun insertAttendances(attendanceEntityList: List<AttendanceEntity>) {
@@ -134,7 +131,6 @@ class Repository @Inject constructor(
     }
 
 
-
     suspend fun deleteAttendanceForStudent(studentId: String) {
         attendanceDao.deleteAttendanceForStudent(studentId)
     }
@@ -161,12 +157,27 @@ class Repository @Inject constructor(
 
     suspend fun insertClass(classEntity: ClassEntity) = classDao.insetClass(classEntity)
 
+    suspend fun copyClass(classEntity: ClassEntity) {
+        classDao.getClassById(classEntity.classId)?.let {
+            val newClass = ClassEntity(
+
+                className = classEntity.className,
+                sectionName = classEntity.sectionName,
+                startDate = classEntity.startDate,
+                endDate = classEntity.endDate,
+                teacher = classEntity.teacher
+            )
+
+            insertClass(newClass)
+        }
+    }
+
+
     suspend fun updateClass(classEntity: ClassEntity) = classDao.updateClass(classEntity)
 
     suspend fun deleteClass(classEntity: ClassEntity) = classDao.deleteClass(classEntity)
 
-    fun getClasses() : Flow<List<ClassEntity>> = classDao.getClasses()
-
+    fun getClasses(): Flow<List<ClassEntity>> = classDao.getClasses()
 
 
 }

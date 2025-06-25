@@ -24,5 +24,7 @@ interface ClassDao {
     @Query("SELECT * FROM class_table ORDER BY className")
     fun getClasses(): Flow<List<ClassEntity>>
 
+    @Query("SELECT * FROM class_table WHERE classId =:classId LIMIT 1")
+    suspend fun getClassById(classId: String):ClassEntity?
 
 }

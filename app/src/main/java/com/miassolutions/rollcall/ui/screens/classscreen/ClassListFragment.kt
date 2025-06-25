@@ -82,7 +82,7 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
         showPopupMenu(view, R.menu.class_poup_menus) { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_copy -> {
-
+                    viewModel.copyClass(classEntity)
                     true
                 }
 
