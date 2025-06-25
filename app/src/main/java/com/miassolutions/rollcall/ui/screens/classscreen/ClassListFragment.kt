@@ -10,6 +10,7 @@ import com.miassolutions.rollcall.data.entities.ClassEntity
 import com.miassolutions.rollcall.databinding.FragmentClassListBinding
 import com.miassolutions.rollcall.extenstions.addMenu
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
+import com.miassolutions.rollcall.extenstions.showPopupMenu
 import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.ui.adapters.ClassListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.ClassViewModel
@@ -45,13 +46,14 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
     }
 
     private fun setupMenu() {
-        addMenu(R.menu.class_list_menus){item ->
-            when(item.itemId){
+        addMenu(R.menu.class_list_menus) { item ->
+            when (item.itemId) {
                 R.id.action_add_class -> {
                     val action = ClassListFragmentDirections.toAddClassFragment()
                     findNavController().navigate(action)
                     true
                 }
+
                 else -> false
             }
         }
@@ -65,7 +67,7 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
         findNavController().navigate(action)
     }
 
-    private fun onAttendanceNavigation(classEntity: ClassEntity){
+    private fun onAttendanceNavigation(classEntity: ClassEntity) {
         val action = ClassListFragmentDirections.toAttendanceListFragment()
         findNavController().navigate(action)
     }
@@ -76,8 +78,29 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
         findNavController().navigate(action)
     }
 
-    private fun onMoreClick(classEntity: ClassEntity){
-        showToast("Add actions Delete -Copy -Edit")
+    private fun onMoreClick(view: View, classEntity: ClassEntity) {
+        showPopupMenu(view, R.menu.class_poup_menus) { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_copy -> {
+
+                    true
+                }
+
+                R.id.action_edit -> {
+
+                    viewModel.updateClass(classEntity)
+                    true
+                }
+
+                R.id.action_delete -> {
+                    viewModel.deleteClass(classEntity)
+                    true
+                }
+
+                else -> false
+            }
+        }
+
     }
 
 

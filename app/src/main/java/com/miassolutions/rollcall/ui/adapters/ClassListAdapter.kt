@@ -1,6 +1,7 @@
 package com.miassolutions.rollcall.ui.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -12,7 +13,7 @@ class ClassListAdapter(
     private val onStudentsClick: (ClassEntity) -> Unit,
     private val onAttendanceClick: (ClassEntity) -> Unit,
     private val onReportClick: (ClassEntity) -> Unit,
-    private val onMoreClick: (ClassEntity) -> Unit,
+    private val onMoreClick: (View,ClassEntity) -> Unit,
 ) : ListAdapter<ClassEntity, ClassListAdapter.ClassViewHolder>(ClassDiffUtil) {
 
 
@@ -40,7 +41,9 @@ class ClassListAdapter(
                 ivStudents.setOnClickListener { onStudentsClick(item) }
                 ivAttendance.setOnClickListener { onAttendanceClick(item) }
                 ivReport.setOnClickListener { onReportClick(item) }
-                ivMore.setOnClickListener { onMoreClick(item) }
+                ivMore.setOnClickListener { view ->
+                    onMoreClick(view, item)
+                }
 
             }
 

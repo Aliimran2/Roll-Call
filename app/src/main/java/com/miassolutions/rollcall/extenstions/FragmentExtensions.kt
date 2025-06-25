@@ -5,9 +5,11 @@ import android.content.pm.PackageManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -52,6 +54,22 @@ fun Fragment.showSnackbar(
     view?.let { hostView ->
         Snackbar.make(hostView, message, duration).show()
     }
+}
+
+fun Fragment.showPopupMenu(
+    anchorView: View,
+    @MenuRes menuRes: Int,
+    onMenuItemClickListener: ((MenuItem) -> Boolean)? =null
+){
+    val popupMenu = PopupMenu(requireContext(), anchorView)
+    popupMenu.menuInflater.inflate(menuRes, popupMenu.menu)
+
+    onMenuItemClickListener?.let {
+        popupMenu.setOnMenuItemClickListener(it)
+    }
+
+    popupMenu.show()
+
 }
 
 
