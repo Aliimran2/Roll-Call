@@ -14,6 +14,18 @@
         android:orientation="vertical"
         android:paddingBottom="24dp">
 
+        <!-- Save Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/save_class_button"
+            style="@style/Widget.Material3.Button.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="end"
+            android:elevation="8dp"
+            />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -128,19 +140,6 @@
                 android:inputType="textCapWords" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Save Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/save_class_button"
-            style="@style/Widget.Material3.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:backgroundTint="?attr/colorPrimary"
-            android:text="Save Class"
-            android:textColor="@android:color/white"
-            app:cornerRadius="16dp"
-            app:icon="@android:drawable/ic_menu_save"
-            app:iconPadding="8dp"
-            app:iconTint="@android:color/white" />
+
     </LinearLayout>
 </ScrollView>
