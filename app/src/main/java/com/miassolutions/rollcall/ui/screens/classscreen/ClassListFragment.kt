@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.classscreen
+package com.miassolutions.rollcall.ui.screens.classscreen
 
 import android.os.Bundle
 import android.view.View

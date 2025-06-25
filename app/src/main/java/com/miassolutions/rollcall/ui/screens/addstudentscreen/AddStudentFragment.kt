@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.fragments
+package com.miassolutions.rollcall.ui.screens.addstudentscreen
 
 import WeekendPastDateValidatorUtil
 import android.os.Bundle

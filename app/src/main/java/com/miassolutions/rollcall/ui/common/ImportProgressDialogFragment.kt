@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.fragments
+package com.miassolutions.rollcall.ui.common
 
 import android.os.Bundle
 import android.view.LayoutInflater

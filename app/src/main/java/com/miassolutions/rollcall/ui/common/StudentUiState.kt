@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.uicommon
+package com.miassolutions.rollcall.ui.common
 
 import com.miassolutions.rollcall.data.entities.StudentEntity
 

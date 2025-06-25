@@ -6,7 +6,7 @@
     app:startDestination="@id/classListFragment">
     <fragment
         android:id="@+id/addStudentFragment"
-        android:name="com.miassolutions.rollcall.ui.fragments.AddStudentFragment"
+        android:name="com.miassolutions.rollcall.ui.screens.addstudentscreen.AddStudentFragment"
         android:label="Add New Student"
         tools:layout="@layout/fragment_add_student" >
         <argument
@@ -24,7 +24,7 @@
     <fragment
         android:id="@+id/studentsFragment"
         tools:layout="@layout/fragment_students"
-        android:name="com.miassolutions.rollcall.ui.studentlistscreen.StudentsFragment"
+        android:name="com.miassolutions.rollcall.ui.screens.studentlistscreen.StudentsFragment"
         android:label="Students" >
         <action
             android:id="@+id/action_studentsFragment_to_addStudentFragment"
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/attendanceFragment"
-        android:name="com.miassolutions.rollcall.ui.fragments.AttendanceFragment"
+        android:name="com.miassolutions.rollcall.ui.screens.attendancescreen.AttendanceFragment"
         android:label="Attendance"
         tools:layout="@layout/fragment_attendance" >
         <argument
@@ -56,7 +56,7 @@
     <fragment
         android:id="@+id/attendanceListFragment"
         tools:layout="@layout/fragment_attendance_list"
-        android:name="com.miassolutions.rollcall.ui.attandancescreen.AttendanceListFragment"
+        android:name="com.miassolutions.rollcall.ui.screens.attandancescreen.AttendanceListFragment"
         android:label="Stats" >
         <action
             android:id="@+id/action_statsFragment_to_attendanceFragment"
@@ -64,7 +64,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.miassolutions.rollcall.ui.settings.SettingsFragment"
+        android:name="com.miassolutions.rollcall.ui.screens.settingscreen.SettingsFragment"
         tools:layout="@layout/fragment_settings"
         android:label="Settings" >
         <action
@@ -75,7 +75,7 @@
     <fragment
         android:id="@+id/studentDetailFragment"
         tools:layout="@layout/fragment_student_detail"
-        android:name="com.miassolutions.rollcall.ui.fragments.StudentDetailFragment"
+        android:name="com.miassolutions.rollcall.ui.screens.studentdetailscreen.StudentDetailFragment"
         android:label="{student_name} Detail" >
         <argument
             android:name="id"
@@ -96,17 +96,17 @@
     </fragment>
     <dialog
         android:id="@+id/datePickerFragment"
-        android:name="com.miassolutions.rollcall.ui.fragments.DatePickerFragment"
+        android:name="com.miassolutions.rollcall.ui.common.DatePickerFragment"
         android:label="DatePickerFragment" />
     <dialog
         android:id="@+id/userProfileFragment"
         tools:layout="@layout/fragment_user_profile"
-        android:name="com.miassolutions.rollcall.ui.userprofile.UserProfileFragment"
+        android:name="com.miassolutions.rollcall.ui.screens.userprofilescreen.UserProfileFragment"
         android:label="UserProfileFragment" />
     <fragment
         android:id="@+id/classListFragment"
         tools:layout="@layout/fragment_class_list"
-        android:name="com.miassolutions.rollcall.ui.classscreen.ClassListFragment"
+        android:name="com.miassolutions.rollcall.ui.screens.classscreen.ClassListFragment"
         android:label="Classes" >
         <action
             android:id="@+id/to_add_class_fragment"

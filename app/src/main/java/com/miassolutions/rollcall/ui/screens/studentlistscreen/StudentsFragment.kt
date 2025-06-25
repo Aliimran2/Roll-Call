@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.studentlistscreen
+package com.miassolutions.rollcall.ui.screens.studentlistscreen
 
 import ImportFromExcel
 import android.content.ActivityNotFoundException
@@ -34,7 +34,7 @@ import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.ui.MainActivity
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
-import com.miassolutions.rollcall.ui.fragments.ImportProgressDialogFragment
+import com.miassolutions.rollcall.ui.common.ImportProgressDialogFragment
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
 import com.miassolutions.rollcall.utils.UiState

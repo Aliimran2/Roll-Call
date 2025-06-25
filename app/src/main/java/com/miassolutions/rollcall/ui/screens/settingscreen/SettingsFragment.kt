@@ -1,10 +1,9 @@
-package com.miassolutions.rollcall.ui.settings
+package com.miassolutions.rollcall.ui.screens.settingscreen
 
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentSettingsBinding
 import com.miassolutions.rollcall.extenstions.showLongToast

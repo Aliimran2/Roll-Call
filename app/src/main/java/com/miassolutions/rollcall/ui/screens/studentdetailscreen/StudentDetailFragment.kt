@@ -1,27 +1,15 @@
-package com.miassolutions.rollcall.ui.fragments
+package com.miassolutions.rollcall.ui.screens.studentdetailscreen
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import coil3.load
-import coil3.request.placeholder
-import com.bumptech.glide.Glide
 import com.miassolutions.rollcall.R
-import com.miassolutions.rollcall.common.Constants.TAG
-import com.miassolutions.rollcall.data.entities.StudentEntity
 
 import com.miassolutions.rollcall.databinding.FragmentStudentProfileBinding
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
-import com.miassolutions.rollcall.extenstions.collectLatestFlow
-import com.miassolutions.rollcall.extenstions.showLongToast
-import com.miassolutions.rollcall.extenstions.toFormattedDate
-import com.miassolutions.rollcall.utils.StudentResult
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class StudentDetailFragment : Fragment(R.layout.fragment_student_profile) {

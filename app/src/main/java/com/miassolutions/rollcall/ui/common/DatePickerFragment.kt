@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.fragments
+package com.miassolutions.rollcall.ui.common
 
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -8,7 +8,7 @@ import android.widget.DatePicker
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import com.miassolutions.rollcall.ui.userprofile.UserProfileViewModel
+import com.miassolutions.rollcall.ui.screens.userprofilescreen.UserProfileViewModel
 import com.miassolutions.rollcall.common.Constants.DATE_REQUEST_KEY
 import com.miassolutions.rollcall.common.Constants.SELECTED_DATE
 import dagger.hilt.android.AndroidEntryPoint

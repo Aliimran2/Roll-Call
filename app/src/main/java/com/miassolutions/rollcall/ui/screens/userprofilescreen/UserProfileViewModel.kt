@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.userprofile
+package com.miassolutions.rollcall.ui.screens.userprofilescreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

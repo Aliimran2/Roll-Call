@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.userprofile
+package com.miassolutions.rollcall.ui.screens.userprofilescreen
 
 import android.os.Bundle
 import android.view.LayoutInflater

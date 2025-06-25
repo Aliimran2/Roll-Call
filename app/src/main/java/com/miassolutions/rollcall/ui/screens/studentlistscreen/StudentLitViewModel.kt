@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.studentlistscreen
+package com.miassolutions.rollcall.ui.screens.studentlistscreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

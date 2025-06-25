@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.attandancescreen
+package com.miassolutions.rollcall.ui.screens.attandancescreen
 
 import android.os.Bundle
 import android.view.View

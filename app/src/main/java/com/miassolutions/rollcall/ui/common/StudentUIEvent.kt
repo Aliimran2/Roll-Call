@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.uicommon
+package com.miassolutions.rollcall.ui.common
 
 sealed class StudentUIEvent {
     data class ShowToast(val message : String) : StudentUIEvent()

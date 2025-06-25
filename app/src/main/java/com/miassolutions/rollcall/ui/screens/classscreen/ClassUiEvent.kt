@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.classscreen
+package com.miassolutions.rollcall.ui.screens.classscreen
 
 sealed class ClassUiEvent {
 
