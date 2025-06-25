@@ -125,5 +125,10 @@
         tools:layout="@layout/fragment_class_form"
         android:id="@+id/classFormFragment"
         android:name="com.miassolutions.rollcall.ui.screens.classform.ClassFormFragment"
-        android:label="Add New Class" />
+        android:label="Add New Class" >
+        <argument
+            android:name="classId"
+            app:argType="string"
+            app:nullable="true" />
+    </dialog>
 </navigation>

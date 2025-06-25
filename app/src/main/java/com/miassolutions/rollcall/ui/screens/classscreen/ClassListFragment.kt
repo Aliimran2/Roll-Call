@@ -49,7 +49,7 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
         addMenu(R.menu.class_list_menus) { item ->
             when (item.itemId) {
                 R.id.action_add_class -> {
-                    val action = ClassListFragmentDirections.toAddClassFragment()
+                    val action = ClassListFragmentDirections.toAddClassFragment(null)
                     findNavController().navigate(action)
                     true
                 }
@@ -114,7 +114,7 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
                     }
 
                     is ClassUiState.Loading -> {
-                        showToast("Loading...")
+//                        showToast("Loading...")
                     }
 
                     is ClassUiState.Success -> {

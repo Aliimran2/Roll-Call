@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.miassolutions.rollcall.data.entities.ClassEntity
 import com.miassolutions.rollcall.databinding.FragmentClassFormBinding
@@ -24,6 +25,7 @@ class ClassFormFragment : BottomSheetDialogFragment() {
     private val binding get() = _biding!!
 
     private val viewModel by viewModels<ClassViewModel>()
+    private val args by navArgs<ClassFormFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +38,13 @@ class ClassFormFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (args.classId == null){
+            //add class
+        } else {
+            //update existing class
+        }
+
 
         setupListeners()
         setupObservers()
