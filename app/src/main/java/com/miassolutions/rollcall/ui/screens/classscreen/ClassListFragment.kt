@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.ClassEntity
 import com.miassolutions.rollcall.databinding.FragmentClassListBinding
+import com.miassolutions.rollcall.extenstions.addMenu
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.ui.adapters.ClassListAdapter
@@ -39,8 +40,21 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
         setupRecyclerView()
         observeUiEvent()
         observeUiState()
-        setupListeners()
+        setupMenu()
 
+    }
+
+    private fun setupMenu() {
+        addMenu(R.menu.class_list_menus){item ->
+            when(item.itemId){
+                R.id.action_add_class -> {
+                    val action = ClassListFragmentDirections.toAddClassFragment()
+                    findNavController().navigate(action)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun onStudentsNavigation(classEntity: ClassEntity) {
@@ -63,16 +77,9 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
     }
 
     private fun onMoreClick(classEntity: ClassEntity){
-        //todo
+        showToast("Add actions Delete -Copy -Edit")
     }
 
-
-    private fun setupListeners() {
-        binding.addClassFab.setOnClickListener {
-            val action = ClassListFragmentDirections.toAddClassFragment()
-            findNavController().navigate(action)
-        }
-    }
 
     private fun observeUiState() {
         collectLatestFlow {
