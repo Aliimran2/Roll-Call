@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -48,6 +49,26 @@ class ClassViewModel @Inject constructor(private val repository: Repository) : V
         }
     }
 
+    private val _currentClassDetail = MutableStateFlow<ClassEntity?>(null)
+    val currentClassDetail: StateFlow<ClassEntity?> = _currentClassDetail.asStateFlow()
+
+    fun loadClassById(classId: String) {
+        viewModelScope.launch {
+            _uiState.value = ClassUiState.Loading
+            repository.getClassById(classId)
+                .catch { e ->
+                    _uiState.value =
+                        ClassUiState.Failure("Error to loading class ${e.localizedMessage}")
+                }
+                .collectLatest { oldClass ->
+                    oldClass?.let {
+                        _uiState.value = ClassUiState.ClassDetail(it)
+                        _currentClassDetail.value = it
+                    }
+                }
+        }
+    }
+
     fun copyClass(classEntity: ClassEntity) {
         viewModelScope.launch {
             repository.copyClass(classEntity)
@@ -76,6 +97,7 @@ class ClassViewModel @Inject constructor(private val repository: Repository) : V
             }
         }
     }
+
 
     fun deleteClass(classEntity: ClassEntity) {
         viewModelScope.launch {

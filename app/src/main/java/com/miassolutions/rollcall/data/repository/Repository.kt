@@ -172,6 +172,10 @@ class Repository @Inject constructor(
         }
     }
 
+    fun getClassById(classId: String): Flow<ClassEntity?> {
+        return classDao.getClassById(classId)
+    }
+
 
     suspend fun updateClass(classEntity: ClassEntity) = classDao.updateClass(classEntity)
 

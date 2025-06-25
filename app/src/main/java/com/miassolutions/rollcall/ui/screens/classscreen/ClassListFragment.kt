@@ -87,8 +87,9 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
                 }
 
                 R.id.action_edit -> {
+                    val action = ClassListFragmentDirections.toAddClassFragment(classEntity.classId)
+                    findNavController().navigate(action)
 
-                    viewModel.updateClass(classEntity)
                     true
                 }
 
@@ -123,6 +124,10 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
 
                     is ClassUiState.Failure -> {
                         showToast(state.message)
+                    }
+
+                    is ClassUiState.ClassDetail -> {
+
                     }
                 }
             }

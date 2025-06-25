@@ -36,6 +36,7 @@ class ClassListAdapter(
 
             binding.apply {
                 tvClassName.text = item.className
+                tvSection.text = " (${item.sectionName})"
                 tvTeacherName.text = item.teacher
 
                 ivStudents.setOnClickListener { onStudentsClick(item) }

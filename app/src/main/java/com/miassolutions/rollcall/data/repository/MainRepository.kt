@@ -142,6 +142,14 @@ class MainRepository @Inject constructor(
     override fun getClasses(): Flow<List<ClassEntity>> =
         classDao.getClasses()
 
+    override fun getClassById(id: String): Flow<ClassEntity?> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun copyExistingClass(classEntity: ClassEntity) {
+        TODO("Not yet implemented")
+    }
+
 
     // endregion
 

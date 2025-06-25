@@ -12,4 +12,9 @@ interface ClassRepository {
     suspend fun deleteClass(classEntity: ClassEntity)
 
     fun getClasses(): Flow<List<ClassEntity>>
+
+    fun getClassById(id : String) : Flow<ClassEntity?>
+
+    suspend fun copyExistingClass(classEntity: ClassEntity)
+
 }
