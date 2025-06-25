@@ -11,10 +11,9 @@ import com.miassolutions.rollcall.data.entities.ClassEntity
 import com.miassolutions.rollcall.databinding.FragmentAddClassBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.showToast
-import com.miassolutions.rollcall.ui.uicommon.ClassUiEvent
+import com.miassolutions.rollcall.ui.classscreen.ClassUiEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import java.util.Calendar
 import java.util.Date
 
 @AndroidEntryPoint

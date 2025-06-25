@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.miassolutions.rollcall.data.entities.ClassEntity
 import com.miassolutions.rollcall.data.repository.Repository
-import com.miassolutions.rollcall.ui.uicommon.ClassUiEvent
-import com.miassolutions.rollcall.ui.uicommon.ClassUiState
+import com.miassolutions.rollcall.ui.classscreen.ClassUiEvent
+import com.miassolutions.rollcall.ui.classscreen.ClassUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

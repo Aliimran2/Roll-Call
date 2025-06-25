@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.fragments
+package com.miassolutions.rollcall.ui.studentlistscreen
 
 import ImportFromExcel
 import android.content.ActivityNotFoundException
@@ -34,6 +34,7 @@ import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.ui.MainActivity
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
+import com.miassolutions.rollcall.ui.fragments.ImportProgressDialogFragment
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
 import com.miassolutions.rollcall.utils.UiState
@@ -51,6 +52,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     private val binding get() = _binding!!
 
     private val addStudentViewModel by viewModels<AddStudentViewModel>()
+    private val studentListViewModel by viewModels<StudentLitViewModel>()
     private val studentDetailViewModel by viewModels<StudentDetailViewModel>()
 
     private val args by navArgs<StudentsFragmentArgs>()
@@ -63,6 +65,9 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentStudentsBinding.bind(view)
+
+        studentListViewModel.updateClassId(args.classId)
+
 
 
 
@@ -81,7 +86,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
     private fun setupSearchBar() {
         binding.searchInput.addTextChangedListener { text ->
-            addStudentViewModel.onSearchQueryChanged(text.toString())
+            studentListViewModel.onSearchQueryChanged(text.toString())
         }
     }
 
@@ -133,7 +138,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
 
         collectLatestFlow {
-            addStudentViewModel.filteredStudents.collectLatest {
+            studentListViewModel.filteredStudents.collectLatest {
                 adapter.submitList(it)
             }
         }

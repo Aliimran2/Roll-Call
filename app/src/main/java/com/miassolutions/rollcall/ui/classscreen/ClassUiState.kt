@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.uicommon
+package com.miassolutions.rollcall.ui.classscreen
 
 import com.miassolutions.rollcall.data.entities.ClassEntity
 

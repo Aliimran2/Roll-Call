@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/dashboardFragment">
+    app:startDestination="@id/listClassFragment">
     <fragment
         android:id="@+id/addStudentFragment"
         android:name="com.miassolutions.rollcall.ui.fragments.AddStudentFragment"
@@ -24,7 +24,7 @@
     <fragment
         android:id="@+id/studentsFragment"
         tools:layout="@layout/fragment_students"
-        android:name="com.miassolutions.rollcall.ui.fragments.StudentsFragment"
+        android:name="com.miassolutions.rollcall.ui.studentlistscreen.StudentsFragment"
         android:label="Students" >
         <action
             android:id="@+id/action_studentsFragment_to_addStudentFragment"
@@ -99,9 +99,6 @@
         <action
             android:id="@+id/action_dashboardFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
-        <action
-            android:id="@+id/action_dashboardFragment_to_listClassFragment"
-            app:destination="@id/listClassFragment" />
     </fragment>
     <dialog
         android:id="@+id/datePickerFragment"
@@ -115,7 +112,7 @@
     <fragment
         android:id="@+id/listClassFragment"
         tools:layout="@layout/fragment_list_class"
-        android:name="com.miassolutions.rollcall.ui.fragments.ListClassFragment"
+        android:name="com.miassolutions.rollcall.ui.classscreen.ListClassFragment"
         android:label="Classes" >
         <action
             android:id="@+id/action_listClassFragment_to_addClassFragment"

@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.fragments
+package com.miassolutions.rollcall.ui.classscreen
 
 import android.os.Bundle
 import android.view.View
@@ -11,8 +11,6 @@ import com.miassolutions.rollcall.databinding.FragmentListClassBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.ui.adapters.ClassListAdapter
-import com.miassolutions.rollcall.ui.uicommon.ClassUiEvent
-import com.miassolutions.rollcall.ui.uicommon.ClassUiState
 import com.miassolutions.rollcall.ui.viewmodels.ClassViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
