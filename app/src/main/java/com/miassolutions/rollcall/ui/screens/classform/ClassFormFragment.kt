@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.viewmodels
+package com.miassolutions.rollcall.ui.screens.classform
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,18 +8,19 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.miassolutions.rollcall.data.entities.ClassEntity
-import com.miassolutions.rollcall.databinding.FragmentAddClassBinding
+import com.miassolutions.rollcall.databinding.FragmentClassFormBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.ui.screens.classscreen.ClassUiEvent
+import com.miassolutions.rollcall.ui.viewmodels.ClassViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import java.util.Date
 
 @AndroidEntryPoint
-class AddClassFragment : BottomSheetDialogFragment() {
+class ClassFormFragment : BottomSheetDialogFragment() {
 
-    private var _biding: FragmentAddClassBinding? = null
+    private var _biding: FragmentClassFormBinding? = null
     private val binding get() = _biding!!
 
     private val viewModel by viewModels<ClassViewModel>()
@@ -29,7 +30,7 @@ class AddClassFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _biding = FragmentAddClassBinding.inflate(inflater)
+        _biding = FragmentClassFormBinding.inflate(inflater)
         return binding.root
     }
 

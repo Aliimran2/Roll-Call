@@ -22,11 +22,10 @@
             android:id="@+id/ivStudentImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:civ_border_color="@color/purple_two"
             android:layout_gravity="center_horizontal"
             android:contentDescription="Student Image"
-            android:src="@drawable/mias_profile_pic"
-            app:civ_border_width="2dp"
+            android:src="@drawable/ic_person"
+            app:civ_border_width="1dp"
 
              />
 

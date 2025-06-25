@@ -17,9 +17,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2"
+            android:orientation="horizontal"
 
-            android:orientation="horizontal">
+            android:weightSum="2">
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -27,8 +27,8 @@
                 style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginEnd="2dp"
+                android:layout_weight="1"
 
                 android:hint="Class Name"
                 app:boxBackgroundMode="outline">
@@ -37,6 +37,7 @@
                     android:id="@+id/class_name_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:inputType="textCapWords"
                     app:simpleItems="@array/class_items" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -46,8 +47,8 @@
                 style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginStart="2dp"
+                android:layout_weight="1"
                 android:hint="Sec Name"
                 app:boxBackgroundMode="outline">
 
@@ -56,51 +57,60 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
+                    android:textSize="12sp"
                     app:simpleItems="@array/sec_items" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
-        <!-- Class Name -->
-
-
-        <!-- Class Name -->
-
-
-        <!-- Start Date -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/start_date_layout"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Start Session Date"
-            app:endIconMode="custom">
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/start_date_input"
-                android:layout_width="match_parent"
+            <!-- Start Date -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/start_date_layout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="false"
-                android:inputType="none" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                android:hint="Start Session"
+                app:endIconMode="custom">
 
-        <!-- End Date -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/end_date_layout"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="End Session Date"
-            app:endIconMode="custom">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/start_date_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:inputType="none"
+                    android:textSize="12sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/end_date_input"
-                android:layout_width="match_parent"
+            <!-- End Date -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/end_date_layout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="false"
-                android:inputType="none" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginStart="2dp"
+                android:layout_weight="1"
+                android:hint="End Session"
+                app:endIconMode="custom">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/end_date_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:inputType="none"
+                    android:textSize="12sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </LinearLayout>
+
 
         <!-- Teacher -->
         <com.google.android.material.textfield.TextInputLayout
@@ -114,6 +124,7 @@
                 android:id="@+id/teacher_name_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="12sp"
                 android:inputType="textCapWords" />
         </com.google.android.material.textfield.TextInputLayout>
 

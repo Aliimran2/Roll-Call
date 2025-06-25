@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.screens.addstudentscreen
+package com.miassolutions.rollcall.ui.screens.studentformscreen
 
 import WeekendPastDateValidatorUtil
 import android.os.Bundle
@@ -16,7 +16,7 @@ import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.common.Constants.DUPLICATE_REG_NUMBER
 import com.miassolutions.rollcall.common.Constants.DUPLICATE_ROLL_NUMBER
 import com.miassolutions.rollcall.data.entities.StudentEntity
-import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
+import com.miassolutions.rollcall.databinding.FragmentStudentFormBinding
 import com.miassolutions.rollcall.extenstions.addMenu
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.showLongToast
@@ -36,19 +36,19 @@ import java.util.Calendar
 import java.util.UUID
 
 @AndroidEntryPoint
-class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
+class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
 
     private lateinit var studentImagePicker: StudentImagePicker
 
     private val viewModel by viewModels<AddStudentViewModel>()
 
-    private var _binding: FragmentAddStudentBinding? = null
+    private var _binding: FragmentStudentFormBinding? = null
     private val binding get() = _binding!!
 
     private var dob: Long = System.currentTimeMillis()
     private var doa: Long = System.currentTimeMillis()
 
-    private val args by navArgs<AddStudentFragmentArgs>()
+    private val args by navArgs<StudentFormFragmentArgs>()
 
     private var currentStudent: StudentEntity? = null
 
@@ -57,7 +57,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentAddStudentBinding.bind(view)
+        _binding = FragmentStudentFormBinding.bind(view)
 
         studentImagePicker = StudentImagePicker(this){uri ->
             Glide.with(requireContext())

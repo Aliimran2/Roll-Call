@@ -5,10 +5,10 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/classListFragment">
     <fragment
-        android:id="@+id/addStudentFragment"
-        android:name="com.miassolutions.rollcall.ui.screens.addstudentscreen.AddStudentFragment"
+        android:id="@+id/studentFormFragment"
+        android:name="com.miassolutions.rollcall.ui.screens.studentformscreen.StudentFormFragment"
         android:label="Add New Student"
-        tools:layout="@layout/fragment_add_student" >
+        tools:layout="@layout/fragment_student_form" >
         <argument
             android:name="student_id"
             app:argType="string"
@@ -28,7 +28,7 @@
         android:label="Students" >
         <action
             android:id="@+id/action_studentsFragment_to_addStudentFragment"
-            app:destination="@id/addStudentFragment" />
+            app:destination="@id/studentFormFragment" />
         <action
             android:id="@+id/action_studentsFragment_to_studentDetailFragment"
             app:destination="@id/studentDetailFragment" />
@@ -110,7 +110,7 @@
         android:label="Classes" >
         <action
             android:id="@+id/to_add_class_fragment"
-            app:destination="@id/addClassFragment" />
+            app:destination="@id/classFormFragment" />
         <action
             android:id="@+id/to_student_list_fragment"
             app:destination="@id/studentsFragment" />
@@ -122,8 +122,8 @@
             app:destination="@id/attendanceFragment" />
     </fragment>
     <dialog
-        tools:layout="@layout/fragment_add_class"
-        android:id="@+id/addClassFragment"
-        android:name="com.miassolutions.rollcall.ui.viewmodels.AddClassFragment"
+        tools:layout="@layout/fragment_class_form"
+        android:id="@+id/classFormFragment"
+        android:name="com.miassolutions.rollcall.ui.screens.classform.ClassFormFragment"
         android:label="Add New Class" />
 </navigation>
