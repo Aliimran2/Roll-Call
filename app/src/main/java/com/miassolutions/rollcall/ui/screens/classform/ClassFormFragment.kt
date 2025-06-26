@@ -13,9 +13,11 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.miassolutions.rollcall.databinding.FragmentClassFormBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.setTextIfChanged
+import com.miassolutions.rollcall.extenstions.showMaterialDatePicker
 import com.miassolutions.rollcall.extenstions.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import java.util.Date
 
 @AndroidEntryPoint
 class ClassFormFragment : BottomSheetDialogFragment() {
@@ -98,14 +100,21 @@ class ClassFormFragment : BottomSheetDialogFragment() {
                 viewModel.onTeacherNameChange(it.toString())
             }
 
-            // Open date picker on click, not on text change
             startDateInput.setOnClickListener {
-                showDatePicker { date ->
+                showMaterialDatePicker(
+                    "Select start date",
+                    MaterialDatePicker.INPUT_MODE_TEXT,
+                    MaterialDatePicker.todayInUtcMilliseconds()
+                ) { date ->
                     viewModel.onStartDateChange(date)
                 }
             }
             endDateInput.setOnClickListener {
-                showDatePicker { date ->
+                showMaterialDatePicker(
+                    "Select end date",
+                    MaterialDatePicker.INPUT_MODE_TEXT,
+                    MaterialDatePicker.todayInUtcMilliseconds()
+                ) { date ->
                     viewModel.onEndDateChange(date)
                 }
             }
@@ -121,18 +130,6 @@ class ClassFormFragment : BottomSheetDialogFragment() {
         }
 
 
-    }
-
-    private fun showDatePicker(onDateSelected: (Long) -> Unit) {
-        val picker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Select date")
-            .build()
-
-        picker.show(parentFragmentManager, "DatePicker")
-
-        picker.addOnPositiveButtonClickListener { millis ->
-            onDateSelected(millis)
-        }
     }
 
 
