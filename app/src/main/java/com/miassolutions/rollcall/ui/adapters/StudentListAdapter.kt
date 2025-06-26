@@ -29,9 +29,14 @@ class StudentListAdapter(
 
             binding.apply {
 
-                item.studentImage?.let {
+                if (item.studentImage.isNullOrEmpty()) {
                     Glide.with(ivStudent.context)
-                        .load(it)
+                        .load(R.drawable.ic_person)
+                        .into(ivStudent)
+                } else {
+
+                    Glide.with(ivStudent.context)
+                        .load(item.studentImage)
                         .placeholder(R.drawable.ic_person)
                         .error(R.drawable.ic_error_image)
                         .into(ivStudent)
