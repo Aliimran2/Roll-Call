@@ -10,17 +10,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.miassolutions.rollcall.data.entities.ClassEntity
 import com.miassolutions.rollcall.databinding.FragmentClassFormBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.setTextIfChanged
-import com.miassolutions.rollcall.extenstions.showMaterialDatePicker
 import com.miassolutions.rollcall.extenstions.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @AndroidEntryPoint
 class ClassFormFragment : BottomSheetDialogFragment() {
@@ -56,7 +51,6 @@ class ClassFormFragment : BottomSheetDialogFragment() {
     }
 
 
-
     private fun setupEventObserver() {
 
         collectLatestFlow {
@@ -84,7 +78,7 @@ class ClassFormFragment : BottomSheetDialogFragment() {
                     startDateInput.setTextIfChanged(state.startDateStr)
                     endDateInput.setTextIfChanged(state.endDateStr)
                     teacherNameInput.setTextIfChanged(state.teacherName)
-                    saveClassButton.text = if(state.isEditMode) "Update" else "Save"
+                    saveClassButton.text = if (state.isEditMode) "Update" else "Save"
                 }
 
             }
@@ -129,7 +123,7 @@ class ClassFormFragment : BottomSheetDialogFragment() {
 
     }
 
-    private fun showDatePicker(onDateSelected: (String) -> Unit) {
+    private fun showDatePicker(onDateSelected: (Long) -> Unit) {
         val picker = MaterialDatePicker.Builder.datePicker()
             .setTitleText("Select date")
             .build()
@@ -137,11 +131,9 @@ class ClassFormFragment : BottomSheetDialogFragment() {
         picker.show(parentFragmentManager, "DatePicker")
 
         picker.addOnPositiveButtonClickListener { millis ->
-            val date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date(millis))
-            onDateSelected(date)
+            onDateSelected(millis)
         }
     }
-
 
 
     private fun validateInputs(): Boolean {
@@ -164,7 +156,6 @@ class ClassFormFragment : BottomSheetDialogFragment() {
                     classSecInput.requestFocus()
                     false
                 }
-
 
 
                 startDateInput.text.isNullOrBlank() -> {

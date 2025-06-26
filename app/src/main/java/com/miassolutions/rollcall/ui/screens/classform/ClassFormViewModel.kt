@@ -64,12 +64,24 @@ class ClassFormViewModel @Inject constructor(private val repository: ClassRepoIm
         _uiState.update { it.copy(teacherName = teacherName) }
     }
 
-    fun onStartDateChange(value: String) {
-        _uiState.update { it.copy(startDateStr = value) }
+    fun onStartDateChange(value: Long) {
+        _uiState.update {
+            it.copy(
+                startDateStr = value.toFormattedDate(),
+                startDate = value
+            )
+
+        }
     }
 
-    fun onEndDateChange(value: String) {
-        _uiState.update { it.copy(endDateStr = value) }
+    fun onEndDateChange(value: Long) {
+        _uiState.update {
+            it.copy(
+                endDateStr = value.toFormattedDate(),
+                endDate = value
+            )
+
+        }
     }
 
     fun onSavClicked() {
@@ -86,7 +98,6 @@ class ClassFormViewModel @Inject constructor(private val repository: ClassRepoIm
             }
             return
         }
-
 
 
         val classEntity = ClassEntity(
