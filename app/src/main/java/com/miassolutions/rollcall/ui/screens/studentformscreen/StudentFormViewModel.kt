@@ -2,6 +2,7 @@ package com.miassolutions.rollcall.ui.screens.studentformscreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.miassolutions.rollcall.common.InsertResult
 import com.miassolutions.rollcall.common.OperationResult
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.data.repository.impl.StudentRepoImpl
@@ -21,11 +22,9 @@ class StudentFormViewModel @Inject constructor(private val repository: StudentRe
     private val _studentToEdit = MutableStateFlow<StudentEntity?>(null)
     val studentToEdit = _studentToEdit.asStateFlow()
 
-    private val _toastMessage = MutableSharedFlow<StudentInsertResult>()
+    private val _toastMessage = MutableSharedFlow<InsertResult>()
     val toastMessage = _toastMessage.asSharedFlow()
 
-    private val _importUIState = MutableStateFlow<UiState<Pair<Int, Int>>>(UiState.Idle)
-    val importUIState = _importUIState.asStateFlow()
 
     fun fetchStudentById(studentId: String) {
         viewModelScope.launch {
@@ -37,14 +36,14 @@ class StudentFormViewModel @Inject constructor(private val repository: StudentRe
                     }
 
                     is OperationResult.Error -> {
-                        _toastMessage.emit(StudentInsertResult.Failure(result.message))
+                        _toastMessage.emit(InsertResult.Failure(result.message))
                     }
 
                     OperationResult.Loading -> {}
 
                 }
             } catch (e: Exception) {
-                _toastMessage.emit(StudentInsertResult.Failure("failed"))
+                _toastMessage.emit(InsertResult.Failure("failed"))
 
             }
         }
@@ -53,7 +52,7 @@ class StudentFormViewModel @Inject constructor(private val repository: StudentRe
     fun updateStudent(student: StudentEntity) {
         viewModelScope.launch {
             repository.updateStudent(student); _toastMessage.emit(
-            StudentInsertResult.Success
+            InsertResult.Success
         )
         }
     }
@@ -61,7 +60,7 @@ class StudentFormViewModel @Inject constructor(private val repository: StudentRe
     fun insertStudent(studentEntity: StudentEntity) {
         viewModelScope.launch {
             val result = repository.insertStudent(studentEntity)
-//            _toastMessage.emit(result)
+            _toastMessage.emit(result)
         }
     }
 

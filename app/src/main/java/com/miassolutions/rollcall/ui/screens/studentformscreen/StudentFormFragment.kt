@@ -15,6 +15,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.common.Constants.DUPLICATE_REG_NUMBER
 import com.miassolutions.rollcall.common.Constants.DUPLICATE_ROLL_NUMBER
+import com.miassolutions.rollcall.common.InsertResult
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.FragmentStudentFormBinding
 import com.miassolutions.rollcall.extenstions.addMenu
@@ -26,7 +27,6 @@ import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.extenstions.toFormattedDate
 import com.miassolutions.rollcall.ui.MainActivity
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
-import com.miassolutions.rollcall.utils.BFormTextWatcher
 import com.miassolutions.rollcall.utils.StudentImagePicker
 import com.miassolutions.rollcall.utils.StudentInsertResult
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +39,7 @@ import java.util.UUID
 class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
 
 
-    private val viewModel by viewModels<AddStudentViewModel>()
+    private val viewModel by viewModels<StudentFormViewModel>()
 
     private var _binding: FragmentStudentFormBinding? = null
     private val binding get() = _binding!!
@@ -59,7 +59,7 @@ class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentStudentFormBinding.bind(view)
 
-        studentImagePicker = StudentImagePicker(this){uri ->
+        studentImagePicker = StudentImagePicker(this) { uri ->
             Glide.with(requireContext())
                 .load(uri)
                 .placeholder(R.drawable.ic_person)
@@ -97,7 +97,7 @@ class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
 
             etStudentName.setText(student.studentName)
             etFatherName.setText(student.fatherName)
-            etRegNumber.setText(student.regNumber.toString())
+            etRegNumber.setText(student.regNumber)
             etRollNumber.setText(student.rollNumber.toString())
             etBForm.setText(student.bForm)
             etDOB.setText(student.dob.toFormattedDate())
@@ -172,12 +172,7 @@ class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
         addMenu(R.menu.menu_add_student) { item ->
             when (item.itemId) {
                 R.id.action_save -> {
-                    val bForm = binding.etBForm.text.toString()
-                    if (bForm.isNotBlank()) {
-                        saveStudent()
-                    } else {
-                        binding.tilBForm.error = "Invalid B-Form format"
-                    }
+                    saveStudent()
                     true
                 }
 
@@ -197,7 +192,7 @@ class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
             launch {
                 viewModel.toastMessage.collect { result ->
                     when (result) {
-                        is StudentInsertResult.Failure -> {
+                        is InsertResult.Failure -> {
                             when (result.reason) {
                                 DUPLICATE_REG_NUMBER -> {
                                     binding.etRegNumber.requestFocus()
@@ -213,7 +208,7 @@ class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
                             }
                         }
 
-                        is StudentInsertResult.Success -> {
+                        is InsertResult.Success -> {
 
                             showToast(
                                 if (currentStudent == null) "Student added!" else "Student updated!"
@@ -268,6 +263,12 @@ class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
                 etDOB.error = "Enter date of birth"
                 return
             }
+
+            bForm.isBlank() -> {
+                etBForm.requestFocus()
+                etBForm.error = "Enter B-Form"
+                return
+            }
         }
 
 
@@ -289,7 +290,7 @@ class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
             dob = dob,
             doa = doa,
             phoneNumber = phoneNumber,
-            classId = args.classId ,
+            classId = args.classId,
             address = address,
             bForm = bForm
         )
