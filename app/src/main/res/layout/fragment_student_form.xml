@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Student Name"
+            android:hint="Student Name *"
             app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
 
-            android:hint="Father Name"
+            android:hint="Father Name *"
             app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -76,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:hint="Registration Number"
+            android:hint="Registration Number *"
             app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -94,31 +94,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:hint="Roll Number"
+            android:hint="Roll Number *"
             app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etRollNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:imeOptions="actionNext"
-                android:inputType="number" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- B-Form -->
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilBForm"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:hint="B-Form (xxxxx-xxxxxxx-x)"
-            app:endIconMode="clear_text">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etBForm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
@@ -132,8 +112,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:hint="Date of Birth"
->
+            android:hint="Date of Birth *"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etDOB"
@@ -145,9 +125,6 @@
                 android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
-
-        <!-- Class -->
-
         <!-- Phone Number -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPhone"
@@ -155,7 +132,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:hint="Phone Number"
+            android:hint="Phone Number *"
             app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -166,6 +143,29 @@
                 android:inputType="phone" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- B-Form -->
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilBForm"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="B-Form (xxxxx-xxxxxxx-x) (Optional)"
+            app:endIconMode="clear_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etBForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
         <!-- Date of Admission -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilDOA"
@@ -173,7 +173,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:hint="Date of Admission"
+            android:hint="Date of Admission *"
          >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -193,7 +193,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:hint="Address"
+            android:hint="Address (Optional)"
             app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText

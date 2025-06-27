@@ -142,7 +142,7 @@ class AttendanceViewModel @Inject constructor(
         _uiState.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
             try {
-                val students = studentRepo.getStudentsByClassId(classId).first()
+                val students = studentRepo.getStudentListByClassId(classId).first()
                 val attendance = attendanceRepo.getClassAttendanceForDate(date)
 
                 val studentAttendances = students.map { student ->
