@@ -22,9 +22,9 @@
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/studentsFragment"
+        android:id="@+id/studentListFragment"
         tools:layout="@layout/fragment_students"
-        android:name="com.miassolutions.rollcall.ui.screens.studentlistscreen.StudentsFragment"
+        android:name="com.miassolutions.rollcall.ui.screens.studentlistscreen.StudentListFragment"
         android:label="Students" >
         <action
             android:id="@+id/action_studentsFragment_to_addStudentFragment"
@@ -113,7 +113,7 @@
             app:destination="@id/classFormFragment" />
         <action
             android:id="@+id/to_student_list_fragment"
-            app:destination="@id/studentsFragment" />
+            app:destination="@id/studentListFragment" />
         <action
             android:id="@+id/to_attendance_list_fragment"
             app:destination="@id/attendanceListFragment" />

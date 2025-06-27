@@ -23,13 +23,12 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
 import com.miassolutions.rollcall.extenstions.addMenu
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
+import com.miassolutions.rollcall.extenstions.showConfirmationDialog
 import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.ui.MainActivity
@@ -46,7 +45,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class StudentsFragment : Fragment(R.layout.fragment_students) {
+class StudentListFragment : Fragment(R.layout.fragment_students) {
 
     private var _binding: FragmentStudentsBinding? = null
     private val binding get() = _binding!!
@@ -55,7 +54,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     private val studentListViewModel by viewModels<StudentLitViewModel>()
     private val studentDetailViewModel by viewModels<StudentDetailViewModel>()
 
-    private val args by navArgs<StudentsFragmentArgs>()
+    private val args by navArgs<StudentListFragmentArgs>()
 
     private lateinit var toolbar: MaterialToolbar
 
@@ -67,11 +66,6 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         _binding = FragmentStudentsBinding.bind(view)
 
         studentListViewModel.updateClassId(args.classId)
-
-
-
-
-
         toolbar = (activity as MainActivity).findViewById<MaterialToolbar>(R.id.toolbar)
 
 
@@ -162,6 +156,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         }
     }
 
+
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun setupMenuProvider() {
 
@@ -212,7 +207,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
     private fun setupFabClickListener() {
         binding.fabAddStudent.setOnClickListener {
-            val action = StudentsFragmentDirections.actionStudentsFragmentToAddStudentFragment(args.classId, args.className)
+            val action = StudentListFragmentDirections.actionStudentsFragmentToAddStudentFragment(args.classId, args.className)
             findNavController().navigate(action)
         }
     }
@@ -231,7 +226,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     }
 
     private fun navToDetail(studentEntity: StudentEntity) {
-        val action = StudentsFragmentDirections.actionStudentsFragmentToStudentDetailFragment(
+        val action = StudentListFragmentDirections.actionStudentsFragmentToStudentDetailFragment(
             studentEntity.studentId, studentEntity.studentName
         )
         findNavController().navigate(action)
@@ -239,7 +234,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
 
     private fun navToEdit(studentId: String) {
         val action =
-            StudentsFragmentDirections.actionStudentsFragmentToAddStudentFragment(
+            StudentListFragmentDirections.actionStudentsFragmentToAddStudentFragment(
                 studentId = studentId,
                 classId = args.classId,
                 className = args.className
@@ -269,19 +264,13 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     }
 
     private fun deleteClickListener(studentId: String) {
-        MaterialAlertDialogBuilder(requireContext())
 
-            .setTitle("Confirm Deletion!!")
-            .setMessage("Are you sure?")
-            .setPositiveButton("Yes, Delete") { dialog, _ ->
+        showConfirmationDialog(
+            "Attention!!",
+            "This will delete all record related to the student"
+            ){
 //                studentDetailViewModel.deleteStudentById(studentId)
-                Snackbar.make(binding.root, "Deleted", Snackbar.LENGTH_LONG)
-                    .show()
-                dialog.dismiss()
-
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
+        }
     }
 
 
