@@ -86,8 +86,9 @@ fun Fragment.showPopupMenu(
 }
 
 
-fun Fragment.setToolbarTitle(title: String) {
+fun Fragment.setToolbarTitle(title: String, subtitle : String? = null) {
     (activity as? AppCompatActivity)?.supportActionBar?.title = title
+    (activity as? AppCompatActivity)?.supportActionBar?.subtitle = subtitle
 }
 
 fun Fragment.requestSmsPermission(onGranted: () -> Unit) {

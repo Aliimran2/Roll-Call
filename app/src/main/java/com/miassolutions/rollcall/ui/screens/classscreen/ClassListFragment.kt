@@ -5,14 +5,17 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.appbar.MaterialToolbar
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.ClassEntity
 import com.miassolutions.rollcall.databinding.FragmentClassListBinding
 import com.miassolutions.rollcall.extenstions.addMenu
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
+import com.miassolutions.rollcall.extenstions.setToolbarTitle
 import com.miassolutions.rollcall.extenstions.showConfirmationDialog
 import com.miassolutions.rollcall.extenstions.showPopupMenu
 import com.miassolutions.rollcall.extenstions.showToast
+import com.miassolutions.rollcall.ui.MainActivity
 import com.miassolutions.rollcall.ui.adapters.ClassListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.ClassViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,10 +37,14 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
         )
     }
 
+    private lateinit var toolbar: MaterialToolbar
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentClassListBinding.bind(view)
+
+        toolbar = (activity as MainActivity).findViewById<MaterialToolbar>(R.id.toolbar)
 
         setupRecyclerView()
         observeUiEvent()
@@ -126,6 +133,8 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
 
                     is ClassUiState.Success -> {
                         adapter.submitList(state.classList)
+                        toolbar.subtitle = "Total Classes: ${state.totalClasses}"
+
                     }
 
                     is ClassUiState.Failure -> {
