@@ -51,7 +51,7 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
     private val binding get() = _binding!!
 
     private val addStudentViewModel by viewModels<AddStudentViewModel>()
-    private val studentListViewModel by viewModels<StudentLitViewModel>()
+    private val studentListViewModel by viewModels<StudentListViewModel>()
     private val studentDetailViewModel by viewModels<StudentDetailViewModel>()
 
     private val args by navArgs<StudentListFragmentArgs>()
@@ -207,7 +207,7 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
 
     private fun setupFabClickListener() {
         binding.fabAddStudent.setOnClickListener {
-            val action = StudentListFragmentDirections.actionStudentsFragmentToAddStudentFragment(args.classId, args.className)
+            val action = StudentListFragmentDirections.toAddUpdateStudent(args.classId, args.className)
             findNavController().navigate(action)
         }
     }
@@ -226,7 +226,7 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
     }
 
     private fun navToDetail(studentEntity: StudentEntity) {
-        val action = StudentListFragmentDirections.actionStudentsFragmentToStudentDetailFragment(
+        val action = StudentListFragmentDirections.toStudentDetailFragment(
             studentEntity.studentId, studentEntity.studentName
         )
         findNavController().navigate(action)
@@ -234,7 +234,7 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
 
     private fun navToEdit(studentId: String) {
         val action =
-            StudentListFragmentDirections.actionStudentsFragmentToAddStudentFragment(
+            StudentListFragmentDirections.toAddUpdateStudent(
                 studentId = studentId,
                 classId = args.classId,
                 className = args.className
@@ -269,7 +269,8 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
             "Attention!!",
             "This will delete all record related to the student"
             ){
-//                studentDetailViewModel.deleteStudentById(studentId)
+                studentListViewModel.deleteStudentById(studentId)
+            showSnackbar("Student deleted")
         }
     }
 

@@ -23,5 +23,5 @@ interface StudentRepository {
 
     suspend fun deleteStudentById(id: String)
 
-    suspend fun getStudentsByClassId(classId: String): Flow<List<StudentEntity>>
+    suspend fun getStudentListByClassId(classId: String): Flow<List<StudentEntity>>
 }

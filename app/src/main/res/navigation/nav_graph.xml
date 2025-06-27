@@ -27,10 +27,10 @@
         android:name="com.miassolutions.rollcall.ui.screens.studentlistscreen.StudentListFragment"
         android:label="Students" >
         <action
-            android:id="@+id/action_studentsFragment_to_addStudentFragment"
+            android:id="@+id/toAddUpdateStudent"
             app:destination="@id/studentFormFragment" />
         <action
-            android:id="@+id/action_studentsFragment_to_studentDetailFragment"
+            android:id="@+id/toStudentDetailFragment"
             app:destination="@id/studentDetailFragment" />
         <argument
             android:name="classId"
