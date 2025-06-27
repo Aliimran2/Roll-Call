@@ -1,23 +1,13 @@
 package com.miassolutions.rollcall.ui.screens.studentlistscreen
 
-import ImportFromExcel
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
-import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
@@ -26,23 +16,14 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
-import com.miassolutions.rollcall.extenstions.addMenu
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.showConfirmationDialog
 import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.ui.MainActivity
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
-import com.miassolutions.rollcall.ui.common.ImportProgressDialogFragment
-import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
-import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
-import com.miassolutions.rollcall.utils.UiState
-import com.miassolutions.rollcall.utils.exportExcelToDownloadsWithMediaStore
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class StudentListFragment : Fragment(R.layout.fragment_students) {
@@ -50,16 +31,12 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
     private var _binding: FragmentStudentsBinding? = null
     private val binding get() = _binding!!
 
-    private val addStudentViewModel by viewModels<AddStudentViewModel>()
     private val studentListViewModel by viewModels<StudentListViewModel>()
-    private val studentDetailViewModel by viewModels<StudentDetailViewModel>()
-
     private val args by navArgs<StudentListFragmentArgs>()
 
-    private lateinit var toolbar: MaterialToolbar
 
+    private lateinit var toolbar: MaterialToolbar
     private lateinit var adapter: StudentListAdapter
-    private lateinit var filePickerLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -71,9 +48,7 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
 
         setupRecyclerView()
         setupFabClickListener()
-        setupMenuProvider()
         observeViewModel()
-        setupFilePicker()
         setupSearchBar()
     }
 
@@ -84,130 +59,21 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
         }
     }
 
-    private fun setupFilePicker() {
-        filePickerLauncher =
-            registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
-                uri?.let { handleExcelFile(it) }
-            }
-    }
-
-    private fun pickExcelFile() {
-        filePickerLauncher.launch(arrayOf("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
-    }
-
-    private fun handleExcelFile(uri: Uri) {
-        val dialog = ImportProgressDialogFragment()
-        dialog.show(parentFragmentManager, ImportProgressDialogFragment.TAG)
-
-        lifecycleScope.launch {
-            try {
-                val students = withContext(Dispatchers.IO) {
-                    ImportFromExcel.readStudentsFromExcel(requireContext(), uri)
-                }
-
-                if (students.isEmpty()) {
-                    showSnackbar("No valid students found in file.")
-                } else {
-                    Log.d("ImportDebug", "Read ${students.size} students from file")
-                    addStudentViewModel.importStudents(students)
-                }
-
-            } catch (e: Exception) {
-                Log.e("ImportError", "Error reading Excel: ${e.message}", e)
-                showSnackbar("Failed to import: ${e.localizedMessage ?: "Invalid Excel file."}")
-            } finally {
-                (parentFragmentManager.findFragmentByTag(ImportProgressDialogFragment.TAG) as? DialogFragment)?.dismiss()
-            }
-        }
-    }
 
     private fun observeViewModel() {
-
-
-        collectLatestFlow {
-            addStudentViewModel.noOfTotalStudents.collectLatest {
-                toolbar.subtitle = "Total Students : $it"
-            }
-        }
-
 
         collectLatestFlow {
             studentListViewModel.filteredStudents.collectLatest {
                 adapter.submitList(it)
             }
         }
-
-        collectLatestFlow {
-            addStudentViewModel.importUIState.collectLatest { state ->
-                binding.progressBar.isVisible = state is UiState.Loading
-
-                when (state) {
-                    is UiState.Success -> {
-                        showSnackbar("Imported: ${state.data.first}, Skipped: ${state.data.second}")
-                    }
-
-                    is UiState.Error -> {
-                        showSnackbar(state.message)
-                    }
-
-                    else -> Unit
-                }
-            }
-        }
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.Q)
-    private fun setupMenuProvider() {
-
-        addMenu(R.menu.student_list_fragment){menuItem ->
-            when(menuItem.itemId){
-                R.id.action_import_excel -> {
-                    pickExcelFile()
-                    true
-                }
-
-                R.id.action_export_excel -> {
-                    lifecycleScope.launch {
-                        val dialog = ImportProgressDialogFragment()
-                        dialog.show(parentFragmentManager, ImportProgressDialogFragment.TAG)
-
-                        try {
-                            val studentList = addStudentViewModel.filteredStudents.value
-
-                            if (studentList.isNotEmpty()) {
-                                withContext(Dispatchers.IO) {
-                                    exportExcelToDownloadsWithMediaStore(requireContext(), studentList)
-                                }
-                                // Make sure showing Snackbar on Main thread
-                                withContext(Dispatchers.Main) {
-                                    showSnackbar("Excel exported to Downloads")
-                                }
-                            } else {
-                                withContext(Dispatchers.Main) {
-                                    showSnackbar("No students to export")
-                                }
-                            }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            withContext(Dispatchers.Main) {
-                                showSnackbar("Export failed: ${e.localizedMessage}")
-                            }
-                        } finally {
-                            dialog.dismiss()
-                        }
-                    }
-                    true
-                }
-                else -> false
-            }
-        }
-
-    }
 
     private fun setupFabClickListener() {
         binding.fabAddStudent.setOnClickListener {
-            val action = StudentListFragmentDirections.toAddUpdateStudent(args.classId, args.className)
+            val action =
+                StudentListFragmentDirections.toAddUpdateStudent(args.classId, args.className)
             findNavController().navigate(action)
         }
     }
@@ -268,8 +134,8 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
         showConfirmationDialog(
             "Attention!!",
             "This will delete all record related to the student"
-            ){
-                studentListViewModel.deleteStudentById(studentId)
+        ) {
+            studentListViewModel.deleteStudentById(studentId)
             showSnackbar("Student deleted")
         }
     }

@@ -6,8 +6,11 @@ import com.miassolutions.rollcall.data.repository.impl.StudentRepoImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
@@ -19,8 +22,19 @@ import javax.inject.Inject
 class StudentListViewModel @Inject constructor(private val studentRepo: StudentRepoImpl) :
     ViewModel() {
 
+
     private val searchQuery = MutableStateFlow("")
     private val mClassId = MutableStateFlow("")
+
+    private val _uiState = MutableStateFlow<StudentListUiState>(StudentListUiState.Empty)
+    val uiState = _uiState.asStateFlow()
+
+    private val _uiEvent = MutableSharedFlow<StudentListUiEvent>()
+    val uiEvent = _uiEvent.asSharedFlow()
+
+
+
+
 
     fun onSearchQueryChanged(query: String) {
         searchQuery.value = query
