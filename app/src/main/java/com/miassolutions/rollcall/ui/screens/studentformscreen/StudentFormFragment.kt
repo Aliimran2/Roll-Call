@@ -38,7 +38,6 @@ import java.util.UUID
 @AndroidEntryPoint
 class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
 
-    private lateinit var studentImagePicker: StudentImagePicker
 
     private val viewModel by viewModels<AddStudentViewModel>()
 
@@ -52,6 +51,7 @@ class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
 
     private var currentStudent: StudentEntity? = null
 
+    private lateinit var studentImagePicker: StudentImagePicker
     private var studentImageUriStr = ""
 
 
@@ -81,14 +81,6 @@ class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
         observeViewModel()
         menuProvider()
 
-        binding.etBForm.addTextChangedListener(BFormTextWatcher(binding.etBForm))
-
-
-    }
-
-    private fun isValidBForm(bForm: String): Boolean {
-        val pattern = Regex("^\\d{5}-\\d{7}-\\d{1}$")
-        return pattern.matches(bForm)
     }
 
 
@@ -181,7 +173,7 @@ class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
             when (item.itemId) {
                 R.id.action_save -> {
                     val bForm = binding.etBForm.text.toString()
-                    if (isValidBForm(bForm) || bForm.isBlank()) {
+                    if (bForm.isNotBlank()) {
                         saveStudent()
                     } else {
                         binding.tilBForm.error = "Invalid B-Form format"

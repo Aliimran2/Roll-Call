@@ -29,38 +29,28 @@ import javax.inject.Inject
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class AddStudentViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    // Internal mutable StateFlow for the search query
     private val _searchQuery = MutableStateFlow<String>("")
 
-    //update query form the ui
     fun onSearchQueryChanged(query: String) {
         _searchQuery.value = query
     }
 
-    // number of total students in db
     private val _noOfTotalStudents = MutableStateFlow<Int>(0)
     val noOfTotalStudents: StateFlow<Int> = _noOfTotalStudents.asStateFlow()
 
-    // filter student list from the db on searchQuery based
     val filteredStudents: StateFlow<List<StudentEntity>> = _searchQuery
-        .debounce(200L) // wait until the user has paused for 200ms before reacting to his input
-        .distinctUntilChanged()  // Only proceed if the query is different from the previous one
-        .flatMapLatest { query -> // Cancel previous search and start a new one if query changes
+        .debounce(200L)
+        .distinctUntilChanged()
+        .flatMapLatest { query ->
             if (query.isBlank()) {
-                repository.allStudentsFlow // Get all students if query is empty or just whitespace
+                repository.allStudentsFlow
             } else {
-                repository.searchStudents(query) // Perform search with the given query
+                repository.searchStudents(query)
             }
         }
         .onEach {
             _noOfTotalStudents.value = it.size
         }
-        /*
-        *This converts the Flow into a StateFlow, making it suitable for UI observation with features
-        * State retention: Keeps the last emitted value
-        * Hot behavior: Starts emitting as long as there's a subscriber
-         */
-
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
 
