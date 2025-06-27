@@ -10,6 +10,7 @@ import com.miassolutions.rollcall.data.entities.ClassEntity
 import com.miassolutions.rollcall.databinding.FragmentClassListBinding
 import com.miassolutions.rollcall.extenstions.addMenu
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
+import com.miassolutions.rollcall.extenstions.showConfirmationDialog
 import com.miassolutions.rollcall.extenstions.showPopupMenu
 import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.ui.adapters.ClassListAdapter
@@ -94,7 +95,12 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
                 }
 
                 R.id.action_delete -> {
-                    viewModel.deleteClass(classEntity)
+                    showConfirmationDialog(
+                        "Attention!!",
+                        "This will delete all data related to the class"
+                    ) {
+                        viewModel.deleteClass(classEntity)
+                    }
                     true
                 }
 

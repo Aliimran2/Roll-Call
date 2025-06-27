@@ -16,6 +16,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.ui.MainActivity
@@ -35,6 +36,18 @@ fun Fragment.addMenu(
             return onItemSelected(menuItem)
         }
     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+}
+
+
+fun Fragment.showConfirmationDialog(title: String, message: String, onConfirm: () -> Unit) {
+    MaterialAlertDialogBuilder(requireContext())
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton("Yes") { _, _ ->
+            onConfirm()
+        }
+        .setNegativeButton("Cancel", null)
+        .show()
 }
 
 
@@ -59,8 +72,8 @@ fun Fragment.showSnackbar(
 fun Fragment.showPopupMenu(
     anchorView: View,
     @MenuRes menuRes: Int,
-    onMenuItemClickListener: ((MenuItem) -> Boolean)? =null
-){
+    onMenuItemClickListener: ((MenuItem) -> Boolean)? = null,
+) {
     val popupMenu = PopupMenu(requireContext(), anchorView)
     popupMenu.menuInflater.inflate(menuRes, popupMenu.menu)
 
