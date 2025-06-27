@@ -12,15 +12,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
-import com.google.android.material.appbar.MaterialToolbar
 import com.miassolutions.rollcall.R
-import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.showConfirmationDialog
 import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.extenstions.showToast
-import com.miassolutions.rollcall.ui.MainActivity
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -31,51 +28,97 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
     private var _binding: FragmentStudentsBinding? = null
     private val binding get() = _binding!!
 
-    private val studentListViewModel by viewModels<StudentListViewModel>()
+    private val viewModel by viewModels<StudentListViewModel>()
     private val args by navArgs<StudentListFragmentArgs>()
 
 
-    private lateinit var toolbar: MaterialToolbar
+    //    private lateinit var toolbar: MaterialToolbar
     private lateinit var adapter: StudentListAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentStudentsBinding.bind(view)
 
-        studentListViewModel.updateClassId(args.classId)
-        toolbar = (activity as MainActivity).findViewById<MaterialToolbar>(R.id.toolbar)
+        viewModel.updateClassId(args.classId, args.className)
+//        toolbar = (activity as AppCompatActivity).findViewById<MaterialToolbar>(R.id.toolbar)
 
 
         setupRecyclerView()
         setupFabClickListener()
-        observeViewModel()
+        observeUiState()
+        observeUiEvent()
         setupSearchBar()
     }
 
 
     private fun setupSearchBar() {
         binding.searchInput.addTextChangedListener { text ->
-            studentListViewModel.onSearchQueryChanged(text.toString())
+            viewModel.onSearchQueryUpdate(text.toString())
         }
     }
 
-
-    private fun observeViewModel() {
-
+    private fun observeUiState() {
         collectLatestFlow {
-            studentListViewModel.filteredStudents.collectLatest {
-                adapter.submitList(it)
+            viewModel.uiState.collectLatest { state ->
+                adapter.submitList(state.studentList)
             }
         }
     }
 
+    private fun observeUiEvent() {
+        collectLatestFlow {
+            viewModel.uiEvent.collectLatest { event ->
+                when (event) {
+                    is StudentListUiEvent.DialPhone -> {
+                        dialPhoneNumber(event.phone)
+
+                    }
+
+                    is StudentListUiEvent.NavigateToAddOrEdit -> {
+                        val action = StudentListFragmentDirections.toAddUpdateStudent(
+                            classId = event.classId,
+                            className = event.className,
+                            studentId = event.studentId
+                        )
+
+                        findNavController().navigate(action)
+                    }
+
+                    is StudentListUiEvent.NavigateToStudentDetail -> {
+                        val action = StudentListFragmentDirections.toStudentDetailFragment(
+                            event.studentId,
+                            event.studentName
+                        )
+                        findNavController().navigate(action)
+
+                    }
+
+                    is StudentListUiEvent.ShowDeleteConfirmation -> {
+                        showConfirmationDialog(
+                            "Attention!!",
+                            "This will delete all records related to the student"
+                        ) {
+                            viewModel.deleteStudent(event.studentId)
+                        }
+
+                    }
+
+                    is StudentListUiEvent.ShowSnackbar -> {
+                        showSnackbar(event.message)
+                    }
+
+
+                }
+
+            }
+        }
+    }
 
     private fun setupFabClickListener() {
         binding.fabAddStudent.setOnClickListener {
-            val action =
-                StudentListFragmentDirections.toAddUpdateStudent(args.classId, args.className)
-            findNavController().navigate(action)
+            viewModel.onAddStudentClicked()
         }
+
     }
 
     private fun dialPhoneNumber(phoneNumber: String) {
@@ -91,31 +134,14 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
         }
     }
 
-    private fun navToDetail(studentEntity: StudentEntity) {
-        val action = StudentListFragmentDirections.toStudentDetailFragment(
-            studentEntity.studentId, studentEntity.studentName
-        )
-        findNavController().navigate(action)
-    }
-
-    private fun navToEdit(studentId: String) {
-        val action =
-            StudentListFragmentDirections.toAddUpdateStudent(
-                studentId = studentId,
-                classId = args.classId,
-                className = args.className
-            )
-        findNavController().navigate(action)
-    }
-
-
     private fun setupRecyclerView() {
         adapter = StudentListAdapter(
-            onPhoneClick = ::dialPhoneNumber,
-            onProfileClick = ::navToDetail,
-            onReportClick = ::reportClickListener,
-            onEditClick = ::navToEdit,
-            onDeleteClick = ::deleteClickListener
+
+            onPhoneClick = viewModel::onPhoneClicked,
+            onProfileClick = viewModel::onStudentClicked,
+            onReportClick = viewModel::onReportClicked,
+            onEditClick = viewModel::onUpdateStudentClicked,
+            onDeleteClick = viewModel::onDeleteClicked
         )
 
         binding.rvStudents.adapter = adapter
@@ -129,25 +155,10 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
         })
     }
 
-    private fun deleteClickListener(studentId: String) {
-
-        showConfirmationDialog(
-            "Attention!!",
-            "This will delete all record related to the student"
-        ) {
-            studentListViewModel.deleteStudentById(studentId)
-            showSnackbar("Student deleted")
-        }
-    }
-
-
-    private fun reportClickListener(studentId: String) {
-        showToast("Showing report for $studentId")
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        toolbar.subtitle = null
+//        toolbar.subtitle = null
         _binding = null
     }
 }

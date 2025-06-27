@@ -173,6 +173,7 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        toolbar.subtitle = null
         _binding = null
     }
 }

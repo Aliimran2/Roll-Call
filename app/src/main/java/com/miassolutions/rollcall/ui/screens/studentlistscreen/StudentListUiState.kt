@@ -1,20 +1,28 @@
 package com.miassolutions.rollcall.ui.screens.studentlistscreen
 
+import androidx.room.Query
 import com.miassolutions.rollcall.data.entities.StudentEntity
 
-sealed class StudentListUiState {
-    data object Loading : StudentListUiState()
-    data object Empty : StudentListUiState()
-    data class Success(val studentList: List<StudentEntity>) : StudentListUiState() {
-        val totalStudents: Int
-            get() = studentList.size
-    }
-}
+data class StudentListUiState(
+    val studentList: List<StudentEntity> = emptyList(),
+    val searchQuery: String = "",
+    val isLoading: Boolean = false,
+    val totalCount: Int = 0,
+)
 
 
 sealed class StudentListUiEvent {
-    data class ShowSnackbar(val message : String)
-    data object NavToAddUpdate : StudentListUiEvent()
-    data object NavToDetail : StudentListUiEvent()
-    data object NavToBack : StudentListUiEvent()
+    data class ShowSnackbar(val message: String) : StudentListUiEvent()
+    data class NavigateToStudentDetail(val studentId: String, val studentName: String) :
+        StudentListUiEvent()
+
+
+    data class NavigateToAddOrEdit(
+        val studentId: String?,
+        val classId: String,
+        val className: String,
+    ) : StudentListUiEvent()
+
+    data class DialPhone(val phone: String) : StudentListUiEvent()
+    data class ShowDeleteConfirmation(val studentId: String) : StudentListUiEvent()
 }
