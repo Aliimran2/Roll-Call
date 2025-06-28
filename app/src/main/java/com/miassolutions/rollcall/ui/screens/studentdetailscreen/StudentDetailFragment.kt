@@ -54,6 +54,13 @@ class StudentDetailFragment : Fragment(R.layout.fragment_student_profile) {
                             tvBForm.text = it.bForm
                         }
                     }
+                    state.secondaryProfile?.let {
+                        binding.secondaryProfile.apply {
+                            tvFatherName.text = it.fatherName
+                            tvPhoneNumber.text = it.phoneNumber
+                            tvAddress.text = it.address
+                        }
+                    }
 
 
                 }

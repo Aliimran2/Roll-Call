@@ -9,6 +9,7 @@ import com.miassolutions.rollcall.extenstions.toFormattedDate
 import com.miassolutions.rollcall.ui.screens.studentdetailscreen.StudentDetailUIState
 import com.miassolutions.rollcall.ui.screens.studentdetailscreen.StudentDetailUiEvent
 import com.miassolutions.rollcall.ui.screens.studentdetailscreen.PrimaryProfile
+import com.miassolutions.rollcall.ui.screens.studentdetailscreen.SecondaryProfile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -63,8 +64,17 @@ class StudentDetailViewModel @Inject constructor(private val repository: Student
                                     bForm = student.data.bForm ?: "0000-0000000-0",
                                 )
                             }
+
+                        val secondaryProfile = SecondaryProfile(
+                            fatherName = student.data.fatherName,
+                            phoneNumber = student.data.phoneNumber ?: "03000000000",
+                            address = student.data.address ?: "Not provided"
+                        )
                         _uiState.update {
-                            it.copy(primaryProfile = primaryProfile)
+                            it.copy(
+                                primaryProfile = primaryProfile,
+                                secondaryProfile = secondaryProfile
+                            )
                         }
                     }
                 }
