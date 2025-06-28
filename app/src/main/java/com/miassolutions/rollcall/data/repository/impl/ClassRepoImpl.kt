@@ -4,6 +4,7 @@ import com.miassolutions.rollcall.data.dao.ClassDao
 import com.miassolutions.rollcall.data.dao.StudentDao
 import com.miassolutions.rollcall.data.entities.ClassEntity
 import com.miassolutions.rollcall.data.repository.ClassRepository
+import com.miassolutions.rollcall.ui.model.ClassWithStudents
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -28,6 +29,11 @@ class ClassRepoImpl @Inject constructor(
 
     override fun getClasses(): Flow<List<ClassEntity>> =
         classDao.getClasses()
+
+    override fun getClassesWithStudents(): Flow<List<ClassWithStudents>> {
+        return classDao.getClassesWithStudents()
+    }
+
 
     override fun getClassById(id: String): Flow<ClassEntity?> {
         return classDao.getClassById(id)

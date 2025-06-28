@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import androidx.room.Update
 import com.miassolutions.rollcall.data.entities.ClassEntity
+import com.miassolutions.rollcall.ui.model.ClassWithStudents
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -26,5 +27,9 @@ interface ClassDao {
 
     @Query("SELECT * FROM class_table WHERE classId =:classId LIMIT 1")
      fun getClassById(classId: String):Flow<ClassEntity?>
+
+     @Query("SELECT * FROM class_table")
+     fun getClassesWithStudents() : Flow<List<ClassWithStudents>>
+
 
 }

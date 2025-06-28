@@ -9,45 +9,55 @@ import androidx.recyclerview.widget.RecyclerView
 import com.miassolutions.rollcall.data.entities.ClassEntity
 import com.miassolutions.rollcall.databinding.ItemClassBinding
 import com.miassolutions.rollcall.extenstions.toFormattedDate
+import com.miassolutions.rollcall.ui.model.ClassWithStudents
 
 class ClassListAdapter(
     private val onStudentsClick: (ClassEntity) -> Unit,
     private val onAttendanceClick: (ClassEntity) -> Unit,
     private val onReportClick: (ClassEntity) -> Unit,
     private val onMoreClick: (View, ClassEntity) -> Unit,
-) : ListAdapter<ClassEntity, ClassListAdapter.ClassViewHolder>(ClassDiffUtil) {
+) : ListAdapter<ClassWithStudents, ClassListAdapter.ClassViewHolder>(ClassDiffUtil) {
 
 
     companion object {
-        val ClassDiffUtil = object : DiffUtil.ItemCallback<ClassEntity>() {
-            override fun areItemsTheSame(oldItem: ClassEntity, newItem: ClassEntity): Boolean {
-                return oldItem.classId == newItem.classId
+        val ClassDiffUtil = object : DiffUtil.ItemCallback<ClassWithStudents>() {
+            override fun areItemsTheSame(
+                oldItem: ClassWithStudents,
+                newItem: ClassWithStudents,
+            ): Boolean {
+                return oldItem.classEntity.classId == newItem.classEntity.classId
             }
 
-            override fun areContentsTheSame(oldItem: ClassEntity, newItem: ClassEntity): Boolean {
+            override fun areContentsTheSame(
+                oldItem: ClassWithStudents,
+                newItem: ClassWithStudents,
+            ): Boolean {
                 return oldItem == newItem
             }
+
         }
     }
 
 
     inner class ClassViewHolder(private val binding: ItemClassBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ClassEntity) {
+        fun bind(item: ClassWithStudents) {
 
             binding.apply {
-                tvClassName.text = item.className
-                tvSection.text = " (${item.sectionName})"
-                tvTeacherName.text = item.teacher
+                tvClassName.text = item.classEntity.className
+                tvSection.text = " (${item.classEntity.sectionName})"
+                tvTeacherName.text = item.classEntity.teacher
 
-                tvStartSession.text = item.startDate.toFormattedDate("dd-MM-yyyy")
-                tvEndSession.text = item.endDate.toFormattedDate("dd-MM-yyyy")
+                tvStartSession.text = item.classEntity.startDate.toFormattedDate("dd-MM-yyyy")
+                tvEndSession.text = item.classEntity.endDate.toFormattedDate("dd-MM-yyyy")
 
-                ivStudents.setOnClickListener { onStudentsClick(item) }
-                ivAttendance.setOnClickListener { onAttendanceClick(item) }
-                ivReport.setOnClickListener { onReportClick(item) }
+                tvTotalStudents.text = item.students.size.toString()
+
+                ivStudents.setOnClickListener { onStudentsClick(item.classEntity) }
+                ivAttendance.setOnClickListener { onAttendanceClick(item.classEntity) }
+                ivReport.setOnClickListener { onReportClick(item.classEntity) }
                 ivMore.setOnClickListener { view ->
-                    onMoreClick(view, item)
+                    onMoreClick(view, item.classEntity)
                 }
 
             }

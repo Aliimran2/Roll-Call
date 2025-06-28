@@ -8,6 +8,7 @@ import com.miassolutions.rollcall.data.dao.StudentDao
 import com.miassolutions.rollcall.data.entities.AttendanceEntity
 import com.miassolutions.rollcall.data.entities.ClassEntity
 import com.miassolutions.rollcall.data.entities.StudentEntity
+import com.miassolutions.rollcall.ui.model.ClassWithStudents
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -142,6 +143,10 @@ class MainRepository @Inject constructor(
 
     override fun getClasses(): Flow<List<ClassEntity>> =
         classDao.getClasses()
+
+    override fun getClassesWithStudents(): Flow<List<ClassWithStudents>> {
+        TODO("Not yet implemented")
+    }
 
     override fun getClassById(id: String): Flow<ClassEntity?> {
         TODO("Not yet implemented")

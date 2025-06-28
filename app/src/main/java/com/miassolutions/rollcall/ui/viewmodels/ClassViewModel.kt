@@ -33,7 +33,7 @@ class ClassViewModel @Inject constructor(private val repository: ClassRepoImpl) 
 
     private fun observeClasses() {
         viewModelScope.launch {
-            repository.getClasses()
+            repository.getClassesWithStudents()
                 .catch { e ->
                     _uiState.value = ClassUiState.Failure("Error : ${e.localizedMessage}")
                 }
