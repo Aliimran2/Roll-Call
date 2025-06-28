@@ -1,6 +1,4 @@
-package com.miassolutions.rollcall.ui.screens.attandancescreen
-
-import com.miassolutions.rollcall.data.entities.AttendanceEntity
+package com.miassolutions.rollcall.ui.screens.attandancelistscreen
 
 data class AttendanceListUiState(
     val isLoading: Boolean = false,

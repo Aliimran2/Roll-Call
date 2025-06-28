@@ -7,6 +7,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
+import com.miassolutions.rollcall.extenstions.hide
+import com.miassolutions.rollcall.extenstions.setToolbarTitle
+import com.miassolutions.rollcall.extenstions.show
+import com.miassolutions.rollcall.extenstions.toFormattedDate
 import com.miassolutions.rollcall.ui.attendance.AttendanceAdapter
 
 import com.miassolutions.rollcall.ui.attendance.AttendanceViewModel
@@ -29,20 +33,22 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAttendanceBinding.bind(view)
-//
-//
-//        attendanceMode = navArgs.attendanceMode
-//        selectedDate = navArgs.selectedDate
-//
-//        if (attendanceMode == "update" && selectedDate != -1L) {
-//            setToolbarTitle("Update Attendance")
-//            binding.attendanceToggleGroup.show()
-//            // Pre-fill date and disable picker
-//            binding.etDatePicker.setText(selectedDate.toFormattedDate())
-//            binding.etDatePicker.isEnabled = false
-//            binding.saveBtn.text = "Update"
-//
-//
+
+
+        attendanceMode = navArgs.attendanceMode
+        selectedDate = navArgs.selectedDate
+
+        if (attendanceMode == "update" && selectedDate != -1L) {
+            setToolbarTitle("Update Attendance")
+            binding.attendanceToggleGroup.show()
+            // Pre-fill date and disable picker
+            binding.etDatePicker.setText(selectedDate.toFormattedDate())
+            binding.etDatePicker.isEnabled = false
+            binding.saveBtn.text = "Update"
+        }
+    }
+
+
 //            // Load attendance from DB
 //            viewModel.setDate(selectedDate)
 //
@@ -285,12 +291,12 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 //            viewModel.updateAttendanceStatus(student, newStatus)
 //        }
 //        binding.rvAttendance.adapter = adapter
+////
+
+//    }
 //
-
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        _binding = null
+//    }
 }

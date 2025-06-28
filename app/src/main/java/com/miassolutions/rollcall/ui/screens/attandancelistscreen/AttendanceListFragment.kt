@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.screens.attandancescreen
+package com.miassolutions.rollcall.ui.screens.attandancelistscreen
 
 import android.os.Bundle
 import android.view.View
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.miassolutions.rollcall.R
@@ -25,7 +26,9 @@ class AttendanceListFragment : Fragment(R.layout.fragment_attendance_list) {
 
     private val viewModel by viewModels<AttendanceStatsViewModel>()
 
-    val adapter by lazy {
+    private val args by navArgs<AttendanceListFragmentArgs>()
+
+    private val adapter by lazy {
         StatsListAdapter(
             ::deleteAttendance,
             ::editAttendance,
@@ -38,6 +41,9 @@ class AttendanceListFragment : Fragment(R.layout.fragment_attendance_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAttendanceListBinding.bind(view)
+
+
+        viewModel.setClassId(args.classId)
 
         toolbar = (activity as AppCompatActivity).findViewById(R.id.toolbar)
         toolbar.subtitle = null
@@ -76,7 +82,10 @@ class AttendanceListFragment : Fragment(R.layout.fragment_attendance_list) {
         collectLatestFlow {
             viewModel.uiEvent.collectLatest { event ->
                 when (event) {
-                    is AttendanceStatsUiEvent.NavToAddEditAttendance -> {}
+                    is AttendanceStatsUiEvent.NavToAddEditAttendance -> {
+
+
+                    }
                     is AttendanceStatsUiEvent.NavToReportAttendance -> {}
                     is AttendanceStatsUiEvent.ShowDeleteConfirmation -> {}
                     is AttendanceStatsUiEvent.ShowSnackbar -> {

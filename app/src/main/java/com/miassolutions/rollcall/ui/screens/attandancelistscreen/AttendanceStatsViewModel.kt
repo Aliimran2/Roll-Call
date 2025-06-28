@@ -1,22 +1,16 @@
-package com.miassolutions.rollcall.ui.screens.attandancescreen
+package com.miassolutions.rollcall.ui.screens.attandancelistscreen
 
-import androidx.core.os.persistableBundleOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.miassolutions.rollcall.common.AttendanceStatus
 import com.miassolutions.rollcall.data.repository.impl.AttendanceRepoImpl
-import com.miassolutions.rollcall.extenstions.toFormattedDate
-import com.miassolutions.rollcall.ui.model.StatsUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch

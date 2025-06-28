@@ -76,7 +76,7 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
     }
 
     private fun onAttendanceNavigation(classEntity: ClassEntity) {
-        val action = ClassListFragmentDirections.toAttendanceListFragment()
+        val action = ClassListFragmentDirections.toAttendanceListFragment(classEntity.classId, classEntity.className, classEntity.sectionName?:"")
         findNavController().navigate(action)
     }
 
