@@ -81,8 +81,8 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
     }
 
     private fun onReportNavigation(classEntity: ClassEntity) {
-        val action = ClassListFragmentDirections.toAttendanceFragment("Report")
-        findNavController().navigate(action)
+//        val action = ClassListFragmentDirections.toAttendanceFragment("Report")
+//        findNavController().navigate(action)
     }
 
     private fun onMoreClick(view: View, classEntity: ClassEntity) {
