@@ -43,7 +43,7 @@
     <fragment
         android:id="@+id/attendanceFragment"
         android:name="com.miassolutions.rollcall.ui.screens.attendancescreen.AttendanceFragment"
-        android:label="Attendance"
+        android:label="Attendance {className} ({sectionName})"
         tools:layout="@layout/fragment_attendance" >
         <argument
             android:name="attendanceMode"
@@ -52,11 +52,20 @@
             android:name="selectedDate"
             app:argType="long"
             android:defaultValue="-1L" />
+        <argument
+            android:name="classId"
+            app:argType="string" />
+        <argument
+            android:name="className"
+            app:argType="string" />
+        <argument
+            android:name="sectionName"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/attendanceListFragment"
         android:name="com.miassolutions.rollcall.ui.screens.attandancelistscreen.AttendanceListFragment"
-        android:label="Attendance {className} ({sectionName})"
+        android:label="Records {className} ({sectionName})"
         tools:layout="@layout/fragment_attendance_list">
         <action
             android:id="@+id/action_statsFragment_to_attendanceFragment"

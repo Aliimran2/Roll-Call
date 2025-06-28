@@ -11,19 +11,21 @@ import com.miassolutions.rollcall.common.AttendanceStatus
 
 class AttendanceAdapter(
     private val readOnly: Boolean = false,
-    private val onStatusChanged: (AttendanceUIModel, AttendanceStatus) -> Unit,
+    private val onStatusChanged: (AttendanceUiState.StudentAttendance, AttendanceStatus) -> Unit,
 ) :
-    ListAdapter<AttendanceUIModel, AttendanceAdapter.AttendanceViewHolder>(AttendanceDiffUtil()) {
+    ListAdapter<AttendanceUiState.StudentAttendance, AttendanceAdapter.AttendanceViewHolder>(
+        AttendanceDiffUtil()
+    ) {
 
     inner class AttendanceViewHolder(private val binding: ItemAttendanceBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: AttendanceUIModel) {
+        fun bind(item: AttendanceUiState.StudentAttendance) {
             binding.apply {
                 tvRollNum.text = item.rollNumber.toString()
-                tvStudentName.text = item.studentName
+                tvStudentName.text = item.name
 
                 toggleAttendance.setOnCheckedChangeListener(null) // clear old listener
-                toggleAttendance.isChecked = item.attendanceStatus == AttendanceStatus.PRESENT
+                toggleAttendance.isChecked = item.status == AttendanceStatus.PRESENT
 
                 toggleAttendance.isEnabled = !readOnly
                 if (!readOnly) {
@@ -56,19 +58,20 @@ class AttendanceAdapter(
 }
 
 
-class AttendanceDiffUtil : DiffUtil.ItemCallback<AttendanceUIModel>() {
+class AttendanceDiffUtil : DiffUtil.ItemCallback<AttendanceUiState.StudentAttendance>() {
     override fun areItemsTheSame(
-        oldItem: AttendanceUIModel,
-        newItem: AttendanceUIModel,
+        oldItem: AttendanceUiState.StudentAttendance,
+        newItem: AttendanceUiState.StudentAttendance,
     ): Boolean {
         return oldItem.studentId == newItem.studentId
     }
 
     override fun areContentsTheSame(
-        oldItem: AttendanceUIModel,
-        newItem: AttendanceUIModel,
+        oldItem: AttendanceUiState.StudentAttendance,
+        newItem: AttendanceUiState.StudentAttendance,
     ): Boolean {
         return oldItem == newItem
     }
+
 
 }

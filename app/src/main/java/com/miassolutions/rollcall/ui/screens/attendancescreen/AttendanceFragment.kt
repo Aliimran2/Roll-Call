@@ -2,19 +2,30 @@ package com.miassolutions.rollcall.ui.screens.attendancescreen
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.miassolutions.rollcall.R
+import com.miassolutions.rollcall.common.AttendanceFilter
+import com.miassolutions.rollcall.common.Constants
 import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
+import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.hide
 import com.miassolutions.rollcall.extenstions.setToolbarTitle
 import com.miassolutions.rollcall.extenstions.show
+import com.miassolutions.rollcall.extenstions.showMaterialDatePicker
 import com.miassolutions.rollcall.extenstions.toFormattedDate
 import com.miassolutions.rollcall.ui.attendance.AttendanceAdapter
+import com.miassolutions.rollcall.ui.attendance.AttendanceUiEvent
+import com.miassolutions.rollcall.ui.attendance.AttendanceUiState
 
 import com.miassolutions.rollcall.ui.attendance.AttendanceViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
@@ -28,7 +39,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     private val navArgs by navArgs<AttendanceFragmentArgs>()
     private var attendanceMode = "add"
     private var selectedDate: Long = -1L
-    private var studentsCount: Int = 0
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,266 +48,129 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
         attendanceMode = navArgs.attendanceMode
         selectedDate = navArgs.selectedDate
+        viewModel.setClassId(navArgs.classId)
 
-        if (attendanceMode == "update" && selectedDate != -1L) {
-            setToolbarTitle("Update Attendance")
-            binding.attendanceToggleGroup.show()
-            // Pre-fill date and disable picker
-            binding.etDatePicker.setText(selectedDate.toFormattedDate())
-            binding.etDatePicker.isEnabled = false
-            binding.saveBtn.text = "Update"
+        observeUiState()
+        setupRecyclerView()
+        setupViews()
+
+    }
+
+    private fun setupViews() {
+        binding.attendanceToggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.btnAll -> viewModel.onEvent(AttendanceUiEvent.UpdateFilter(AttendanceFilter.ALL))
+
+                    R.id.btnAbsent -> viewModel.onEvent(
+                        AttendanceUiEvent.UpdateFilter(
+                            AttendanceFilter.ABSENT
+                        )
+                    )
+
+                    R.id.btnPresent -> viewModel.onEvent(
+                        AttendanceUiEvent.UpdateFilter(
+                            AttendanceFilter.PRESENT
+                        )
+                    )
+                }
+            }
+        }
+        binding.etSearch.doAfterTextChanged { text ->
+            viewModel.onEvent(AttendanceUiEvent.UpdateSearchQuery(text.toString()))
+        }
+
+        binding.etDatePicker.setOnClickListener {
+            showMaterialDatePicker("Select Date"){
+                viewModel.setDate(it)
+                binding.etDatePicker.setText(it.toFormattedDate())
+            }
+        }
+
+
+        // Setup save button (hide in report mode)
+        binding.saveBtn.apply {
+            if (attendanceMode == "report") {
+                hide()
+            } else {
+                setOnClickListener {
+                    viewModel.onEvent(AttendanceUiEvent.SaveAttendance)
+                }
+            }
+        }
+    }
+
+    private fun showError(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun showSuccess(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.green))
+            .show()
+    }
+
+    private fun observeUiState() {
+        collectLatestFlow {
+            viewModel.filteredAttendance.collectLatest { students ->
+                adapter.submitList(students)
+            }
+
+            viewModel.uiState.collectLatest { state ->
+
+                if (state.isLoading || state.isSaving) {
+                    binding.progressBar.show()
+                } else {
+                    binding.progressBar.hide()
+                }
+
+                updateCountCards(state.counts)
+
+
+
+                state.selectedDate?.let { date ->
+                    if (binding.etDatePicker.text.toString() != date.toFormattedDate()) {
+                        binding.etDatePicker.setText(date.toFormattedDate())
+                    }
+                }
+
+                state.error?.let { eror ->
+                    showError(eror)
+
+                }
+
+                if (state.saveSuccess){
+                    showSuccess("Attendance saved successfully")
+                    viewModel.onEvent(AttendanceUiEvent.SaveAttendance)
+                }
+
+            }
+        }
+    }
+
+    private fun updateCountCards(counts: AttendanceUiState.AttendanceCounts) {
+        binding.apply {
+            totalCard.tvCountTitle.text = "Total"
+            presentCard.tvCountTitle.text = "Present"
+            absentCard.tvCountTitle.text = "Absent"
+            totalCard.tvCount.text = counts.total.toString()
+            presentCard.tvCount.text = counts.present.toString()
+            absentCard.tvCount.text = counts.absent.toString()
         }
     }
 
 
-//            // Load attendance from DB
-//            viewModel.setDate(selectedDate)
-//
-//        } else if (attendanceMode == "report" && selectedDate != -1L) {
-//            setToolbarTitle("Report ${selectedDate.toFormattedDate()}")
-//            binding.attendanceToggleGroup.show()
-//            binding.etDatePicker.setText(selectedDate.toFormattedDate())
-//            binding.etDatePicker.isEnabled = false
-//            binding.saveBtn.hide()
-//            binding.etDatePicker.hide()
-//
-//            // Load attendance from DB
-//            viewModel.setDate(selectedDate)
-//        }
-//
-//
-//
-//
-//        setupDateChangeListener()
-//        setupRecyclerView()
-//        collectFlows()
-//        clickListener()
-//        filterAttendance()
-//        searchStudent()
-//
-//    }
-//
-//    private fun searchStudent() {
-//        binding.etSearch.addTextChangedListener { searchText ->
-//            viewModel.updateSearchQuery(searchText.toString())
-//
-//        }
-//    }
-//
-//
-//    private fun setupDateChangeListener() {
-//        parentFragmentManager.setFragmentResultListener(
-//            DATE_REQUEST_KEY,
-//            viewLifecycleOwner
-//        ) { _, bundle ->
-//            val selectedDate = bundle.getLong(Constants.SELECTED_DATE)
-//            binding.etDatePicker.setText(selectedDate.toFormattedDate())
-//        }
-//    }
-//
-//    private fun clickListener() {
-//
-//        binding.apply {
-//            etDatePicker.setOnClickListener {
-//                showDatePicker {
-//                    etDatePicker.setText(it.toFormattedDate())
-//                    viewModel.setDate(it)
-//                }
-//
-//            }
-//
-//            saveBtn.setOnClickListener {
-//                val dateStr = binding.etDatePicker.text.toString()
-//
-//                when {
-//                    dateStr.isEmpty() -> {
-//                        showSnackbar("Select date first")
-//                        return@setOnClickListener
-//                    }
-//
-//                    studentsCount == 0 -> {
-//                        showSnackbar("No students for attendance")
-//                        return@setOnClickListener
-//                    }
-//                }
-//
-//
-//                val date = viewModel.selectedDate.value
-//                if (date == null) {
-//                    showSnackbar("Date not selected")
-//                    return@setOnClickListener
-//                }
-//
-//                when (attendanceMode) {
-//                    "update" -> {
-//
-//
-//                        viewModel.updateAttendanceForDate(date) { success ->
-//                            if (success) {
-//                                showSnackbar("Attendance updated for $dateStr")
-//                                findNavController().navigateUp()
-//                            } else {
-//                                showSnackbar("Failed to update attendance for $dateStr")
-//                            }
-//                        }
-//                    }
-//
-//                    "report" -> {
-//
-//                        filterAttendance()
-//                    }
-//
-//                    else -> {
-//
-//                        viewModel.saveAttendance { success ->
-//                            if (success) {
-//                                showSnackbar("Attendance saved for $dateStr")
-//                                findNavController().navigateUp()
-//                            } else {
-//                                showSnackbar("Attendance already exists for $dateStr")
-//                            }
-//                        }
-//
-//                    }
-//                }
-//            }
-//
-//        }
-//
-//
-//    }
-//
-//    private fun filterAttendance() {
-//
-//
-//        binding.attendanceToggleGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
-//            if (isChecked) {
-//                when (checkedId) {
-//                    R.id.btnAll -> {
-//                        viewModel.setFilter(AttendanceFilter.ALL)
-//
-//                    }
-//
-//                    R.id.btnPresent -> {
-//                        viewModel.setFilter(AttendanceFilter.PRESENT)
-//                    }
-//
-//                    R.id.btnAbsent -> {
-//                        viewModel.setFilter(AttendanceFilter.ABSENT)
-//                    }
-//                }
-//            }
-//        }
-////
-////        val popupMenu = PopupMenu(requireContext(), binding.saveBtn)
-////        popupMenu.apply {
-////            menuInflater.inflate(R.menu.popup_menu_filter_attendance, menu)
-////            setOnMenuItemClickListener { menuItem ->
-////                when (menuItem.itemId) {
-////                    R.id.menu_all -> {
-////                        viewModel.setFilter(AttendanceFilter.ALL)
-////                        true
-////                    }
-////
-////                    R.id.menu_present -> {
-////                        viewModel.setFilter(AttendanceFilter.PRESENT)
-////                        true
-////                    }
-////
-////                    R.id.menu_absent -> {
-////                        viewModel.setFilter(AttendanceFilter.ABSENT)
-////                        true
-////                    }
-////
-////                    else -> false
-////                }
-////            }
-////
-////        }
-////
-////
-////        popupMenu.show()
-//    }
-//
-//
-//    private fun showDatePicker(onDateSelected: (Long) -> Unit) {
-//
-//        if (attendanceMode == "update") return  // Prevent interaction
-//        if (attendanceMode == "report") return
-//
-//        val constraintsBuilder = CalendarConstraints.Builder()
-//            .setFirstDayOfWeek(Calendar.MONDAY)
-//            .setValidator(WeekendPastDateValidatorUtil())
-//
-//        showMaterialDatePicker(
-//            title = "Select Attendance Date",
-//            selection = MaterialDatePicker.todayInUtcMilliseconds(),
-//            constraints = constraintsBuilder.build(),
-//        ) {
-//            onDateSelected(it)
-//            viewModel.setDate(it)
-//        }
-//
-//
-//    }
-//
-//
-//    private fun collectFlows() {
-//        collectLatestFlow {
-//
-//            launch {
-//                viewModel.filteredAttendanceUI.collectLatest { adapter.submitList(it) }
-//            }
-//
-//            launch {
-//                viewModel.totalCount.collectLatest {
-//                    binding.totalCard.tvCount.text = it.toString()
-//                    studentsCount = it
-//                }
-//            }
-//            launch {
-//                viewModel.presentCount.collectLatest {
-//                    binding.presentCard.tvCount.text = it.toString()
-//                    binding.presentCard.tvCountTitle.text = "Present"
-//                    binding.presentCard.tvCount.setTextColor(
-//                        ContextCompat.getColor(
-//                            requireContext(),
-//                            R.color.green_present
-//                        )
-//                    )
-//                }
-//            }
-//            launch {
-//                viewModel.absentCount.collectLatest {
-//                    binding.absentCard.tvCount.text = it.toString()
-//                    binding.absentCard.tvCountTitle.text = "Absent"
-//                    binding.absentCard.tvCount.setTextColor(
-//                        ContextCompat.getColor(
-//                            requireContext(),
-//                            R.color.red_absent
-//                        )
-//                    )
-//                }
-//            }
-//            launch {
-//                viewModel.attendanceUI.collectLatest { adapter.submitList(it) }
-//            }
-//        }
-//    }
-//
-//    private fun setupRecyclerView() {
-//        val readOnly = attendanceMode == "report"
-//
-//        adapter = AttendanceAdapter(readOnly) { student, newStatus ->
-//            viewModel.updateAttendanceStatus(student, newStatus)
-//        }
-//        binding.rvAttendance.adapter = adapter
-////
+    private fun setupRecyclerView() {
+        val readOnly = attendanceMode == "report"
 
-//    }
-//
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        _binding = null
-//    }
+        adapter = AttendanceAdapter(readOnly) { student, newStatus ->
+            viewModel.onEvent(AttendanceUiEvent.UpdateStatus(student.studentId, newStatus))
+        }
+        binding.rvAttendance.adapter = adapter
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

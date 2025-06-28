@@ -130,7 +130,7 @@ class AttendanceViewModel @Inject constructor(
         )
     }
 
-    private fun setDate(date: Long) {
+    fun setDate(date: Long) {
         _uiState.update { it.copy(selectedDate = date) }
         loadAttendance(date)
     }

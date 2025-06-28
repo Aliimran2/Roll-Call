@@ -57,7 +57,10 @@ class AttendanceListFragment : Fragment(R.layout.fragment_attendance_list) {
             val action = AttendanceListFragmentDirections
                 .actionStatsFragmentToAttendanceFragment(
                     attendanceMode = "add",
-                    selectedDate = -1L
+                    selectedDate = -1L,
+                    classId = args.classId,
+                    className = args.className,
+                    sectionName = args.sectionName,
                 )
             findNavController().navigate(action)
         }
@@ -86,6 +89,7 @@ class AttendanceListFragment : Fragment(R.layout.fragment_attendance_list) {
 
 
                     }
+
                     is AttendanceStatsUiEvent.NavToReportAttendance -> {}
                     is AttendanceStatsUiEvent.ShowDeleteConfirmation -> {}
                     is AttendanceStatsUiEvent.ShowSnackbar -> {
@@ -99,15 +103,18 @@ class AttendanceListFragment : Fragment(R.layout.fragment_attendance_list) {
     private fun editAttendance(date: Long) {
         val action = AttendanceListFragmentDirections.actionStatsFragmentToAttendanceFragment(
             attendanceMode = "update",
-            selectedDate = date
+            selectedDate = date,
+            classId = args.classId,
+            className = args.className,
+            sectionName = args.sectionName,
         )
         findNavController().navigate(action)
     }
 
     private fun reportAttendance(date: Long) {
-        val action =
-            AttendanceListFragmentDirections.actionStatsFragmentToAttendanceFragment("report", date)
-        findNavController().navigate(action)
+//        val action =
+//            AttendanceListFragmentDirections.actionStatsFragmentToAttendanceFragment("report", date)
+//        findNavController().navigate(action)
     }
 
     private fun deleteAttendance(date: Long) {

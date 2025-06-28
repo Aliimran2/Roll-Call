@@ -240,6 +240,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@color/white_two"
+            android:layout_gravity="center"
+            android:indeterminate="true" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_attendance"
             android:layout_width="match_parent"
