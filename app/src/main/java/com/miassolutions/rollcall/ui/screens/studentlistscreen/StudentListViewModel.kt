@@ -45,7 +45,7 @@ class StudentListViewModel @Inject constructor(private val studentRepo: StudentR
     private fun fetchStudents() {
         viewModelScope.launch {
             studentRepo.getStudentListByClassId(classId).collectLatest { students ->
-                _uiState.update { it.copy(studentList = students) }
+                _uiState.update { it.copy(studentList = students, totalCount = students.size) }
             }
         }
     }
@@ -63,7 +63,7 @@ class StudentListViewModel @Inject constructor(private val studentRepo: StudentR
                     it.studentName.contains(query, ignoreCase = true) ||
                             it.rollNumber.toString().contains(query, ignoreCase = true)
                 }
-                _uiState.update { it.copy(studentList = filtered) }
+                _uiState.update { it.copy(studentList = filtered, totalCount = all.size, filterCount = filtered.size) }
             }
         }
 

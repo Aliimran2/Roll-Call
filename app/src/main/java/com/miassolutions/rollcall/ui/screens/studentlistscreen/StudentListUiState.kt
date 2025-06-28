@@ -8,6 +8,7 @@ data class StudentListUiState(
     val searchQuery: String = "",
     val isLoading: Boolean = false,
     val totalCount: Int = 0,
+    val filterCount : Int = 0
 )
 
 

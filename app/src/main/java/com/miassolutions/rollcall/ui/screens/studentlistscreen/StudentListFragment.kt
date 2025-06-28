@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.google.android.material.appbar.MaterialToolbar
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentStudentsBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
@@ -32,7 +34,7 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
     private val args by navArgs<StudentListFragmentArgs>()
 
 
-    //    private lateinit var toolbar: MaterialToolbar
+    private lateinit var toolbar: MaterialToolbar
     private lateinit var adapter: StudentListAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,7 +42,7 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
         _binding = FragmentStudentsBinding.bind(view)
 
         viewModel.updateClassId(args.classId, args.className)
-//        toolbar = (activity as AppCompatActivity).findViewById<MaterialToolbar>(R.id.toolbar)
+        toolbar = (activity as AppCompatActivity).findViewById<MaterialToolbar>(R.id.toolbar)
 
 
         setupRecyclerView()
@@ -61,6 +63,12 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
         collectLatestFlow {
             viewModel.uiState.collectLatest { state ->
                 adapter.submitList(state.studentList)
+                if (state.filterCount == 0) {
+                    toolbar.subtitle = "Total: ${state.totalCount}"
+                } else {
+                    toolbar.subtitle = "Showing: ${state.filterCount} / Total: ${state.totalCount}"
+                }
+
             }
         }
     }

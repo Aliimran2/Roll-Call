@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
 
-            android:hint="Search by name, roll, reg..."
+            android:hint="Search by name, roll, reg"
             app:boxBackgroundColor="@color/white_one"
             app:boxCornerRadiusBottomEnd="16dp"
             app:boxCornerRadiusBottomStart="16dp"

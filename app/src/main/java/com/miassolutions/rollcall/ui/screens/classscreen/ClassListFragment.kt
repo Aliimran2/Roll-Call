@@ -38,7 +38,6 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
 
     private lateinit var toolbar: MaterialToolbar
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentClassListBinding.bind(view)
@@ -79,7 +78,6 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
         findNavController().navigate(action)
     }
 
-
     private fun onReportNavigation(classEntity: ClassEntity) {
         val action = ClassListFragmentDirections.toAttendanceFragment("Report")
         findNavController().navigate(action)
@@ -111,7 +109,6 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
         }
 
     }
-
 
     private fun observeUiState() {
         collectLatestFlow {
