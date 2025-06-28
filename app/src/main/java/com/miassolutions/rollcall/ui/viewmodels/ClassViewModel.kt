@@ -3,15 +3,13 @@ package com.miassolutions.rollcall.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.miassolutions.rollcall.data.entities.ClassEntity
-import com.miassolutions.rollcall.data.repository.Repository
+import com.miassolutions.rollcall.data.repository.impl.ClassRepoImpl
 import com.miassolutions.rollcall.ui.screens.classscreen.ClassUiEvent
 import com.miassolutions.rollcall.ui.screens.classscreen.ClassUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
@@ -20,7 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ClassViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
+class ClassViewModel @Inject constructor(private val repository: ClassRepoImpl) : ViewModel() {
 
 
     private val _uiState = MutableStateFlow<ClassUiState>(ClassUiState.Loading)
@@ -69,11 +67,6 @@ class ClassViewModel @Inject constructor(private val repository: Repository) : V
         }
     }
 
-    fun copyClass(classEntity: ClassEntity) {
-        viewModelScope.launch {
-            repository.copyClass(classEntity)
-        }
-    }
 
     fun insertClass(classEntity: ClassEntity) {
         viewModelScope.launch {

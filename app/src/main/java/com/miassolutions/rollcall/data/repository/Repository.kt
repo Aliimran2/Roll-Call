@@ -13,7 +13,6 @@ import com.miassolutions.rollcall.utils.StudentInsertResult
 import com.miassolutions.rollcall.utils.StudentResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -155,7 +154,7 @@ class Repository @Inject constructor(
 
     //classEntity Operations
 
-    suspend fun insertClass(classEntity: ClassEntity) = classDao.insetClass(classEntity)
+    suspend fun insertClass(classEntity: ClassEntity) = classDao.insertClass(classEntity)
 
     suspend fun copyClass(classEntity: ClassEntity) {
         classDao.getClassById(classEntity.classId)?.let {

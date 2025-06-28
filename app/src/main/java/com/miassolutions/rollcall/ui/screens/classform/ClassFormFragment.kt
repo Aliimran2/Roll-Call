@@ -17,7 +17,6 @@ import com.miassolutions.rollcall.extenstions.showMaterialDatePicker
 import com.miassolutions.rollcall.extenstions.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import java.util.Date
 
 @AndroidEntryPoint
 class ClassFormFragment : BottomSheetDialogFragment() {

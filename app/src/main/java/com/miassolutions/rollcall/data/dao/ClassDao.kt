@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 interface ClassDao {
 
     @Insert(onConflict = REPLACE)
-    suspend fun insetClass(classEntity: ClassEntity)
+    suspend fun insertClass(classEntity: ClassEntity)
 
     @Update
     suspend fun updateClass(classEntity: ClassEntity)

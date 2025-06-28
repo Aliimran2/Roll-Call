@@ -132,7 +132,7 @@ class MainRepository @Inject constructor(
 
     // region ClassRepository
     override suspend fun insertClass(classEntity: ClassEntity) =
-        classDao.insetClass(classEntity)
+        classDao.insertClass(classEntity)
 
     override suspend fun updateClass(classEntity: ClassEntity) =
         classDao.updateClass(classEntity)
@@ -146,11 +146,6 @@ class MainRepository @Inject constructor(
     override fun getClassById(id: String): Flow<ClassEntity?> {
         TODO("Not yet implemented")
     }
-
-    override suspend fun copyExistingClass(classEntity: ClassEntity) {
-        TODO("Not yet implemented")
-    }
-
 
     // endregion
 

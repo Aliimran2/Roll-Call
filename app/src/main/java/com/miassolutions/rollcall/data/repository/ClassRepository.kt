@@ -1,7 +1,9 @@
 package com.miassolutions.rollcall.data.repository
 
+import com.miassolutions.rollcall.common.OperationResult
 import com.miassolutions.rollcall.data.entities.ClassEntity
 import kotlinx.coroutines.flow.Flow
+import java.util.UUID
 
 interface ClassRepository {
 
@@ -14,7 +16,4 @@ interface ClassRepository {
     fun getClasses(): Flow<List<ClassEntity>>
 
     fun getClassById(id : String) : Flow<ClassEntity?>
-
-    suspend fun copyExistingClass(classEntity: ClassEntity)
-
 }

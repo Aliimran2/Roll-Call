@@ -11,7 +11,6 @@ import com.miassolutions.rollcall.data.entities.ClassEntity
 import com.miassolutions.rollcall.databinding.FragmentClassListBinding
 import com.miassolutions.rollcall.extenstions.addMenu
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
-import com.miassolutions.rollcall.extenstions.setToolbarTitle
 import com.miassolutions.rollcall.extenstions.showConfirmationDialog
 import com.miassolutions.rollcall.extenstions.showPopupMenu
 import com.miassolutions.rollcall.extenstions.showToast
@@ -89,10 +88,6 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
     private fun onMoreClick(view: View, classEntity: ClassEntity) {
         showPopupMenu(view, R.menu.class_poup_menus) { menuItem ->
             when (menuItem.itemId) {
-                R.id.action_copy -> {
-                    viewModel.copyClass(classEntity)
-                    true
-                }
 
                 R.id.action_edit -> {
                     val action = ClassListFragmentDirections.toAddClassFragment(classEntity.classId)

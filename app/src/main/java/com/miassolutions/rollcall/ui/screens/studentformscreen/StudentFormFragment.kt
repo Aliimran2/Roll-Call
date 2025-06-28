@@ -26,9 +26,7 @@ import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.extenstions.toFormattedDate
 import com.miassolutions.rollcall.ui.MainActivity
-import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.utils.StudentImagePicker
-import com.miassolutions.rollcall.utils.StudentInsertResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -117,8 +115,8 @@ class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
             etRegNumber.doAfterTextChanged { etRegNumber.error = null }
             etRollNumber.doAfterTextChanged { etRollNumber.error = null }
             etStudentName.doAfterTextChanged { etStudentName.error = null }
-            etFatherName.doAfterTextChanged { etFatherName.error = null }
-            etDOB.doAfterTextChanged { etDOB.error = null }
+//            etFatherName.doAfterTextChanged { etFatherName.error = null }
+//            etDOB.doAfterTextChanged { etDOB.error = null }
         }
     }
 
@@ -227,9 +225,9 @@ class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
         val rollNumberStr = etRollNumber.text.toString()
         val studentName = etStudentName.text.toString()
         val fatherName = etFatherName.text.toString()
-        val dobStr = etDOB.text.toString()
-        val phoneNumber = etPhone.text.toString()
-        val bForm = etBForm.text.toString()
+//        val dobStr = etDOB.text.toString()
+//        val phoneNumber = etPhone.text.toString()
+//        val bForm = etBForm.text.toString()
         val klass = args.className //todo
         val address = etAddress.text.toString()
 
@@ -252,23 +250,23 @@ class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
                 return
             }
 
-            fatherName.isBlank() -> {
-                etFatherName.requestFocus()
-                etFatherName.error = "Enter father's name"
-                return
-            }
+//            fatherName.isBlank() -> {
+//                etFatherName.requestFocus()
+//                etFatherName.error = "Enter father's name"
+//                return
+//            }
 
-            dobStr.isBlank() -> {
-                etDOB.requestFocus()
-                etDOB.error = "Enter date of birth"
-                return
-            }
-
-            bForm.isBlank() -> {
-                etBForm.requestFocus()
-                etBForm.error = "Enter B-Form"
-                return
-            }
+//            dobStr.isBlank() -> {
+//                etDOB.requestFocus()
+//                etDOB.error = "Enter date of birth"
+//                return
+//            }
+//
+//            bForm.isBlank() -> {
+//                etBForm.requestFocus()
+//                etBForm.error = "Enter B-Form"
+//                return
+//            }
         }
 
 
@@ -289,10 +287,10 @@ class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
             fatherName = fatherName,
             dob = dob,
             doa = doa,
-            phoneNumber = phoneNumber,
+            phoneNumber = "03001234567",
             classId = args.classId,
             address = address,
-            bForm = bForm
+            bForm = "121345789"
         )
 
         if (currentStudent != null) {
