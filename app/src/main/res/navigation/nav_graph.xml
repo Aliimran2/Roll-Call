@@ -55,9 +55,9 @@
     </fragment>
     <fragment
         android:id="@+id/attendanceListFragment"
-        tools:layout="@layout/fragment_attendance_list"
         android:name="com.miassolutions.rollcall.ui.screens.attandancescreen.AttendanceListFragment"
-        android:label="Stats" >
+        android:label="Attendance Stats"
+        tools:layout="@layout/fragment_attendance_list">
         <action
             android:id="@+id/action_statsFragment_to_attendanceFragment"
             app:destination="@id/attendanceFragment" />
@@ -118,9 +118,6 @@
         <action
             android:id="@+id/to_attendance_list_fragment"
             app:destination="@id/attendanceListFragment" />
-        <action
-            android:id="@+id/to_attendance_fragment"
-            app:destination="@id/attendanceFragment" />
     </fragment>
     <dialog
         tools:layout="@layout/fragment_class_form"
