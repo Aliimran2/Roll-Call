@@ -8,12 +8,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.miassolutions.rollcall.data.entities.ClassEntity
 import com.miassolutions.rollcall.databinding.ItemClassBinding
+import com.miassolutions.rollcall.extenstions.toFormattedDate
 
 class ClassListAdapter(
     private val onStudentsClick: (ClassEntity) -> Unit,
     private val onAttendanceClick: (ClassEntity) -> Unit,
     private val onReportClick: (ClassEntity) -> Unit,
-    private val onMoreClick: (View,ClassEntity) -> Unit,
+    private val onMoreClick: (View, ClassEntity) -> Unit,
 ) : ListAdapter<ClassEntity, ClassListAdapter.ClassViewHolder>(ClassDiffUtil) {
 
 
@@ -38,6 +39,9 @@ class ClassListAdapter(
                 tvClassName.text = item.className
                 tvSection.text = " (${item.sectionName})"
                 tvTeacherName.text = item.teacher
+
+                tvStartSession.text = item.startDate.toFormattedDate("dd-MM-yyyy")
+                tvEndSession.text = item.endDate.toFormattedDate("dd-MM-yyyy")
 
                 ivStudents.setOnClickListener { onStudentsClick(item) }
                 ivAttendance.setOnClickListener { onAttendanceClick(item) }
