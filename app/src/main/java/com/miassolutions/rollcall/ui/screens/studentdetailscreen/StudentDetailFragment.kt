@@ -25,7 +25,7 @@ class StudentDetailFragment : Fragment(R.layout.fragment_student_profile) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentStudentProfileBinding.bind(view)
 
-        val studentId = args.id
+        val studentId = args.studentId
 
         loadStudentData()
 //        actionButtonsListener(args.id, args.studentName)

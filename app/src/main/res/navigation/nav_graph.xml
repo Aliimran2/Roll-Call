@@ -74,13 +74,14 @@
 
     <fragment
         android:id="@+id/studentDetailFragment"
-        tools:layout="@layout/fragment_student_detail"
+        tools:layout="@layout/fragment_student_profile"
         android:name="com.miassolutions.rollcall.ui.screens.studentdetailscreen.StudentDetailFragment"
-        android:label="{student_name} Detail" >
+        android:label="{studentName}" >
         <argument
-            android:name="id"
+            android:name="studentId"
             app:argType="string" />
-        <argument android:name="student_name" />
+        <argument android:name="studentName"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/dashboardFragment"

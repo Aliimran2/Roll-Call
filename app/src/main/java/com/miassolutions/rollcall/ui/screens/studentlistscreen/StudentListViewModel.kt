@@ -7,6 +7,7 @@ import com.miassolutions.rollcall.data.repository.impl.StudentRepoImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -25,16 +27,11 @@ import javax.inject.Inject
 class StudentListViewModel @Inject constructor(private val studentRepo: StudentRepoImpl) :
     ViewModel() {
 
-
-    private val searchQuery = MutableStateFlow("")
-    private val mClassId = MutableStateFlow("")
-
-
     private val _uiState = MutableStateFlow(StudentListUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val _uiEvent = MutableSharedFlow<StudentListUiEvent>()
-    val uiEvent = _uiEvent.asSharedFlow()
+    private val _uiEvent = Channel<StudentListUiEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
 
     private var classId: String = ""
     private var className: String = ""
@@ -42,7 +39,6 @@ class StudentListViewModel @Inject constructor(private val studentRepo: StudentR
     fun updateClassId(id: String, name: String) {
         classId = id
         className = name
-
         fetchStudents()
     }
 
@@ -75,44 +71,44 @@ class StudentListViewModel @Inject constructor(private val studentRepo: StudentR
 
     fun onAddStudentClicked() {
         viewModelScope.launch {
-            _uiEvent.emit(StudentListUiEvent.NavigateToAddOrEdit(null, classId, className))
+            _uiEvent.send(StudentListUiEvent.NavigateToAddOrEdit(null, classId, className))
         }
     }
 
     fun onUpdateStudentClicked(studentId: String) {
         viewModelScope.launch {
-            _uiEvent.emit(StudentListUiEvent.NavigateToAddOrEdit(studentId, classId, className))
+            _uiEvent.send(StudentListUiEvent.NavigateToAddOrEdit(studentId, classId, className))
         }
     }
 
     fun onStudentClicked(student : StudentEntity){
         viewModelScope.launch {
-            _uiEvent.emit(StudentListUiEvent.NavigateToStudentDetail(student.studentId, student.studentName))
+            _uiEvent.send(StudentListUiEvent.NavigateToStudentDetail(student.studentId, student.studentName))
         }
     }
 
     fun onDeleteClicked(studentId: String){
         viewModelScope.launch {
-            _uiEvent.emit(StudentListUiEvent.ShowDeleteConfirmation(studentId))
+            _uiEvent.send(StudentListUiEvent.ShowDeleteConfirmation(studentId))
         }
     }
 
     fun deleteStudent(studentId: String){
         viewModelScope.launch {
             studentRepo.deleteStudentById(studentId)
-            _uiEvent.emit(StudentListUiEvent.ShowSnackbar("Student deleted"))
+            _uiEvent.send(StudentListUiEvent.ShowSnackbar("Student deleted"))
         }
     }
 
     fun onPhoneClicked(phone : String){
         viewModelScope.launch {
-            _uiEvent.emit(StudentListUiEvent.DialPhone(phone))
+            _uiEvent.send(StudentListUiEvent.DialPhone(phone))
         }
     }
 
     fun onReportClicked(studentId: String){
         viewModelScope.launch {
-            _uiEvent.emit(StudentListUiEvent.ShowSnackbar("Later will be implemented"))
+            _uiEvent.send(StudentListUiEvent.ShowSnackbar("Later will be implemented"))
         }
     }
 
