@@ -7,11 +7,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil3.load
+import com.google.android.material.appbar.MaterialToolbar
 import com.miassolutions.rollcall.R
 
 import com.miassolutions.rollcall.databinding.FragmentStudentProfileBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.showSnackbar
+import com.miassolutions.rollcall.ui.MainActivity
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -26,12 +28,17 @@ class StudentDetailFragment : Fragment(R.layout.fragment_student_profile) {
     private val args by navArgs<StudentDetailFragmentArgs>()
     private val viewModel by viewModels<StudentDetailViewModel>()
 
+    private lateinit var toolbar: MaterialToolbar
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentStudentProfileBinding.bind(view)
 
         val studentId = args.studentId
+
+        toolbar = (activity as MainActivity).findViewById(R.id.toolbar)
+        toolbar.subtitle = null
 
         viewModel.fetchStudentById(studentId)
         collectUiState()

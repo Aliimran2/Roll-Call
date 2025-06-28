@@ -52,10 +52,14 @@ class StudentFormFragment : Fragment(R.layout.fragment_student_form) {
     private lateinit var studentImagePicker: StudentImagePicker
     private var studentImageUriStr = ""
 
+    private lateinit var toolbar: MaterialToolbar
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentStudentFormBinding.bind(view)
+
+        toolbar = (activity as MainActivity).findViewById(R.id.toolbar)
+        toolbar.subtitle = null
 
         studentImagePicker = StudentImagePicker(this) { uri ->
             Glide.with(requireContext())

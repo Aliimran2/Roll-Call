@@ -34,7 +34,7 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
     private val args by navArgs<StudentListFragmentArgs>()
 
 
-    private lateinit var toolbar: MaterialToolbar
+        private lateinit var toolbar: MaterialToolbar
     private lateinit var adapter: StudentListAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,12 +63,7 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
         collectLatestFlow {
             viewModel.uiState.collectLatest { state ->
                 adapter.submitList(state.studentList)
-                if (state.filterCount == 0) {
-                    toolbar.subtitle = "Total: ${state.totalCount}"
-                } else {
-                    toolbar.subtitle = "Showing: ${state.filterCount} / Total: ${state.totalCount}"
-                }
-
+                toolbar.subtitle = "Total Students: ${state.totalCount}"
             }
         }
     }
@@ -166,7 +161,7 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-//        toolbar.subtitle = null
+
         _binding = null
     }
 }

@@ -38,6 +38,8 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
 
     private lateinit var toolbar: MaterialToolbar
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentClassListBinding.bind(view)
@@ -165,7 +167,7 @@ class ClassListFragment : Fragment(R.layout.fragment_class_list) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        toolbar.subtitle = null
+//        toolbar.subtitle = null
         _binding = null
     }
 }
