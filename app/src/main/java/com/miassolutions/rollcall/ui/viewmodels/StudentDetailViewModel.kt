@@ -2,51 +2,101 @@ package com.miassolutions.rollcall.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.miassolutions.rollcall.common.AttendanceStatus
-import com.miassolutions.rollcall.data.entities.AttendanceEntity
+import com.miassolutions.rollcall.common.OperationResult
 import com.miassolutions.rollcall.data.entities.StudentEntity
-import com.miassolutions.rollcall.data.repository.Repository
-import com.miassolutions.rollcall.utils.StudentResult
+import com.miassolutions.rollcall.data.repository.impl.StudentRepoImpl
+import com.miassolutions.rollcall.extenstions.toFormattedDate
+import com.miassolutions.rollcall.ui.screens.studentdetailscreen.StudentDetailUIState
+import com.miassolutions.rollcall.ui.screens.studentdetailscreen.StudentDetailUiEvent
+import com.miassolutions.rollcall.ui.screens.studentdetailscreen.PrimaryProfile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 @OptIn(ExperimentalCoroutinesApi::class)
-class StudentDetailViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
+class StudentDetailViewModel @Inject constructor(private val repository: StudentRepoImpl) :
+    ViewModel() {
 
-    private val _studentEntityState =
-        MutableStateFlow<StudentResult<StudentEntity>>(StudentResult.Loading)
-    val studentEntityState: StateFlow<StudentResult<StudentEntity>> = _studentEntityState
 
-    private val _deleteMessage = MutableSharedFlow<String>()
-    val deleteMessage = _deleteMessage.asSharedFlow()
+    private val _uiState = MutableStateFlow(StudentDetailUIState())
+    val uiState = _uiState.asStateFlow()
 
+    private val _uiEvent = MutableSharedFlow<StudentDetailUiEvent>()
+    val uiEvent = _uiEvent.asSharedFlow()
+
+    private var studentId = ""
 
     fun fetchStudentById(studentId: String) {
+        this.studentId = studentId
+        loadData()
+    }
+
+
+    private fun loadData() {
         viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
 
-            _studentEntityState.value = StudentResult.Loading
-            _studentEntityState.value = repository.getStudentById(studentId)
-            _deleteMessage.emit("Deleted")
+            try {
+                when (val student = repository.getStudentById(studentId)) {
+                    is OperationResult.Error -> {
+                        _uiEvent.emit(StudentDetailUiEvent.ShowSnackbar("Student not found"))
+                    }
 
+                    OperationResult.Loading -> {}
+                    is OperationResult.Success<StudentEntity> -> {
+                        val primaryProfile =
+                            student.data.studentImage?.let {
+                                PrimaryProfile(
+                                    name = student.data.studentName,
+                                    rollNum = student.data.rollNumber.toString(),
+                                    regNum = student.data.regNumber,
+                                    imageUri = it,
+                                    dateOfBirth = student.data.dob.toFormattedDate(),
+                                    dateOfAdmission = student.data.doa?.toFormattedDate() ?: "",
+                                    bForm = student.data.bForm ?: "0000-0000000-0",
+                                )
+                            }
+                        _uiState.update {
+                            it.copy(primaryProfile = primaryProfile)
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _uiEvent.emit(StudentDetailUiEvent.ShowSnackbar("Error :${e.localizedMessage}"))
+            }
         }
     }
 
-    private val _studentId = MutableStateFlow("")
-    fun setStudentId(studentId: String) {
-        _studentId.value = studentId
-    }
+
+//    private val _studentEntityState =
+//        MutableStateFlow<StudentResult<StudentEntity>>(StudentResult.Loading)
+//    val studentEntityState: StateFlow<StudentResult<StudentEntity>> = _studentEntityState
+//
+//    private val _deleteMessage = MutableSharedFlow<String>()
+//    val deleteMessage = _deleteMessage.asSharedFlow()
+//
+//
+//    fun fetchStudentById(studentId: String) {
+//        viewModelScope.launch {
+//
+//            _studentEntityState.value = StudentResult.Loading
+//            _studentEntityState.value = repository.getStudentById(studentId)
+//            _deleteMessage.emit("Deleted")
+//
+//        }
+//    }
+//
+//    private val _studentId = MutableStateFlow("")
+//    fun setStudentId(studentId: String) {
+//        _studentId.value = studentId
+//    }
 
 //    val attendanceOfStudent: StateFlow<List<AttendanceEntity>> = _studentId
 //        .filterNotNull()

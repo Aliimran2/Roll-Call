@@ -4,12 +4,18 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import coil3.load
 import com.miassolutions.rollcall.R
 
 import com.miassolutions.rollcall.databinding.FragmentStudentProfileBinding
+import com.miassolutions.rollcall.extenstions.collectLatestFlow
+import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class StudentDetailFragment : Fragment(R.layout.fragment_student_profile) {
@@ -27,98 +33,46 @@ class StudentDetailFragment : Fragment(R.layout.fragment_student_profile) {
 
         val studentId = args.studentId
 
-        loadStudentData()
-//        actionButtonsListener(args.id, args.studentName)
         viewModel.fetchStudentById(studentId)
-        viewModel.setStudentId(studentId)
+        collectUiState()
+
 
     }
 
-
-    private fun loadStudentData() {
-
-//        collectLatestFlow {
-//            launch {
-//                viewModel.attendanceOfStudent.collectLatest {
-//
-//                    Log.d("MiasSolutionsDetails", it.toString())
-//
-//                }
-//            }
-//
-//            launch {
-//                viewModel.presentCount.collectLatest {
-//                    binding.attendanceGraph.tvPresent.text = "Presence : $it"
-//                }
-//            }
-//
-//            launch {
-//                viewModel.absentCount.collectLatest {
-//                    binding.attendanceGraph.tvAbsent.text = "Absence : $it"
-//                }
-//            }
-//
-//            launch {
-//                viewModel.attendancePercentage.collectLatest {
-//                    binding.attendanceGraph.progressCircular.setProgressCompat(it, true)
-//                    binding.attendanceGraph.tvPercentageText.text = "Percentage : $it%"
-//                }
-//            }
-//
-//
-//            launch {
-//                viewModel.studentEntityState.collect { result ->
-//                    when (result) {
-//                        is StudentResult.Error -> {
-//                            showLongToast(result.message)
-//                        }
-//
-//                        StudentResult.Loading -> {/*nothing to do*/
-//                        }
-//
-//                        is StudentResult.Success<StudentEntity> -> {
-//                            val student = result.data
-//
-//                            binding.apply {
-//                                primaryProfile.apply {
-//                                    student.studentImage?.let {
-//                                        Log.d(TAG, it)
-//                                        Glide.with(requireContext())
-//                                            .load(it)
-//                                            .placeholder(R.drawable.ic_person)
-//                                            .error(R.drawable.ic_error_image)
-//                                            .into(ivProfile)
-//
-//
-//                                    }
-//                                    tvStudentName.text = student.studentName
-//                                    tvRegNum.text = "${student.regNumber}"
-//                                    tvRollNum.text = "${student.rollNumber}"
-//                                    tvDob.text = "${student.dob.toFormattedDate()}"
-//                                    tvDoa.text = "${student.dob.toFormattedDate()}" //todo
-//                                    tvBForm.text = "${student.bForm}"
-//                                }
-//
-//                                secondaryProfile.apply {
-//                                    tvFatherName.text = "${student.fatherName}"
-//                                    tvPhoneNumber.text = "${student.phoneNumber}"
-//                                    tvAddress.text = "${student.address}"
-//                                }
-//
-//
-//                            }
-//
-//                        }
-//                    }
-//
-//                }
-//
-//            }
-//
-//
-//        }
+    private fun collectUiState() {
+        collectLatestFlow {
+            launch {
+                viewModel.uiState.collectLatest { state ->
+                    state.primaryProfile?.let {
+                        binding.primaryProfile.apply {
+                            ivProfile.load(it.imageUri)
+                            tvStudentName.text = it.name
+                            tvRollNum.text = it.rollNum
+                            tvRegNum.text = it.regNum
+                            tvDob.text = it.dateOfBirth
+                            tvDoa.text = it.dateOfAdmission
+                            tvBForm.text = it.bForm
+                        }
+                    }
 
 
+                }
+            }
+
+            launch {
+                viewModel.uiEvent.collectLatest { event ->
+                    when (event) {
+                        StudentDetailUiEvent.NavigateBack -> {
+                            findNavController().navigateUp()
+                        }
+
+                        is StudentDetailUiEvent.ShowSnackbar -> {
+                            showSnackbar(event.message)
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
