@@ -10,7 +10,7 @@
         android:label="Add New Student"
         tools:layout="@layout/fragment_student_form" >
         <argument
-            android:name="student_id"
+            android:name="studentId"
             app:argType="string"
             android:defaultValue="@null"
             app:nullable="true" />

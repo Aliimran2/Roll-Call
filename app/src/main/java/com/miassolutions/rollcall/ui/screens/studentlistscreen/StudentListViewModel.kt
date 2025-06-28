@@ -117,33 +117,6 @@ class StudentListViewModel @Inject constructor(private val studentRepo: StudentR
     }
 
 
-    fun onSearchQueryChanged(query: String) {
-        searchQuery.value = query
-    }
-//
-//    fun updateClassId(classId: String) {
-//        mClassId.value = classId
-//    }
-
-    fun deleteStudentById(studentId: String) {
-        viewModelScope.launch {
-            studentRepo.deleteStudentById(studentId)
-        }
-    }
-
-    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-    val filteredStudents = searchQuery
-        .debounce(200L)
-        .distinctUntilChanged()
-        .flatMapLatest { query ->
-            if (query.isBlank()) {
-                studentRepo.getStudentListByClassId(classId = mClassId.value)
-            } else {
-                studentRepo.searchStudents(query)
-            }
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
-
-
 }
 
 
