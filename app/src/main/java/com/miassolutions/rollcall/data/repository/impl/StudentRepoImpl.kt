@@ -16,11 +16,11 @@ class StudentRepoImpl @Inject constructor(private val studentDao: StudentDao) : 
     override suspend fun insertStudent(student: StudentEntity): InsertResult {
 
         val duplicateReg = studentDao.getStudentByRegNum(student.regNumber)
-        val duplicateRoll = studentDao.getStudentByRollNum(student.rollNumber)
+        val duplicateRoll = studentDao.getStudentByRollNum(student.classId, student.rollNumber)
 
         return when {
-            duplicateReg != null -> InsertResult.Failure("Duplicate Reg No")
-            duplicateRoll != null -> InsertResult.Failure("Duplicate Roll No")
+            duplicateReg != null -> InsertResult.Failure("Duplicate Reg no")
+            duplicateRoll != null -> InsertResult.Failure("Duplicate Roll no in the class")
             else -> {
                 try {
                     studentDao.insertStudent(student)
@@ -59,11 +59,12 @@ class StudentRepoImpl @Inject constructor(private val studentDao: StudentDao) : 
     override suspend fun updateStudent(student: StudentEntity) = studentDao.updateStudent(student)
 
 
-    override fun searchStudents(query: String): Flow<List<StudentEntity>> = studentDao.searchStudent(query)
+    override fun searchStudents(query: String): Flow<List<StudentEntity>> =
+        studentDao.searchStudent(query)
 
     override suspend fun clearAllStudents() = studentDao.clearAllStudents()
 
-    override suspend fun deleteStudentById(id: String) =studentDao.deleteStudentById(id)
+    override suspend fun deleteStudentById(id: String) = studentDao.deleteStudentById(id)
 
     override suspend fun getStudentListByClassId(classId: String): Flow<List<StudentEntity>> {
         return studentDao.getStudentListByClassId(classId)

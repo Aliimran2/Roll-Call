@@ -17,7 +17,7 @@ import java.util.UUID
     )],
     indices = [
         Index(value = ["regNumber"], unique = true),
-        Index(value = ["rollNumber"], unique = true)
+        Index(value = ["classId","rollNumber"], unique = true)
     ]
 )
 data class StudentEntity(

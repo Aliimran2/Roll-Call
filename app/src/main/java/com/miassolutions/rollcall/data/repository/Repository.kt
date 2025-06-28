@@ -28,7 +28,7 @@ class Repository @Inject constructor(
 
     suspend fun insertStudent(studentEntity: StudentEntity): StudentInsertResult {
         val duplicateRegNum = studentDao.getStudentByRegNum(studentEntity.regNumber)
-        val duplicateRollNum = studentDao.getStudentByRollNum(studentEntity.rollNumber)
+        val duplicateRollNum = studentDao.getStudentByRollNum(studentEntity.classId,studentEntity.rollNumber)
 
         return when {
             duplicateRegNum != null -> StudentInsertResult.Failure(DUPLICATE_REG_NUMBER)
