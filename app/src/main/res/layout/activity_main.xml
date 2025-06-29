@@ -5,40 +5,29 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    android:background="@drawable/main_back_ground"
     tools:context=".ui.MainActivity">
-
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="32dp"
         android:paddingBottom="8dp"
-        tools:subtitle = "My subtitle"
-        android:theme="@style/ThemeOverlay.Material3.Dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.Material3.Light"
-        app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:subtitleTextColor="@color/white_one"
-        app:title="Attendance App"
-        app:titleTextAppearance="@style/TextAppearance.Material3.ActionBar.Title"
-        app:titleTextColor="@color/white_two" />
+        tools:subtitle="My subtitle"
+        tools:title="Attendance App"
+
+        />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-
         app:defaultNavHost="true"
-
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

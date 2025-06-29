@@ -8,14 +8,15 @@
     <color name="purple_one">#6C5ADD</color>
     <color name="purple_two">#412EA4</color>
 
-    <color name="primary">#6750A4</color>
-    <color name="onPrimary">#FFFFFF</color>
-    <color name="surface">#FFFBFE</color>
-    <color name="onSurface">#1C1B1F</color>
-    <color name="background">#FFFBFE</color>
-    <color name="onBackground">#1C1B1F</color>
-    <color name="error">#B3261E</color>
-    <color name="onError">#FFFFFF</color>
+
+    <color name="primary">#D0BCFF</color>
+    <color name="onPrimary">#381E72</color>
+    <color name="surface">#1C1B1F</color>
+    <color name="onSurface">#E6E1E5</color>
+    <color name="background">#1C1B1F</color>
+    <color name="onBackground">#E6E1E5</color>
+    <color name="error">#F2B8B5</color>
+    <color name="onError">#601410</color>
 
 
 
