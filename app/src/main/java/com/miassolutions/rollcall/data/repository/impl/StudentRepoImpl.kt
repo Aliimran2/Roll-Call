@@ -66,7 +66,7 @@ class StudentRepoImpl @Inject constructor(private val studentDao: StudentDao) : 
 
     override suspend fun deleteStudentById(id: String) = studentDao.deleteStudentById(id)
 
-    override suspend fun getStudentListByClassId(classId: String): Flow<List<StudentEntity>> {
+    override fun getStudentListByClassId(classId: String): Flow<List<StudentEntity>> {
         return studentDao.getStudentListByClassId(classId)
     }
 }

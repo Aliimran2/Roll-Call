@@ -72,7 +72,7 @@ class MainRepository @Inject constructor(
     override suspend fun clearAllStudents() = studentDao.clearAllStudents()
 
     override suspend fun deleteStudentById(id: String) =studentDao.deleteStudentById(id)
-    override suspend fun getStudentListByClassId(classId: String): Flow<List<StudentEntity>> {
+    override fun getStudentListByClassId(classId: String): Flow<List<StudentEntity>> {
         TODO("Not yet implemented")
     }
 

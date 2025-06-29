@@ -1,31 +1,31 @@
-package com.miassolutions.rollcall.ui.attendance
+package com.miassolutions.rollcall.ui.screens.attendancescreen
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.miassolutions.rollcall.common.AttendanceStatus
 import com.miassolutions.rollcall.databinding.ItemAttendanceBinding
 import com.miassolutions.rollcall.ui.model.AttendanceUIModel
-import com.miassolutions.rollcall.common.AttendanceStatus
 
 class AttendanceAdapter(
     private val readOnly: Boolean = false,
-    private val onStatusChanged: (AttendanceUiState.StudentAttendance, AttendanceStatus) -> Unit,
+    private val onStatusChanged: (AttendanceUIModel, AttendanceStatus) -> Unit,
 ) :
-    ListAdapter<AttendanceUiState.StudentAttendance, AttendanceAdapter.AttendanceViewHolder>(
+    ListAdapter<AttendanceUIModel, AttendanceAdapter.AttendanceViewHolder>(
         AttendanceDiffUtil()
     ) {
 
     inner class AttendanceViewHolder(private val binding: ItemAttendanceBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: AttendanceUiState.StudentAttendance) {
+        fun bind(item: AttendanceUIModel) {
             binding.apply {
                 tvRollNum.text = item.rollNumber.toString()
-                tvStudentName.text = item.name
+                tvStudentName.text = item.studentName
 
                 toggleAttendance.setOnCheckedChangeListener(null) // clear old listener
-                toggleAttendance.isChecked = item.status == AttendanceStatus.PRESENT
+                toggleAttendance.isChecked = item.attendanceStatus == AttendanceStatus.PRESENT
 
                 toggleAttendance.isEnabled = !readOnly
                 if (!readOnly) {
@@ -58,17 +58,14 @@ class AttendanceAdapter(
 }
 
 
-class AttendanceDiffUtil : DiffUtil.ItemCallback<AttendanceUiState.StudentAttendance>() {
-    override fun areItemsTheSame(
-        oldItem: AttendanceUiState.StudentAttendance,
-        newItem: AttendanceUiState.StudentAttendance,
-    ): Boolean {
+class AttendanceDiffUtil : DiffUtil.ItemCallback<AttendanceUIModel>() {
+    override fun areItemsTheSame(oldItem: AttendanceUIModel, newItem: AttendanceUIModel): Boolean {
         return oldItem.studentId == newItem.studentId
     }
 
     override fun areContentsTheSame(
-        oldItem: AttendanceUiState.StudentAttendance,
-        newItem: AttendanceUiState.StudentAttendance,
+        oldItem: AttendanceUIModel,
+        newItem: AttendanceUIModel,
     ): Boolean {
         return oldItem == newItem
     }
