@@ -31,6 +31,8 @@
 
     <color name="text_primary">#1C1B1F</color>  <!-- Very dark gray, softer than black -->
     <color name="text_secondary">#4D4D4D</color> <!-- Medium gray for less emphasis -->
+    <color name="text_background">#D7F4F8</color>
+
 
 
 

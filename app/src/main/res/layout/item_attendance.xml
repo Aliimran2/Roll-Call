@@ -10,32 +10,31 @@
     <!-- Name -->
     <TextView
         android:id="@+id/tv_student_name"
+        style="@style/MediumTextAppearance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/poppins_medium"
         android:text="Ali Hussain"
         android:textSize="12sp"
-        android:textStyle="bold"
-        android:fontFamily="@font/roboto_slab"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Roll -->
     <TextView
+        style="@style/SmallTextAppearance"
         android:id="@+id/tv_roll_num"
+        android:textSize="12sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
-        android:background="@drawable/bg_roll"
         android:paddingHorizontal="8dp"
         android:paddingVertical="4dp"
         android:text="01"
-        android:textSize="12sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintHorizontal_bias="0.67"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
