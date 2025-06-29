@@ -200,35 +200,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                 }
             }
         }
-//
-//        val popupMenu = PopupMenu(requireContext(), binding.saveBtn)
-//        popupMenu.apply {
-//            menuInflater.inflate(R.menu.popup_menu_filter_attendance, menu)
-//            setOnMenuItemClickListener { menuItem ->
-//                when (menuItem.itemId) {
-//                    R.id.menu_all -> {
-//                        viewModel.setFilter(AttendanceFilter.ALL)
-//                        true
-//                    }
-//
-//                    R.id.menu_present -> {
-//                        viewModel.setFilter(AttendanceFilter.PRESENT)
-//                        true
-//                    }
-//
-//                    R.id.menu_absent -> {
-//                        viewModel.setFilter(AttendanceFilter.ABSENT)
-//                        true
-//                    }
-//
-//                    else -> false
-//                }
-//            }
-//
-//        }
-//
-//
-//        popupMenu.show()
+
     }
 
 
@@ -243,7 +215,6 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
         showMaterialDatePicker(
             title = "Select Attendance Date",
-            selection = MaterialDatePicker.todayInUtcMilliseconds(),
             constraints = constraintsBuilder.build(),
         ) {
             onDateSelected(it)
@@ -253,9 +224,29 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
     }
 
+    private fun toggleDirectionLayout(showDirection: Boolean) {
+        if (showDirection) {
+            binding.direction.show()
+            binding.rvAttendance.hide()
+        } else {
+            binding.direction.hide()
+            binding.rvAttendance.show()
+        }
+    }
+
 
     private fun collectFlows() {
         collectLatestFlow {
+            launch {
+                viewModel.attendanceUI.collectLatest {
+                    adapter.submitList(it)
+                    if (it.isNotEmpty()) {
+                        toggleDirectionLayout(false)
+                    } else if (attendanceMode == "add") {
+                        toggleDirectionLayout(true)
+                    }
+                }
+            }
 
             launch {
                 viewModel.filteredAttendanceUI.collectLatest { adapter.submitList(it) }

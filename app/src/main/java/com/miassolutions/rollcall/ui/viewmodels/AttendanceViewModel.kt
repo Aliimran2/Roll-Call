@@ -96,6 +96,29 @@ class AttendanceViewModel @Inject constructor(
         }
     }
 
+
+    init {
+        viewModelScope.launch {
+            combine(studentList, selectedDate.filterNotNull()) { students, date ->
+                val attendanceEntities = repository.getAttendanceForDate(date)
+
+                students.map { student ->
+                    val match = attendanceEntities.find { it.studentId == student.studentId }
+                    AttendanceUIModel(
+                        studentId = student.studentId,
+                        studentName = student.studentName,
+                        rollNumber = student.rollNumber,
+                        attendanceStatus = match?.attendanceStatus ?: AttendanceStatus.PRESENT
+                    )
+                }
+            }.collectLatest { attendanceModels ->
+                _attendanceUI.value = attendanceModels
+            }
+        }
+    }
+
+
+
     fun saveAttendance(onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             val date = _selectedDate.value ?: return@launch
