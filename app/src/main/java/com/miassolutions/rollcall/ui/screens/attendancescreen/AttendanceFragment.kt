@@ -64,6 +64,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                     etDatePicker.isEnabled = false
                     saveBtn.text = "Update"
                     viewModel.setDate(selectedDate)
+
                 }
 
                 "report" -> {
@@ -74,6 +75,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                     etDatePicker.hide()
                     saveBtn.hide()
                     viewModel.setDate(selectedDate)
+
                 }
             }
         }
@@ -160,6 +162,22 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
     private fun collectFlows() {
         collectLatestFlow {
+            launch {
+                viewModel.date.collect { date ->
+                    if (date == 0L && attendanceMode == "add") {
+                        binding.tvDirection.apply {
+                            text = "Please select a date to load students"
+                            show()
+                        }
+                        binding.rvAttendance.hide()
+                    } else {
+                        binding.tvDirection.hide()
+                        binding.rvAttendance.show()
+                    }
+                }
+            }
+
+
             launch {
                 viewModel.filteredAttendanceUI.collectLatest { adapter.submitList(it) }
             }

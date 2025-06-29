@@ -242,6 +242,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+        <TextView
+            android:id="@+id/tv_direction"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:background="@color/gray"
+            android:text="Please select date to load students"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_attendance"
             android:layout_width="match_parent"

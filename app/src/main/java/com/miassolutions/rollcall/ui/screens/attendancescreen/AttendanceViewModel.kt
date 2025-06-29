@@ -164,6 +164,7 @@ class AttendanceViewModel @Inject constructor(
     private suspend fun updateAttendanceUI(dateMillis: Long, students: List<StudentEntity>) {
         if (dateMillis == 0L || students.isEmpty()) {
             _attendanceUI.value = emptyList() // Clear UI if no valid date or students
+
             return
         }
 
