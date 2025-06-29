@@ -108,7 +108,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
             etDOA.setText(
                 student.doa?.toFormattedDate() ?: System.currentTimeMillis().toFormattedDate()
             )
-            etClass.setText(student.klass)
+
             etPhone.setText(student.phoneNumber)
             etAddress.setText(student.address)
 
@@ -240,7 +240,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         val dobStr = etDOB.text.toString()
         val phoneNumber = etPhone.text.toString()
         val bForm = etBForm.text.toString()
-        val klass = etClass.text.toString()
+
         val address = etAddress.text.toString()
 
         when {
@@ -294,7 +294,6 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
             dob = dob,
             doa = doa,
             phoneNumber = phoneNumber,
-            klass = klass,
             address = address,
             bForm = bForm
         )
