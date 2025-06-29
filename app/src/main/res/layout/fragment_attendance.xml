@@ -43,7 +43,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingHorizontal="12dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:checkedButton="@id/btnAll"
         app:selectionRequired="true"
         app:singleSelection="true">
@@ -52,14 +52,12 @@
             android:id="@+id/btnAll"
             style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:text="All"
             android:textColor="#232323"
             android:textSize="14sp"
             app:cornerRadius="12dp"
-            app:rippleColor="?attr/colorPrimaryContainer"
-            app:strokeColor="?attr/colorPrimary"
             app:strokeWidth="1dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -72,8 +70,6 @@
             android:textColor="#232323"
             android:textSize="14sp"
             app:cornerRadius="12dp"
-            app:rippleColor="?attr/colorPrimaryContainer"
-            app:strokeColor="?attr/colorPrimary"
             app:strokeWidth="1dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -86,8 +82,6 @@
             android:textColor="#232323"
             android:textSize="14sp"
             app:cornerRadius="12dp"
-            app:rippleColor="?attr/colorPrimaryContainer"
-            app:strokeColor="?attr/colorPrimary"
             app:strokeWidth="1dp" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
@@ -99,27 +93,21 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
 
-        app:boxCornerRadiusBottomEnd="16dp"
-        app:boxCornerRadiusBottomStart="16dp"
-        app:boxCornerRadiusTopEnd="16dp"
-        app:boxCornerRadiusTopStart="16dp"
-
-        app:boxStrokeColor="@color/white"
-        app:endIconMode="clear_text"
-        app:hintTextColor="@color/white"
-        android:textColorHint="@color/white"
         android:hint="Search student by name or roll no"
         android:textSize="12sp"
-        app:endIconTint="@color/white"
-        app:startIconTint="@color/white"
+        app:boxCornerRadiusBottomEnd="16dp"
+        app:boxCornerRadiusBottomStart="16dp"
+
+
+        app:boxCornerRadiusTopEnd="16dp"
+        app:boxCornerRadiusTopStart="16dp"
+        app:endIconMode="clear_text"
         app:startIconDrawable="@drawable/ic_search">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_search"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-             />
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -160,15 +148,11 @@
             android:clickable="true"
             android:drawableEnd="@drawable/ic_date_picker"
             android:drawablePadding="8dp"
-
-            android:drawableTint="@color/white_two"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:hint="Select Date"
             android:inputType="date"
             android:padding="14dp"
-            android:textColor="@color/white_two"
-            android:textColorHint="@android:color/darker_gray"
             android:textSize="12sp" />
 
 
@@ -182,8 +166,7 @@
         android:layout_margin="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.62"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:background="@color/purple_one">
+        app:layout_constraintStart_toStartOf="parent">
         <!-- Name -->
         <TextView
             android:id="@+id/tv_student_name"
@@ -192,7 +175,6 @@
             android:layout_marginStart="16dp"
             android:fontFamily="@font/roboto_slab"
             android:text="Name"
-            android:textColor="@color/white_two"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -208,7 +190,6 @@
             android:paddingHorizontal="8dp"
             android:paddingVertical="4dp"
             android:text="Roll No"
-            android:textColor="@color/white_two"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -224,7 +205,6 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:text="@string/status"
-            android:textColor="@color/white_two"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
