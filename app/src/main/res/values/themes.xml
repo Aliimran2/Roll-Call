@@ -16,7 +16,7 @@
         <item name="colorOnSecondaryContainer">@color/onPrimary</item>
 
         <item name="fontFamily">@font/roboto_slab</item>
-        <item name="android:textColor">@color/primary</item>
+        <item name="android:textColor">@color/text_primary</item>
         <item name="toolbarStyle">@style/Widget.MyApp.Toolbar</item>
 <!--tint color for toolbar icon-->
 <!--        <item name="colorControlNormal">@color/green</item>-->
