@@ -2,11 +2,13 @@ package com.miassolutions.rollcall.ui.screens.attandancelistscreen
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentAttendanceListBinding
@@ -26,6 +28,8 @@ class AttendanceListFragment : Fragment(R.layout.fragment_attendance_list) {
     private val viewModel by viewModels<AttendanceStatsViewModel>()
     private val args by navArgs<AttendanceListFragmentArgs>()
 
+    private lateinit var toolbar: MaterialToolbar
+
     private val adapter by lazy {
         StatsListAdapter(
             deleteAction = { date -> confirmDelete(date) },
@@ -39,6 +43,7 @@ class AttendanceListFragment : Fragment(R.layout.fragment_attendance_list) {
         _binding = FragmentAttendanceListBinding.bind(view)
 
         viewModel.setClassId(args.classId)
+        setupToolbar()
         setupRecyclerView()
         observeUiState()
         observeUiEvent()
@@ -54,6 +59,12 @@ class AttendanceListFragment : Fragment(R.layout.fragment_attendance_list) {
                 )
             findNavController().navigate(action)
         }
+    }
+
+    private fun setupToolbar(){
+
+        toolbar = (activity as AppCompatActivity).findViewById(R.id.toolbar)
+        toolbar.subtitle = null
     }
 
     private fun setupRecyclerView() {

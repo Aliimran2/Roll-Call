@@ -42,7 +42,7 @@ class StudentListFragment : Fragment(R.layout.fragment_students) {
         _binding = FragmentStudentsBinding.bind(view)
 
         viewModel.updateClassId(args.classId, args.className)
-        toolbar = (activity as AppCompatActivity).findViewById<MaterialToolbar>(R.id.toolbar)
+        toolbar = (activity as AppCompatActivity).findViewById(R.id.toolbar)
 
 
         setupRecyclerView()
