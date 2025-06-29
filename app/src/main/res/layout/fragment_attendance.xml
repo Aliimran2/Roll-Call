@@ -242,15 +242,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <TextView
-            android:id="@+id/tv_direction"
+        <LinearLayout
+            android:id="@+id/direction"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:background="@color/gray"
-            android:text="Please select date to load students"/>
+            android:orientation="vertical"
+            android:background="@color/blue_one"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="50dp"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="end"
+                android:src="@drawable/arrow"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:gravity="center_horizontal"
+                android:text="No date selected. Please pick one to continue."/>
+
+
+
+        </LinearLayout>
+
+
+
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_attendance"

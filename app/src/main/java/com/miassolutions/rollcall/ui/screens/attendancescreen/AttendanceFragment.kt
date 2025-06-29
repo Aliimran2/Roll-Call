@@ -165,13 +165,13 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             launch {
                 viewModel.date.collect { date ->
                     if (date == 0L && attendanceMode == "add") {
-                        binding.tvDirection.apply {
-                            text = "Please select a date to load students"
+                        binding.direction.apply {
+
                             show()
                         }
                         binding.rvAttendance.hide()
                     } else {
-                        binding.tvDirection.hide()
+                        binding.direction.hide()
                         binding.rvAttendance.show()
                     }
                 }
