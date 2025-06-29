@@ -24,9 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="4dp"
             android:layout_marginTop="4dp"
-            android:background="@drawable/bg_roll"
             android:paddingBottom="8dp"
-
             android:orientation="vertical">
             <include
                 android:id="@+id/secondary_profile"
@@ -35,17 +33,10 @@
                 android:layout_height="wrap_content"
                  />
 
-<!--            <include-->
-<!--                android:id="@+id/attendance_table"-->
-<!--                layout="@layout/attance_table_layout"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="4dp" />-->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Attendance Information:"
-                android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:paddingVertical="8dp"
@@ -53,13 +44,8 @@
                 tools:ignore="RtlSymmetry" />
 
             <include
-
                 android:id="@+id/attendance_graph"
                 layout="@layout/attendace_percentage_layout"/>
-
-
-
-
 
         </LinearLayout>
 

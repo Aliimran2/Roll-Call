@@ -5,7 +5,6 @@
     android:id="@+id/students_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white_two"
     tools:context=".ui.fragments.StudentsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,15 +19,11 @@
             android:layout_margin="16dp"
             android:hint="Search by name, roll, reg..."
             app:startIconDrawable="@drawable/ic_search"
-            app:startIconTint="@color/gray"
             app:endIconMode="clear_text"
-            app:endIconTint="@color/gray"
             app:boxCornerRadiusTopStart="16dp"
             app:boxCornerRadiusTopEnd="16dp"
             app:boxCornerRadiusBottomStart="16dp"
             app:boxCornerRadiusBottomEnd="16dp"
-            app:boxBackgroundColor="@color/white_one"
-            app:boxStrokeColor="@color/purple_two"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -39,8 +34,6 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:imeOptions="actionSearch"
-                android:textColor="@color/black"
-                android:textColorHint="@color/gray"
                 android:backgroundTint="@android:color/transparent" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,9 +61,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
         android:contentDescription="Add Student"
-        android:src="@drawable/ic_add"
-        app:backgroundTint="@color/purple_two"
-        app:tint="@color/white_one" />
+        android:src="@drawable/ic_add" />
 
     <!-- Progress bar in center -->
     <ProgressBar

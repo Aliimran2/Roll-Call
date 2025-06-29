@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="4dp"
     android:layout_marginTop="4dp"
-    app:cardBackgroundColor="@color/white_two"
     app:cardCornerRadius="8dp">
 
     <GridLayout
@@ -21,7 +20,6 @@
         <TextView
             android:text="father : "
             android:textAllCaps="true"
-            android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -30,33 +28,28 @@
             android:id="@+id/tv_father_name"
             android:text="M Imran Ali Sajid"
             android:textAllCaps="true"
-            android:textColor="@color/black"
             android:textSize="12sp" />
 
         <TextView
             android:text="Phone no : "
             android:textAllCaps="true"
-            android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_phone_number"
             android:text="Phone No : 03120000000"
-            android:textColor="@color/black"
             android:textSize="12sp" />
 
         <TextView
             android:text="Address : "
             android:textAllCaps="true"
-            android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_address"
             android:text="Address : abc 123 xyz"
-            android:textColor="@color/black"
             android:textSize="12sp" />
     </GridLayout>
 

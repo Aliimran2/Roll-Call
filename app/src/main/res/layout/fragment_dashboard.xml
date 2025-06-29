@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:paddingVertical="12dp"
     android:orientation="vertical">
 
     <include
@@ -15,34 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"/>
 
-    <GridLayout
-        android:id="@+id/gridLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:columnCount="2"
-        android:padding="8dp"
-        android:visibility="invisible"
-        android:useDefaultMargins="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <include
-            android:id="@+id/user_profile_card"
-            layout="@layout/item_top_card"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1" />
-
-        <include
-            android:id="@+id/date_card"
-            layout="@layout/item_top_card"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1" />
-
-    </GridLayout>
 
 
     <GridLayout

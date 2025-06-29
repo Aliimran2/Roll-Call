@@ -5,10 +5,9 @@
     android:id="@+id/linearLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:gravity="center"
     android:orientation="vertical"
-    tools:background="@color/purple_one">
+    >
 
 
     <TextView
@@ -19,7 +18,6 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:text="Session Start Date"
-        android:textColor="@color/white_two"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,15 +35,11 @@
         android:clickable="true"
         android:drawableEnd="@drawable/ic_date_picker"
         android:drawablePadding="8dp"
-        android:drawableTint="@color/white_two"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:hint="Session start date"
         android:inputType="date"
-
         android:paddingHorizontal="8dp"
-        android:textColor="@color/white_two"
-        android:textColorHint="@android:color/darker_gray"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/btn_save_min_date"
         app:layout_constraintEnd_toStartOf="@+id/btn_save_min_date"
@@ -62,14 +56,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="Save"
-        android:textColor="@color/white_two"
         android:textSize="10sp"
         app:cornerRadius="8dp"
         app:icon="@drawable/ic_save"
         app:iconGravity="top"
         app:iconSize="18dp"
         app:iconPadding="4dp"
-        app:iconTint="@color/white_two"
         app:layout_constraintBottom_toBottomOf="@+id/btn_reset_session_date"
         app:layout_constraintEnd_toStartOf="@+id/btn_reset_session_date"
         app:layout_constraintTop_toTopOf="@+id/btn_reset_session_date"
@@ -83,14 +75,12 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:text="Reset"
-        android:textColor="@color/white_two"
         android:textSize="10sp"
         app:cornerRadius="8dp"
         app:icon="@drawable/ic_reset"
         app:iconGravity="top"
         app:iconPadding="4dp"
         app:iconSize="18dp"
-        app:iconTint="@color/white_two"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_info" />
 
@@ -115,8 +105,6 @@
         android:layout_marginBottom="32dp"
         app:icon="@drawable/ic_excel"
         app:iconPadding="16dp"
-        app:iconTint="@color/white_two"
-        android:textColor="@color/white_two"
         style="@style/Widget.Material3.Button.IconButton.Outlined"
         android:text="Download Sample Excel"
         app:layout_constraintBottom_toTopOf="@+id/btn_delete_all_students"
