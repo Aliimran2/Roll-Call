@@ -5,20 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.miassolutions.rollcall.common.AttendanceFilter
 import com.miassolutions.rollcall.common.AttendanceStatus
 import com.miassolutions.rollcall.data.entities.AttendanceEntity
+import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.data.repository.impl.AttendanceRepoImpl
 import com.miassolutions.rollcall.data.repository.impl.StudentRepoImpl
-import com.miassolutions.rollcall.extenstions.toFormattedDate
 import com.miassolutions.rollcall.ui.model.AttendanceUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
@@ -30,68 +22,87 @@ class AttendanceViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _classId = MutableStateFlow("")
-    val classId = _classId.asStateFlow()
+    val classId: StateFlow<String> = _classId.asStateFlow()
+
+    private val _date = MutableStateFlow(Date().time)
+    val date: StateFlow<Long> = _date.asStateFlow()
+
+    private val _searchStudent = MutableStateFlow("")
+
+    private val _studentList = MutableStateFlow<List<StudentEntity>>(emptyList())
+
+    private val _attendanceUI = MutableStateFlow<List<AttendanceUIModel>>(emptyList())
+
+    private val _filter = MutableStateFlow(AttendanceFilter.ALL)
+
+    val filteredAttendanceUI: StateFlow<List<AttendanceUIModel>> = combine(
+        _attendanceUI, _filter, _searchStudent
+    ) { list, filter, query ->
+        list.filter {
+            when (filter) {
+                AttendanceFilter.ALL -> true
+                AttendanceFilter.PRESENT -> it.attendanceStatus == AttendanceStatus.PRESENT
+                AttendanceFilter.ABSENT -> it.attendanceStatus == AttendanceStatus.ABSENT
+            }
+        }.filter {
+            it.studentName.contains(query, ignoreCase = true) ||
+                    query.toIntOrNull()?.let { roll -> it.rollNumber == roll } == true
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    val totalCounts = _attendanceUI.map { it.size }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+
+    val presentCount = _attendanceUI.map { list ->
+        list.count { it.attendanceStatus == AttendanceStatus.PRESENT }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+
+    val absentCount = _attendanceUI.map { list ->
+        list.count { it.attendanceStatus == AttendanceStatus.ABSENT }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
 
     fun setClassId(id: String) {
         _classId.value = id
-
+        _date.value = Date().time // Automatically set today's date
+        initializeData()
     }
-
-    private val _date = MutableStateFlow(Date().time)
-    val date = _date.asStateFlow()
 
     fun setDate(date: Long) {
         _date.value = date
     }
 
-    private val studentList = studentRepo.getStudentListByClassId(_classId.value)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
-
-
-    private val _attendanceUI = MutableStateFlow<List<AttendanceUIModel>>(emptyList())
-    val attendanceUI = _attendanceUI.asStateFlow()
-
-    private val _filter = MutableStateFlow(AttendanceFilter.ALL)
-    val filter = _filter.asStateFlow()
+    fun updateSearchQuery(query: String) {
+        _searchStudent.value = query
+    }
 
     fun setFilter(filter: AttendanceFilter) {
         _filter.value = filter
     }
 
-
-    val filteredAttendanceUI: StateFlow<List<AttendanceUIModel>> =
-        combine(_attendanceUI, _filter) { list, filter ->
-            when (filter) {
-                AttendanceFilter.ALL -> list
-                AttendanceFilter.PRESENT -> list.filter { it.attendanceStatus == AttendanceStatus.PRESENT }
-                AttendanceFilter.ABSENT -> list.filter { it.attendanceStatus == AttendanceStatus.ABSENT }
-            }
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
-
     fun updateAttendanceStatus(student: AttendanceUIModel, newStatus: AttendanceStatus) {
-        _attendanceUI.value = _attendanceUI.value.map {
-            if (it.studentId == student.studentId) it.copy(attendanceStatus = newStatus) else it
+        _attendanceUI.update { list ->
+            list.map {
+                if (it.studentId == student.studentId) it.copy(attendanceStatus = newStatus)
+                else it
+            }
         }
     }
-
 
     fun saveAttendance(onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             val date = _date.value
-            val alreadyExist = attendanceRepo.isAttendanceTaken(date)
-
-            if (alreadyExist) {
+            if (attendanceRepo.isAttendanceTaken(date)) {
                 onResult(false)
             } else {
-                val attendanceList = _attendanceUI.value.map {
+                val attendances = _attendanceUI.value.map {
                     AttendanceEntity(
-                        classId = classId.value,
+                        classId = _classId.value,
                         studentId = it.studentId,
                         date = date,
                         attendanceStatus = it.attendanceStatus
                     )
                 }
-                attendanceRepo.insertAttendances(attendanceList)
+                attendanceRepo.insertAttendances(attendances)
                 onResult(true)
             }
         }
@@ -99,35 +110,53 @@ class AttendanceViewModel @Inject constructor(
 
     fun updateAttendanceForDate(classId: String, date: Long, onComplete: (Boolean) -> Unit) {
         viewModelScope.launch {
-            try {
-                attendanceRepo.replaceAttendanceForDate(classId, date, _attendanceUI.value.map {
+            runCatching {
+                val newList = _attendanceUI.value.map {
                     AttendanceEntity(
-                        classId,
-                        it.studentId,
+                        classId = classId,
+                        studentId = it.studentId,
                         date = date,
                         attendanceStatus = it.attendanceStatus
                     )
-                })
-
-
-            } catch (e: Exception) {
-                e.printStackTrace()
+                }
+                attendanceRepo.replaceAttendanceForDate(classId, date, newList)
+            }.onSuccess {
+                onComplete(true)
+            }.onFailure {
+                it.printStackTrace()
                 onComplete(false)
             }
         }
     }
 
-    val totalCounts = attendanceUI.map { it.size }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+    private fun initializeData() {
+        _classId.filter { it.isNotEmpty() }
+            .onEach { id ->
+                studentRepo.getStudentListByClassId(id).collect { students ->
+                    _studentList.value = students
+                    updateAttendanceUI()
+                }
+            }
+            .launchIn(viewModelScope)
 
-    val presentCount = attendanceUI.map { list ->
-        list.count { it.attendanceStatus == AttendanceStatus.PRESENT }
+        _date.filterNotNull()
+            .onEach { updateAttendanceUI() }
+            .launchIn(viewModelScope)
     }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
 
-    val absentCount = attendanceUI.map { list ->
-        list.count { it.attendanceStatus == AttendanceStatus.ABSENT }
+    private suspend fun updateAttendanceUI() {
+        if (_classId.value.isEmpty() || _studentList.value.isEmpty()) return
+
+        val attendanceEntities = attendanceRepo.getClassAttendanceForDate(_date.value)
+
+        _attendanceUI.value = _studentList.value.map { student ->
+            val record = attendanceEntities.find { it.studentId == student.studentId }
+            AttendanceUIModel(
+                studentId = student.studentId,
+                studentName = student.studentName,
+                rollNumber = student.rollNumber,
+                attendanceStatus = record?.attendanceStatus ?: AttendanceStatus.PRESENT
+            )
+        }
     }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
-
 }
