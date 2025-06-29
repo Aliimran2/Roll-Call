@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="8dp"
     android:layout_marginVertical="2dp"
-    app:cardCornerRadius="12dp">
+    app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,19 +14,17 @@
         android:padding="8dp">
 
 
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_student"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="student image"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_person" />
-
-
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_student"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="student image"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_person"
+            app:tint="@color/primary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <ImageView
@@ -39,7 +37,8 @@
             android:src="@drawable/ic_phone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/primary" />
 
         <TextView
             android:id="@+id/tv_student_name"
@@ -91,7 +90,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_roll_num"
             app:layout_constraintTop_toBottomOf="@+id/tv_roll_num"
-            app:srcCompat="@drawable/ic_person_outline" />
+            app:srcCompat="@drawable/ic_person_outline"
+            app:tint="@color/primary" />
 
         <ImageView
             android:id="@+id/iv_report"
@@ -104,7 +104,7 @@
             app:layout_constraintStart_toEndOf="@+id/iv_profile"
             app:layout_constraintTop_toTopOf="@+id/iv_profile"
             app:srcCompat="@drawable/ic_bars"
-            />
+            app:tint="@color/primary" />
 
         <ImageView
             android:id="@+id/iv_edit"
@@ -112,11 +112,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:clickable="true"
-            android:tintMode="multiply"
             app:layout_constraintBottom_toBottomOf="@+id/iv_report"
             app:layout_constraintStart_toEndOf="@+id/iv_report"
             app:layout_constraintTop_toTopOf="@+id/iv_report"
-            app:srcCompat="@drawable/ic_edit_person" />
+            app:srcCompat="@drawable/ic_edit_person"
+            app:tint="@color/primary" />
 
         <ImageView
             android:id="@+id/iv_delete"
@@ -128,7 +128,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/iv_edit"
             app:layout_constraintStart_toEndOf="@+id/iv_edit"
             app:layout_constraintTop_toTopOf="@+id/iv_edit"
-            app:srcCompat="@drawable/ic_delete" />
+            app:srcCompat="@drawable/ic_delete"
+            app:tint="@color/primary" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

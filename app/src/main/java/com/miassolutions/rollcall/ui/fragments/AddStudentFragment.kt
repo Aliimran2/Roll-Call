@@ -65,7 +65,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
             studentImageUriStr = uri.toString()
         }
 
-        binding.tvChangePhoto.setOnClickListener {
+        binding.ivStudentImage.setOnClickListener {
             studentImagePicker.requestAndPickImage()
         }
 
