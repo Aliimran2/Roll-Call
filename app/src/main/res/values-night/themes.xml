@@ -11,15 +11,15 @@
         <item name="colorError">@color/error</item>
         <item name="colorOnError">@color/onError</item>
 
+        <!--        for changing fab color-->
+        <item name="colorSecondaryContainer">@color/primary</item>
+        <item name="colorOnSecondaryContainer">@color/onPrimary</item>
+
         <item name="fontFamily">@font/roboto_slab</item>
         <item name="android:textColor">@color/primary</item>
         <item name="toolbarStyle">@style/Widget.MyApp.Toolbar</item>
+        <item name="floatingActionButtonStyle">@style/Widget.RollCall.FloatingActionButton</item>
 
-    </style>
-
-    <style name="TransparentDialog" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
 

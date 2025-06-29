@@ -8,14 +8,26 @@
     <color name="purple_one">#6C5ADD</color>
     <color name="purple_two">#412EA4</color>
 
-    <color name="primary">#6750A4</color>
-    <color name="onPrimary">#FFFFFF</color>
-    <color name="surface">#FFFBFE</color>
-    <color name="onSurface">#1C1B1F</color>
-    <color name="background">#FFFBFE</color>
+    <color name="primary">#4B7BE5</color>          <!-- Calming blue for trust & focus -->
+    <color name="onPrimary">#FFFFFF</color>        <!-- White text/icons on primary -->
+
+    <color name="primaryContainer">#D6E3FF</color> <!-- Light blue background containers -->
+    <color name="onPrimaryContainer">#002F6C</color>
+
+    <color name="secondary">#00A86B</color>        <!-- Green for present status -->
+    <color name="onSecondary">#FFFFFF</color>
+
+    <color name="background">#FDFDFD</color>       <!-- Soft white background -->
     <color name="onBackground">#1C1B1F</color>
-    <color name="error">#B3261E</color>
+
+    <color name="surface">#FFFFFF</color>          <!-- Card or surface background -->
+    <color name="onSurface">#1C1B1F</color>
+
+    <color name="error">#D32F2F</color>            <!-- Red for absent/error -->
     <color name="onError">#FFFFFF</color>
+
+    <color name="outline">#BDBDBD</color>          <!-- Divider lines or borders -->
+    <color name="icon_default">#555555</color>     <!-- Default icon tint -->
 
 
 

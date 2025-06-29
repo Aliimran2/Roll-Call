@@ -9,14 +9,27 @@
     <color name="purple_two">#412EA4</color>
 
 
-    <color name="primary">#D0BCFF</color>
-    <color name="onPrimary">#381E72</color>
-    <color name="surface">#1C1B1F</color>
-    <color name="onSurface">#E6E1E5</color>
-    <color name="background">#1C1B1F</color>
-    <color name="onBackground">#E6E1E5</color>
-    <color name="error">#F2B8B5</color>
-    <color name="onError">#601410</color>
+    <color name="primary">#9CBFFF</color>          <!-- Muted blue for night -->
+    <color name="onPrimary">#002F6C</color>
+
+    <color name="primaryContainer">#00325E</color>
+    <color name="onPrimaryContainer">#D6E3FF</color>
+
+    <color name="secondary">#34D399</color>        <!-- Teal green for presence -->
+    <color name="onSecondary">#003B2D</color>
+
+    <color name="background">#121212</color>       <!-- Dark background -->
+    <color name="onBackground">#FFFFFF</color>
+
+    <color name="surface">#1E1E1E</color>          <!-- Slightly raised surface -->
+    <color name="onSurface">#FFFFFF</color>
+
+    <color name="error">#FFB4AB</color>
+    <color name="onError">#690005</color>
+
+    <color name="outline">#444444</color>
+    <color name="icon_default">#CCCCCC</color>     <!-- Default icon tint for night -->
+
 
 
 
