@@ -27,6 +27,13 @@ class SettingsViewModel @Inject constructor(
     val minDate = prefs.minDate.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
     val userName = prefs.userName.asLiveData()
     val instituteName = prefs.instituteName.asLiveData()
+    val userProfileImage = prefs.userProfileImage.asLiveData()
+
+    fun saveImageUriStr(imagePath : String){
+        viewModelScope.launch {
+            prefs.saveUserImage(imagePath)
+        }
+    }
 
 
     fun saveMinDate(timestamp: Long) {

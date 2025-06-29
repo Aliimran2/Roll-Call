@@ -5,6 +5,9 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import coil3.load
+import coil3.request.error
+import coil3.request.placeholder
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentDashboardBinding
 
@@ -76,6 +79,15 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         settingsViewModel.instituteName.observe(viewLifecycleOwner) {
             it?.let {
                 binding.topLayout.tvSubtitle.text = it
+            }
+        }
+
+        settingsViewModel.userProfileImage.observe(viewLifecycleOwner){
+            it?.let {userImage->
+                binding.topLayout.ivUserProfile.load(userImage){
+                    placeholder(R.drawable.ic_person_outline)
+                    error(R.drawable.ic_error_image)
+                }
             }
         }
     }
