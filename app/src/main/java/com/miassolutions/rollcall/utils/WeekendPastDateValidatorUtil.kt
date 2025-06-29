@@ -1,8 +1,10 @@
+package com.miassolutions.rollcall.utils
+
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.android.material.datepicker.CalendarConstraints
 import com.miassolutions.rollcall.extenstions.clearTimeComponents
-import java.util.*
+import java.util.Calendar
 
 class WeekendPastDateValidatorUtil() :
     CalendarConstraints.DateValidator {

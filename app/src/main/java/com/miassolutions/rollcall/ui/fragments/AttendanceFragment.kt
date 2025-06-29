@@ -1,9 +1,8 @@
 package com.miassolutions.rollcall.ui.fragments
 
-import WeekendPastDateValidatorUtil
+import com.miassolutions.rollcall.utils.WeekendPastDateValidatorUtil
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment

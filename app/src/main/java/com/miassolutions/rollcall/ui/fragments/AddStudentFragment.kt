@@ -1,18 +1,13 @@
 package com.miassolutions.rollcall.ui.fragments
 
-import WeekendPastDateValidatorUtil
+import com.miassolutions.rollcall.utils.WeekendPastDateValidatorUtil
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import coil3.load
-import coil3.request.placeholder
-import coil3.toUri
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.datepicker.CalendarConstraints

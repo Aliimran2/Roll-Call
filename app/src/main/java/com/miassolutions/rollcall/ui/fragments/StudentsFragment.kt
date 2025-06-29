@@ -34,9 +34,9 @@ import com.miassolutions.rollcall.ui.MainActivity
 import com.miassolutions.rollcall.ui.adapters.StudentListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
 import com.miassolutions.rollcall.ui.viewmodels.StudentDetailViewModel
-import com.miassolutions.rollcall.utils.ImportFromExcel
 import com.miassolutions.rollcall.utils.UiState
 import com.miassolutions.rollcall.utils.exportExcelToDownloadsWithMediaStore
+import com.miassolutions.rollcall.utils.readStudentsFromExcel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -98,7 +98,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
         lifecycleScope.launch {
             try {
                 val students = withContext(Dispatchers.IO) {
-                    ImportFromExcel.readStudentsFromExcel(requireContext(), uri)
+                    readStudentsFromExcel(requireContext(), uri)
                 }
 
                 if (students.isEmpty()) {
