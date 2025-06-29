@@ -17,7 +17,7 @@ data class AttendanceStatsItem(
 
 sealed class AttendanceStatsUiEvent {
     data class ShowSnackbar(val message: String) : AttendanceStatsUiEvent()
-    data class NavToAddEditAttendance(val attendanceId: String) : AttendanceStatsUiEvent()
-    data class NavToReportAttendance(val attendanceId: String) : AttendanceStatsUiEvent()
-    data class ShowDeleteConfirmation(val attendanceId: String) : AttendanceStatsUiEvent()
+    data class NavToAddEditAttendance(val date: Long) : AttendanceStatsUiEvent()
+    data class NavToReportAttendance(val date: Long) : AttendanceStatsUiEvent()
+
 }

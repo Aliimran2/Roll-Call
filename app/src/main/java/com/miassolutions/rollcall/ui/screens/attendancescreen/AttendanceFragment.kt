@@ -42,7 +42,6 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
         attendanceMode = navArgs.attendanceMode
         selectedDate = navArgs.selectedDate
-
         viewModel.setClassId(navArgs.classId)
 
         setupModeUI()
@@ -57,11 +56,6 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     private fun setupModeUI() {
         binding.apply {
             when (attendanceMode) {
-                "add" ->{
-                    setToolbarTitle("Take Attendance")
-                    val today = viewModel.date.value
-                    binding.etDatePicker.setText(today.toFormattedDate())
-                }
 
                 "update" -> {
                     setToolbarTitle("Update Attendance")
@@ -71,6 +65,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                     saveBtn.text = "Update"
                     viewModel.setDate(selectedDate)
                 }
+
                 "report" -> {
                     setToolbarTitle("Report ${selectedDate.toFormattedDate()}")
                     attendanceToggleGroup.show()
@@ -91,7 +86,10 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     }
 
     private fun setupDateChangeListener() {
-        parentFragmentManager.setFragmentResultListener(DATE_REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
+        parentFragmentManager.setFragmentResultListener(
+            DATE_REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
             val date = bundle.getLong(Constants.SELECTED_DATE)
             binding.etDatePicker.setText(date.toFormattedDate())
         }
@@ -100,9 +98,9 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     private fun setupClickListeners() = binding.apply {
         etDatePicker.setOnClickListener {
             if (attendanceMode == "update" || attendanceMode == "report") return@setOnClickListener
-            showDatePicker {
-                etDatePicker.setText(it.toFormattedDate())
+            showDatePicker{
                 viewModel.setDate(it)
+                etDatePicker.setText(it.toFormattedDate())
             }
         }
 
@@ -118,6 +116,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                     showSnackbar("$msg for $dateStr")
                     if (it) findNavController().navigateUp()
                 }
+
                 "report" -> setupFilterListener()
                 else -> viewModel.saveAttendance {
                     val msg = if (it) "Attendance saved" else "Attendance already exists"
@@ -141,19 +140,22 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         }
     }
 
-    private fun showDatePicker(onDateSelected: (Long) -> Unit) {
-        val constraints = CalendarConstraints.Builder()
+
+
+    private fun showDatePicker(onDateSelected: (Long) -> Unit ) {
+
+        val validator = WeekendPastDateValidatorUtil()
+        validator.isWeekendDisabled = true
+
+        val constraintsBuilder = CalendarConstraints.Builder()
             .setFirstDayOfWeek(Calendar.MONDAY)
-            .setValidator(WeekendPastDateValidatorUtil())
-            .build()
+            .setValidator(validator)
 
         showMaterialDatePicker(
-            title = "Select Attendance Date",
-            selection = MaterialDatePicker.todayInUtcMilliseconds(),
-            constraints = constraints
-        ) {
-            onDateSelected(it)
-        }
+            title = "Select date",
+            constraints = constraintsBuilder.build(),
+            onDateSelected = { onDateSelected(it) }
+        )
     }
 
     private fun collectFlows() {

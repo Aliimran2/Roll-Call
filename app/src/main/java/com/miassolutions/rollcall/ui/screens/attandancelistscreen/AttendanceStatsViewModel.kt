@@ -4,39 +4,30 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.miassolutions.rollcall.common.AttendanceStatus
 import com.miassolutions.rollcall.data.repository.impl.AttendanceRepoImpl
+import com.miassolutions.rollcall.extenstions.toFormattedDate
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AttendanceStatsViewModel @Inject constructor(private val repository: AttendanceRepoImpl) :
-    ViewModel() {
-
+class AttendanceStatsViewModel @Inject constructor(
+    private val repository: AttendanceRepoImpl,
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AttendanceListUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val _uiEvent = MutableSharedFlow<AttendanceStatsUiEvent>()
-    val uiEvent = _uiEvent.asSharedFlow()
+    private val _uiEvent = Channel<AttendanceStatsUiEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
 
     private var classId: String = ""
 
     fun setClassId(id: String) {
         classId = id
+        loadAttendanceStats() // Start loading once classId is set
     }
-
-    init {
-        loadAttendanceStats()
-    }
-
 
     private fun loadAttendanceStats() {
         viewModelScope.launch {
@@ -46,46 +37,60 @@ class AttendanceStatsViewModel @Inject constructor(private val repository: Atten
                 }
                 .catch { e ->
                     _uiState.update { it.copy(isLoading = false) }
-                    _uiEvent.emit(AttendanceStatsUiEvent.ShowSnackbar("Error : ${e.localizedMessage}"))
+                    _uiEvent.trySend(
+                        AttendanceStatsUiEvent.ShowSnackbar("Error: ${e.localizedMessage}")
+                    )
                 }
                 .collectLatest { groupedMap ->
-                    val statsList = groupedMap.map { (dateInMillis, attendanceList) ->
+                    val statsList = groupedMap.map { (date, attendanceList) ->
                         val presentCount =
                             attendanceList.count { it.attendanceStatus == AttendanceStatus.PRESENT }
                         val totalCount = attendanceList.size
                         val percentage = if (totalCount == 0) 0 else presentCount * 100 / totalCount
 
                         AttendanceStatsItem(
-                            date = dateInMillis,
+                            date = date,
                             presentCount = presentCount,
                             totalCount = totalCount,
                             percentage = percentage
                         )
-
                     }.sortedByDescending { it.date }
 
-                    _uiState.update { it.copy(isLoading = false, attendanceStats = statsList) }
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            attendanceStats = statsList
+                        )
+                    }
                 }
-
-
         }
     }
 
-    fun onEditClick(attendanceId: String) {
-        viewModelScope.launch {
-            _uiEvent.emit(AttendanceStatsUiEvent.NavToAddEditAttendance(attendanceId))
-        }
+    fun onEditClick(date: Long) {
+        emitEvent(AttendanceStatsUiEvent.NavToAddEditAttendance(date))
     }
 
-    fun onDeleteClick(attendanceId: String) {
+    fun onDeleteClick(date: Long) {
         viewModelScope.launch {
-            _uiEvent.emit(AttendanceStatsUiEvent.ShowDeleteConfirmation(attendanceId))
+            try {
+                repository.deleteAttendancesForClassAndDate(classId, date)
+                loadAttendanceStats()
+                emitEvent(AttendanceStatsUiEvent.ShowSnackbar("Deleted record for date ${date.toFormattedDate()}"))
+
+            } catch (e:Exception){
+                emitEvent(AttendanceStatsUiEvent.ShowSnackbar("Failed : ${e.localizedMessage}"))
+            }
         }
+
     }
 
-    fun onReportClick(attendanceId: String) {
+    fun onReportClick(date: Long) {
+        emitEvent(AttendanceStatsUiEvent.NavToReportAttendance(date))
+    }
+
+    private fun emitEvent(event: AttendanceStatsUiEvent) {
         viewModelScope.launch {
-            _uiEvent.emit(AttendanceStatsUiEvent.NavToReportAttendance(attendanceId))
+            _uiEvent.trySend(event)
         }
     }
 

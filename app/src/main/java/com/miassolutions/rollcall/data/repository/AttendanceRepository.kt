@@ -7,7 +7,7 @@ interface AttendanceRepository {
 
     suspend fun insertAttendances(list: List<AttendanceEntity>)
 
-    suspend fun isAttendanceTaken(date: Long) : Boolean
+    suspend fun isAttendanceTaken(classId: String,date: Long) : Boolean
 
 //    suspend fun getAttendanceCountForClassAndDate(classId : String, date :Long)
 

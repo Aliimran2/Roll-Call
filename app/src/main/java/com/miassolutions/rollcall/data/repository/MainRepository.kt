@@ -85,12 +85,9 @@ class MainRepository @Inject constructor(
         attendanceDao.insertAttendances(list)
     }
 
-    override suspend fun isAttendanceTaken(date: Long): Boolean {
-        return attendanceDao.getAttendanceCount(date) > 0
+    override suspend fun isAttendanceTaken(classId: String, date: Long): Boolean {
+        TODO("Not yet implemented")
     }
-
-
-
 
 
     override suspend fun getClassAttendanceGroupedByDate(classId: String): Flow<Map<Long, List<AttendanceEntity>>> {

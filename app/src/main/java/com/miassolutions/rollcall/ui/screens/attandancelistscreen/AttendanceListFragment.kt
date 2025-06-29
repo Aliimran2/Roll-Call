@@ -2,12 +2,11 @@ package com.miassolutions.rollcall.ui.screens.attandancelistscreen
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentAttendanceListBinding
@@ -25,33 +24,24 @@ class AttendanceListFragment : Fragment(R.layout.fragment_attendance_list) {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<AttendanceStatsViewModel>()
-
     private val args by navArgs<AttendanceListFragmentArgs>()
 
     private val adapter by lazy {
         StatsListAdapter(
-            ::deleteAttendance,
-            ::editAttendance,
-            ::reportAttendance
+            deleteAction = { date -> confirmDelete(date) },
+            onEditAttendanceAction = { date -> viewModel.onEditClick(date) },
+            onReportAttendanceAction = { date -> viewModel.onReportClick(date) }
         )
     }
-
-    private lateinit var toolbar: MaterialToolbar
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAttendanceListBinding.bind(view)
 
-
         viewModel.setClassId(args.classId)
-
-        toolbar = (activity as AppCompatActivity).findViewById(R.id.toolbar)
-        toolbar.subtitle = null
-
+        setupRecyclerView()
         observeUiState()
-        observeUIEvent()
-        setupRecyclerview()
-
+        observeUiEvent()
 
         binding.btnTakeAtt.setOnClickListener {
             val action = AttendanceListFragmentDirections
@@ -64,11 +54,9 @@ class AttendanceListFragment : Fragment(R.layout.fragment_attendance_list) {
                 )
             findNavController().navigate(action)
         }
-
-
     }
 
-    private fun setupRecyclerview() {
+    private fun setupRecyclerView() {
         binding.rvStats.adapter = adapter
     }
 
@@ -76,64 +64,67 @@ class AttendanceListFragment : Fragment(R.layout.fragment_attendance_list) {
         collectLatestFlow {
             viewModel.uiState.collectLatest { state ->
                 adapter.submitList(state.attendanceStats)
-
+//                binding.progressBar.isVisible = state.isLoading
+//                binding.tvEmpty.isVisible = !state.isLoading && state.attendanceStats.isEmpty()
             }
         }
     }
 
-    private fun observeUIEvent() {
+    private fun observeUiEvent() {
         collectLatestFlow {
             viewModel.uiEvent.collectLatest { event ->
                 when (event) {
                     is AttendanceStatsUiEvent.NavToAddEditAttendance -> {
 
+                            val action = AttendanceListFragmentDirections
+                                .actionStatsFragmentToAttendanceFragment(
+                                    attendanceMode = "update",
+                                    selectedDate = event.date,
+                                    classId = args.classId,
+                                    className = args.className,
+                                    sectionName = args.sectionName
+                                )
+                            findNavController().navigate(action)
+
 
                     }
 
-                    is AttendanceStatsUiEvent.NavToReportAttendance -> {}
-                    is AttendanceStatsUiEvent.ShowDeleteConfirmation -> {}
+                    is AttendanceStatsUiEvent.NavToReportAttendance -> {
+                        val action = AttendanceListFragmentDirections
+                            .actionStatsFragmentToAttendanceFragment(
+                                attendanceMode = "report",
+                                selectedDate = event.date,
+                                classId = args.classId,
+                                className = args.className,
+                                sectionName = args.sectionName
+                            )
+                        findNavController().navigate(action)
+                    }
+
+
+
                     is AttendanceStatsUiEvent.ShowSnackbar -> {
                         showSnackbar(event.message)
                     }
+
                 }
             }
         }
     }
 
-    private fun editAttendance(date: Long) {
-        val action = AttendanceListFragmentDirections.actionStatsFragmentToAttendanceFragment(
-            attendanceMode = "update",
-            selectedDate = date,
-            classId = args.classId,
-            className = args.className,
-            sectionName = args.sectionName,
-        )
-        findNavController().navigate(action)
-    }
-
-    private fun reportAttendance(date: Long) {
-//        val action =
-//            AttendanceListFragmentDirections.actionStatsFragmentToAttendanceFragment("report", date)
-//        findNavController().navigate(action)
-    }
-
-    private fun deleteAttendance(date: Long) {
+    private fun confirmDelete(date: Long) {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Delete Confirmation!!")
-            .setMessage("Are you suer?")
+            .setTitle("Delete Confirmation!")
+            .setMessage("Are you sure you want to delete attendance for ${date.toFormattedDate()}?")
             .setPositiveButton("Yes, Delete") { _, _ ->
-//                viewModel.deleteAttendance(date)
-                showSnackbar("Attendance record deleted for ${date.toFormattedDate()}")
+                viewModel.onDeleteClick(date)
             }
             .setNegativeButton("Cancel", null)
             .show()
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }

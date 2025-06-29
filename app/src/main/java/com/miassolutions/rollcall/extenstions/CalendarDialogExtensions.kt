@@ -1,5 +1,6 @@
 package com.miassolutions.rollcall.extenstions
 
+import WeekendPastDateValidatorUtil
 import androidx.fragment.app.Fragment
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -48,4 +49,32 @@ fun Calendar.clearTimeComponents() {
     set(Calendar.MINUTE, 0)
     set(Calendar.SECOND, 0)
     set(Calendar.MILLISECOND, 0)
+}
+
+fun Fragment.showAttendanceDatePicker(onDateSelected: (Long) -> Unit) {
+    val constraints = CalendarConstraints.Builder()
+        .setFirstDayOfWeek(Calendar.MONDAY)
+        .setValidator(WeekendPastDateValidatorUtil())
+        .build()
+
+    val picker = MaterialDatePicker.Builder.datePicker()
+        .setTitleText("Select Attendance Date")
+        .setCalendarConstraints(constraints)
+        .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+        .build()
+
+    picker.addOnPositiveButtonClickListener { selectedDate ->
+        // Only called when a valid date is selected
+        onDateSelected(selectedDate)
+    }
+
+    picker.addOnNegativeButtonClickListener {
+        // User clicked cancel
+    }
+
+    picker.addOnDismissListener {
+        // Dialog was dismissed without selection
+    }
+
+    picker.show(parentFragmentManager, "DATE_PICKER")
 }
