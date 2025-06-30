@@ -38,10 +38,6 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
 
         binding.rvStats.adapter = adapter
 
-
-
-
-
         binding.btnTakeAtt.setOnClickListener {
             val action = StatsFragmentDirections
                 .actionStatsFragmentToAttendanceFragment(
@@ -79,32 +75,6 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
             .show()
     }
 
-
-//    private fun menuProvider() {
-//        val menuHost = requireActivity()
-//        menuHost.addMenuProvider(
-//            object : MenuProvider {
-//                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-//                    menuInflater.inflate(R.menu.menu_attendance, menu)
-//                }
-//
-//                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-//                    return when (menuItem.itemId) {
-//                        R.id.action_add_att -> {
-//                            val action =
-//                                StatsFragmentDirections.actionStatsFragmentToAttendanceFragment()
-//                            findNavController().navigate(action)
-////                            true
-//                        }
-//
-//                        else -> false
-//                    }
-//                }
-//            },
-//            viewLifecycleOwner,
-//            Lifecycle.State.RESUMED
-//        )
-//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

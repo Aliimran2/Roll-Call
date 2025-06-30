@@ -12,31 +12,41 @@
     <include
         android:id="@+id/top_layout"
         layout="@layout/profile_layout"
-        android:layout_margin="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <GridLayout
-        android:id="@+id/dashboard_card_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnCount="2"
-        android:paddingHorizontal="32dp"
-        android:useDefaultMargins="true"
+        android:layout_margin="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_layout">
-
-        <include
-            android:id="@+id/info_card"
-            layout="@layout/item_info_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-    </GridLayout>
+    <include
+        android:id="@+id/info_card"
+        layout="@layout/item_info_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_layout" />
 
+    <TextView
+        android:id="@+id/tv_attendance_warn"
+        style="@style/MediumTextAppearance"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="16dp"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:background="@drawable/bg_roll"
+        android:text="No attendance taken yet for today"
+        app:layout_constraintBottom_toTopOf="@+id/dashboard_card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/info_card" />
 
     <GridLayout
         android:id="@+id/dashboard_card"
@@ -44,7 +54,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:columnCount="2"
-
         android:paddingHorizontal="8dp"
         android:useDefaultMargins="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -81,8 +90,5 @@
             android:layout_columnWeight="1" />
 
     </GridLayout>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.miassolutions.rollcall.data.repository
 
 import android.util.Log
+import com.miassolutions.rollcall.common.AttendanceStatus
 import com.miassolutions.rollcall.common.Constants.DUPLICATE_REG_NUMBER
 import com.miassolutions.rollcall.common.Constants.DUPLICATE_ROLL_NUMBER
 import com.miassolutions.rollcall.data.dao.AttendanceDao
@@ -13,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import java.util.Date
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -61,7 +63,6 @@ class Repository @Inject constructor(
         studentDao.updateStudent(studentEntity)
 
 
-
     suspend fun insertStudents(studentEntities: List<StudentEntity>): Boolean {
         return withContext(Dispatchers.IO) {
             try {
@@ -74,18 +75,18 @@ class Repository @Inject constructor(
         }
     }
 
-    fun searchStudents(query : String) = studentDao.searchStudent(query)
+    fun searchStudents(query: String) = studentDao.searchStudent(query)
 
     suspend fun clearAllStudents() = studentDao.clearAllStudents()
 
     suspend fun deleteStudentById(studentId: String) = studentDao.deleteStudentById(studentId)
 
-    suspend fun insertStudentsBulk(students : List<StudentEntity>) : Pair<Int, Int> {
+    suspend fun insertStudentsBulk(students: List<StudentEntity>): Pair<Int, Int> {
         var success = 0
         var failure = 0
 
-        for (student in students){
-            when(insertStudent(student)){
+        for (student in students) {
+            when (insertStudent(student)) {
                 is StudentInsertResult.Success -> success++
                 is StudentInsertResult.Failure -> failure++
             }
@@ -114,6 +115,22 @@ class Repository @Inject constructor(
         }
     }
 
+
+    fun getPresentCount(date: Long): Flow<Int> {
+        return attendanceDao.getAttendanceCountForDateAndStatus(
+            date,
+            AttendanceStatus.PRESENT
+        )
+
+    }
+
+
+    fun getTotalCount(): Flow<Int> {
+        return attendanceDao.getTotalStudentsCount()
+
+    }
+
+
     fun getAttendanceForStudent(studentId: String): Flow<List<AttendanceEntity>> {
         return attendanceDao.getAttendanceByStudent(studentId)
     }
@@ -129,7 +146,6 @@ class Repository @Inject constructor(
     suspend fun updateAttendances(attendanceList: List<AttendanceEntity>) {
         attendanceDao.updateAttendances(attendanceList)
     }
-
 
 
     suspend fun deleteAttendanceForStudent(studentId: String) {
