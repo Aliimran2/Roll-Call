@@ -17,27 +17,24 @@
         android:layout_height="0dp"/>
 
 
-
-
     <GridLayout
         android:id="@+id/dashboard_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/dashboard_card_two"
-        android:columnCount="2"
         android:layout_marginTop="80dp"
+        android:columnCount="2"
         android:paddingHorizontal="8dp"
         android:useDefaultMargins="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_layout"
-        >
+        app:layout_constraintTop_toBottomOf="@id/top_layout">
 
         <include
             android:id="@+id/attendance_card"
             layout="@layout/item_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_columnWeight="3" />
+            android:layout_columnWeight="1" />
 
         <include
             android:id="@+id/students_card"
@@ -45,20 +42,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1" />
-
-    </GridLayout>
-
-    <GridLayout
-        android:id="@+id/dashboard_card_two"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:columnCount="2"
-        android:paddingHorizontal="8dp"
-        android:useDefaultMargins="true"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dashboard_card">
 
 
         <include
@@ -73,10 +56,11 @@
             layout="@layout/item_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_columnWeight="3" />
-
+            android:layout_columnWeight="1" />
 
     </GridLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
