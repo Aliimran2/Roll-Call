@@ -33,9 +33,6 @@
         android:name="com.miassolutions.rollcall.ui.fragments.AttendanceFragment"
         android:label="Attendance"
         tools:layout="@layout/fragment_attendance" >
-        <action
-            android:id="@+id/action_attendanceFragment_to_datePickerFragment"
-            app:destination="@id/datePickerFragment" />
         <argument
             android:name="attendanceMode"
             app:argType="string" />
@@ -65,7 +62,7 @@
 
     <fragment
         android:id="@+id/studentDetailFragment"
-        tools:layout="@layout/fragment_student_detail"
+        tools:layout="@layout/fragment_student_profile"
         android:name="com.miassolutions.rollcall.ui.fragments.StudentDetailFragment"
         android:label="{student_name} Detail" >
         <argument

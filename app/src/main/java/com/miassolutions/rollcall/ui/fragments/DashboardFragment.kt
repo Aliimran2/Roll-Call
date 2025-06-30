@@ -79,8 +79,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             }
         }
 
-        settingsViewModel.userProfileImage.observe(viewLifecycleOwner){
-            it?.let {userImage->
+        settingsViewModel.userProfileImage.observe(viewLifecycleOwner) {
+            it?.let { userImage ->
                 Glide.with(requireContext())
                     .load(userImage)
                     .placeholder(R.drawable.ic_person)
