@@ -1,6 +1,7 @@
 package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -8,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import coil3.load
 import coil3.request.error
 import coil3.request.placeholder
+import com.bumptech.glide.Glide
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentDashboardBinding
 
@@ -84,10 +86,11 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
         settingsViewModel.userProfileImage.observe(viewLifecycleOwner){
             it?.let {userImage->
-                binding.topLayout.ivUserProfile.load(userImage){
-                    placeholder(R.drawable.ic_person_outline)
-                    error(R.drawable.ic_error_image)
-                }
+                Glide.with(requireContext())
+                    .load(userImage)
+                    .placeholder(R.drawable.ic_person)
+                    .error(R.drawable.ic_error_image)
+                    .into(binding.topLayout.ivUserProfile)
             }
         }
     }
