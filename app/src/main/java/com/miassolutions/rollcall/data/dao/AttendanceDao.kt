@@ -5,8 +5,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.miassolutions.rollcall.data.entities.AttendanceEntity
 import com.miassolutions.rollcall.common.AttendanceStatus
+import com.miassolutions.rollcall.data.entities.AttendanceEntity
 import kotlinx.coroutines.flow.Flow
 
 
