@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:paddingVertical="12dp"
     android:orientation="vertical">
+
 
     <include
         android:id="@+id/top_layout"
@@ -14,18 +16,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <GridLayout
+        android:id="@+id/dashboard_card_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:paddingHorizontal="32dp"
+        android:useDefaultMargins="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_layout">
+
+        <include
+            android:id="@+id/info_card"
+            layout="@layout/item_info_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1" />
+
+
+    </GridLayout>
+
 
     <GridLayout
         android:id="@+id/dashboard_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginBottom="32dp"
         android:columnCount="2"
+
         android:paddingHorizontal="8dp"
         android:useDefaultMargins="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_layout">
+        app:layout_constraintEnd_toEndOf="parent">
+
 
         <include
             android:id="@+id/attendance_card"
