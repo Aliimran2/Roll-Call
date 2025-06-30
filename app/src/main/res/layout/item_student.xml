@@ -83,7 +83,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_roll_num"
             app:layout_constraintTop_toBottomOf="@+id/tv_roll_num"
-            app:srcCompat="@drawable/ic_person_outline"
+            app:srcCompat="@drawable/ic_person"
             app:tint="@color/primary" />
 
         <ImageView

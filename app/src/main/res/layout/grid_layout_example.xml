@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/iv_profile"
         android:layout_width="100dp"
-        android:src="@drawable/mias_profile_pic"
+        android:src="@drawable/ic_person"
         android:scaleType="centerCrop"
         android:layout_height="120dp"/>
 

@@ -3,7 +3,6 @@
 
     <item
         android:id="@+id/menu_all"
-        android:icon="@drawable/ic_all"
         android:title="All" />
     <item
         android:id="@+id/menu_present"
@@ -11,6 +10,5 @@
         android:title="Present only" />
     <item
         android:id="@+id/menu_absent"
-        android:icon="@drawable/ic_absent"
         android:title="Absent only" />
 </menu>
