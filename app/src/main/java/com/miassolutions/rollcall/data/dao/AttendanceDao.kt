@@ -23,7 +23,10 @@ interface AttendanceDao {
     // --- Get Attendance Data ---
 
     @Query("SELECT COUNT(*) FROM attendance_table WHERE date = :date")
-    suspend fun getAttendanceCountForDate(date: Long): Int
+    fun getAttendanceCountForDate(date: Long): Flow<Int>
+
+
+
 
     @Query("SELECT * FROM attendance_table WHERE studentId = :studentId ORDER BY date DESC")
     fun getAttendanceByStudent(studentId: String): Flow<List<AttendanceEntity>>

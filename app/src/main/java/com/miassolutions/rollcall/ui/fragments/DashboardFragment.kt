@@ -3,6 +3,7 @@ package com.miassolutions.rollcall.ui.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -95,26 +96,24 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND,0)
         }
-
         return calendar.time.time
     }
 
     private fun bindAttendance(item: DashboardViewModel.Counts) {
         binding.infoCard.apply {
-            tvDate.text = setToDayDate().toFormattedDate("dd.MM.yyyy EEEE")
+            tvDate.text = dashboardViewModel.selectedDate.value.toFormattedDate("dd.MM.yyyy EE")
             dbTotalCard.tvCount.text = item.total
             dbTotalCard.tvCountTitle.text = getString(R.string.total)
             dbPresentCard.tvCount.text = item.present
+            dbPresentCard.tvCount.setTextColor(ContextCompat.getColor(requireContext(),R.color.green_present))
             dbPresentCard.tvCountTitle.text = getString(R.string.present)
             dbAbsentCard.tvCount.text = item.absent
+            dbAbsentCard.tvCount.setTextColor(ContextCompat.getColor(requireContext(),R.color.red_absent))
             dbAbsentCard.tvCountTitle.text = getString(R.string.absent)
         }
     }
 
-
     private fun observeViewModel() {
-
-
 
         collectLatestFlow {
             dashboardViewModel.isAttendanceTaken.collectLatest { taken ->

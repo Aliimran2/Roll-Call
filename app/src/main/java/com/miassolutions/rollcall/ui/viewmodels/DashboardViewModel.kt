@@ -23,12 +23,10 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     val selectedDate: StateFlow<Long> = _selectedDate
 
 
-    val isAttendanceTaken : StateFlow<Boolean> = _selectedDate
+    val isAttendanceTaken: StateFlow<Boolean> = _selectedDate
         .flatMapLatest { date ->
-            flow {
-                emit(repository.isAttendanceTaken(date))
-            }
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),false)
+            repository.isAttendanceTaken(date)
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
 
     val attendanceCounts: StateFlow<Counts> = _selectedDate
@@ -37,17 +35,17 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
                 repository.getPresentCount(date),
                 repository.getTotalCount(),
                 isAttendanceTaken
-            ) { present, total , taken->
-                if (taken){
+            ) { present, total, taken ->
+                if (taken) {
                     Counts(
                         total = total.toString(),
                         present = present.toString(),
                         absent = (total - present).toString()
                     )
-                }else{
+                } else {
                     Counts(
                         total = total.toString(),
-                        present ="0",
+                        present = "0",
                         absent = "0"
                     )
                 }
@@ -63,7 +61,7 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     data class Counts(
         val total: String = "",
         val present: String = "",
-        val absent: String = ""
+        val absent: String = "",
     )
 
 

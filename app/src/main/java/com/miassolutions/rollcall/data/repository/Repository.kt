@@ -12,6 +12,7 @@ import com.miassolutions.rollcall.utils.StudentInsertResult
 import com.miassolutions.rollcall.utils.StudentResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.util.Date
@@ -105,8 +106,14 @@ class Repository @Inject constructor(
         attendanceDao.insertAttendances(attendanceEntityList)
     }
 
-    suspend fun isAttendanceTaken(date: Long): Boolean {
-        return attendanceDao.getAttendanceCountForDate(date) > 0
+    fun isAttendanceTaken(date: Long): Flow<Boolean> {
+        return attendanceDao.getAttendanceCountForDate(date).map {
+            it > 0
+        }
+    }
+
+    suspend fun isAttendanceTakenOnce(date: Long): Boolean {
+        return attendanceDao.getAttendanceCountForDate(date).first() > 0
     }
 
     fun getAttendanceGroupedByDate(): Flow<Map<Long, List<AttendanceEntity>>> {

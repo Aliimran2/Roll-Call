@@ -117,12 +117,10 @@ class AttendanceViewModel @Inject constructor(
         }
     }
 
-
-
     fun saveAttendance(onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             val date = _selectedDate.value ?: return@launch
-            val alreadyExists = repository.isAttendanceTaken(date)
+            val alreadyExists = repository.isAttendanceTakenOnce(date)
 
             if (alreadyExists) {
                 onResult(false)
