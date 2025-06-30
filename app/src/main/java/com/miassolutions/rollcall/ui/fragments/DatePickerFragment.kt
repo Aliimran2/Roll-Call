@@ -31,12 +31,7 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
             DatePickerDialog(requireContext(), this, initYear, initMonth, initDay)
         datePickerDialog.datePicker.maxDate = calendar.timeInMillis
         collectLatestFlow {
-            viewModel.minDate.collect { minDate ->
-                minDate?.let {
-                    datePickerDialog.datePicker.minDate = it
 
-                }
-            }
         }
         return datePickerDialog
     }

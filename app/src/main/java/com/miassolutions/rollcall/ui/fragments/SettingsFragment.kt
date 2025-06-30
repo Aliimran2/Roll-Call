@@ -3,6 +3,7 @@ package com.miassolutions.rollcall.ui.fragments
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -27,7 +28,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<SettingsViewModel>()
-    private var selectedMinDate: Long? = null
+
+
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,33 +39,22 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         setupButtonClickListener()
         collectFlow()
-        setupDateChangeListener()
+//
+//        binding.chipToggle.setOnClickListener {
+//            val current = binding.chipToggle.isChecked
+//            viewModel.saveSaturdayStatus(current)
+//        }
 
-
-
-        binding.etMinDatePicker.setOnClickListener {
-            val action = SettingsFragmentDirections.actionSettingsFragmentToDatePickerFragment()
-            findNavController().navigate(action)
-        }
-
-        binding.btnResetSessionDate.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Confirm!")
-                .setMessage("Are you sure to reset date")
-                .setPositiveButton("Yes, Sure") { _, _ ->
-                    viewModel.resetPreferences()
-                    showSnackbar("Session date reset")
-                }
-                .setNegativeButton("Cancel", null)
-                .show()
-
-        }
-
-        binding.btnSaveMinDate.setOnClickListener {
-            selectedMinDate?.let {
-                viewModel.saveMinDate(it)
-                showSnackbar("Session date set to ${it.toFormattedDate()}")
+        binding.chipToggle.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked){
+                buttonView.text = "Saturday Disabled"
+                buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            } else {
+                buttonView.text = "Saturday Enabled"
+                buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue_two))
             }
+            binding.chipToggle.isChecked = isChecked
+            viewModel.saveSaturdayStatus(isChecked)
         }
 
         binding.btnExcelDownload.setOnClickListener {
@@ -78,28 +71,12 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     }
 
 
-
-
-    private fun setupDateChangeListener() {
-        parentFragmentManager.setFragmentResultListener(
-            Constants.DATE_REQUEST_KEY,
-            viewLifecycleOwner
-        ) { _, bundle ->
-            val selectedDate = bundle.getLong(Constants.SELECTED_DATE)
-            binding.etMinDatePicker.setText(selectedDate.toFormattedDate())
-            selectedMinDate = selectedDate
-
-        }
-    }
-
     private fun collectFlow() {
-        collectLatestFlow {
+        viewModel.disableSaturday.observe(viewLifecycleOwner){
+            binding.chipToggle.isChecked = it
+        }
 
-            launch {
-                viewModel.minDate.collectLatest {
-                    binding.etMinDatePicker.setText(it?.toFormattedDate())
-                }
-            }
+        collectLatestFlow {
             launch {
                 viewModel.messageEvent.collect {
                     showSnackbar(it)

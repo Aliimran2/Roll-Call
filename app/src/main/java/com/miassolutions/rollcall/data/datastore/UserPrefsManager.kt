@@ -1,6 +1,7 @@
 package com.miassolutions.rollcall.data.datastore
 
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -25,6 +26,17 @@ class UserPrefsManager @Inject constructor(@ApplicationContext private val conte
         private val USER_NAME_KEY = stringPreferencesKey("user_name_key")
         private val INSTITUTE_NAME_KEY = stringPreferencesKey("institute_name_key")
         private val USER_PROFILE_IMAGE = stringPreferencesKey("user_profile_image")
+        private val DISABLE_SATURDAY = booleanPreferencesKey("disable_saturday")
+    }
+
+    suspend fun setDisableSaturday(value: Boolean) {
+        dataStore.edit { prefs ->
+            prefs[DISABLE_SATURDAY] = value
+        }
+    }
+
+    val disableSaturday: Flow<Boolean> = dataStore.data.map { prefs ->
+        prefs[DISABLE_SATURDAY] ?: false
     }
 
 

@@ -2,11 +2,13 @@ package com.miassolutions.rollcall.ui.fragments
 
 import com.miassolutions.rollcall.utils.WeekendPastDateValidatorUtil
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.datepicker.CalendarConstraints
@@ -26,8 +28,10 @@ import com.miassolutions.rollcall.extenstions.show
 import com.miassolutions.rollcall.extenstions.showMaterialDatePicker
 import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.extenstions.toFormattedDate
+import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
@@ -39,11 +43,14 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
     private lateinit var adapter: AttendanceAdapter
     private val viewModel by viewModels<AttendanceViewModel>()
+    private val settingsViewModel by viewModels<SettingsViewModel>()
+
 
     private val navArgs by navArgs<AttendanceFragmentArgs>()
     private var attendanceMode = "add"
     private var selectedDate: Long = -1L
     private var studentsCount: Int = 0
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -78,32 +85,15 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         }
 
 
-
-
-        setupDateChangeListener()
         setupRecyclerView()
         collectFlows()
         clickListener()
         filterAttendance()
         searchStudent()
-
     }
-
     private fun searchStudent() {
         binding.etSearch.addTextChangedListener { searchText ->
             viewModel.updateSearchQuery(searchText.toString())
-
-        }
-    }
-
-
-    private fun setupDateChangeListener() {
-        parentFragmentManager.setFragmentResultListener(
-            DATE_REQUEST_KEY,
-            viewLifecycleOwner
-        ) { _, bundle ->
-            val selectedDate = bundle.getLong(Constants.SELECTED_DATE)
-            binding.etDatePicker.setText(selectedDate.toFormattedDate())
         }
     }
 
@@ -180,8 +170,6 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     }
 
     private fun filterAttendance() {
-
-
         binding.attendanceToggleGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
             if (isChecked) {
                 when (checkedId) {
@@ -205,23 +193,24 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
 
     private fun showDatePicker(onDateSelected: (Long) -> Unit) {
+        if (attendanceMode == "update" || attendanceMode == "report") return
 
-        if (attendanceMode == "update") return  // Prevent interaction
-        if (attendanceMode == "report") return
+        settingsViewModel.disableSaturday.observe(viewLifecycleOwner){isSaturdayDisabled ->
 
-        val constraintsBuilder = CalendarConstraints.Builder()
-            .setFirstDayOfWeek(Calendar.MONDAY)
-            .setValidator(WeekendPastDateValidatorUtil())
 
-        showMaterialDatePicker(
-            title = "Select Attendance Date",
-            constraints = constraintsBuilder.build(),
-        ) {
-            onDateSelected(it)
-            viewModel.setDate(it)
+
+            val constraintsBuilder = CalendarConstraints.Builder()
+                .setFirstDayOfWeek(Calendar.MONDAY)
+                .setValidator(WeekendPastDateValidatorUtil(disableSaturday = isSaturdayDisabled))
+
+            showMaterialDatePicker(
+                title = "Select Attendance Date",
+                constraints = constraintsBuilder.build(),
+            ) {
+                onDateSelected(it)
+                viewModel.setDate(it)
+            }
         }
-
-
     }
 
     private fun toggleDirectionLayout(showDirection: Boolean) {
@@ -233,7 +222,6 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             binding.rvAttendance.show()
         }
     }
-
 
     private fun collectFlows() {
         collectLatestFlow {

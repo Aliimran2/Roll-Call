@@ -1,5 +1,6 @@
 package com.miassolutions.rollcall.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -10,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,10 +26,11 @@ class SettingsViewModel @Inject constructor(
     private val _messageEvent = MutableSharedFlow<String>()
     val messageEvent: SharedFlow<String> = _messageEvent
 
-    val minDate = prefs.minDate.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
     val userName = prefs.userName.asLiveData()
     val instituteName = prefs.instituteName.asLiveData()
     val userProfileImage = prefs.userProfileImage.asLiveData()
+    val disableSaturday = prefs.disableSaturday.asLiveData()
+
 
     fun saveImageUriStr(imagePath : String){
         viewModelScope.launch {
@@ -35,12 +38,13 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-
-    fun saveMinDate(timestamp: Long) {
+    fun saveSaturdayStatus(value : Boolean){
         viewModelScope.launch {
-            prefs.saveMinDate(timestamp)
+            Log.d("SettingsViewModel", "Saving disableSaturday = $value")
+            prefs.setDisableSaturday(value)
         }
     }
+
 
     private fun saveUserName(userName: String) {
         viewModelScope.launch(Dispatchers.IO) {
