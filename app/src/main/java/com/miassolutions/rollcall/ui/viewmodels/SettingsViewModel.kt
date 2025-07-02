@@ -65,13 +65,6 @@ class SettingsViewModel @Inject constructor(
         saveInstituteName(instituteName)
     }
 
-    fun resetPreferences() {
-        viewModelScope.launch {
-            prefs.saveMinDate(0L)
-            prefs.saveUserName("") //todo
-            prefs.saveInstituteName("") //todo
-        }
-    }
 
 
     fun deleteAll() {

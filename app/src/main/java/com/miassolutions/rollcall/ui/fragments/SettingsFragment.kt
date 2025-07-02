@@ -9,16 +9,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.miassolutions.rollcall.R
-import com.miassolutions.rollcall.common.Constants
 import com.miassolutions.rollcall.databinding.FragmentSettingsBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.showLongToast
 import com.miassolutions.rollcall.extenstions.showSnackbar
-import com.miassolutions.rollcall.extenstions.toFormattedDate
 import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
 import com.miassolutions.rollcall.utils.copySampleExcelFromAssets
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -30,23 +27,19 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private val viewModel by viewModels<SettingsViewModel>()
 
 
-
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSettingsBinding.bind(view)
 
-        setupButtonClickListener()
+        setupListeners()
         collectFlow()
-//
-//        binding.chipToggle.setOnClickListener {
-//            val current = binding.chipToggle.isChecked
-//            viewModel.saveSaturdayStatus(current)
-//        }
 
+
+    }
+
+    private fun setupListeners() {
         binding.chipToggle.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked){
+            if (isChecked) {
                 buttonView.text = "Saturday Disabled"
                 buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
             } else {
@@ -68,26 +61,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         }
 
-    }
-
-
-    private fun collectFlow() {
-        viewModel.disableSaturday.observe(viewLifecycleOwner){
-            binding.chipToggle.isChecked = it
-        }
-
-        collectLatestFlow {
-            launch {
-                viewModel.messageEvent.collect {
-                    showSnackbar(it)
-                }
-            }
-
-
-        }
-    }
-
-    private fun setupButtonClickListener() {
         binding.btnDeleteAllStudents.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Caution!!")
@@ -102,6 +75,25 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         }
     }
+
+
+    private fun collectFlow() {
+        viewModel.disableSaturday.observe(viewLifecycleOwner) {
+            binding.chipToggle.isChecked = it
+        }
+
+        collectLatestFlow {
+            launch {
+                viewModel.messageEvent.collect {
+                    showSnackbar(it)
+                }
+            }
+
+
+        }
+    }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
