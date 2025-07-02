@@ -4,6 +4,10 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.android.material.datepicker.CalendarConstraints
 import com.miassolutions.rollcall.extenstions.clearTimeComponents
+import java.time.DayOfWeek
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Calendar
 
 class WeekendPastDateValidatorUtil(
@@ -14,19 +18,31 @@ class WeekendPastDateValidatorUtil(
 
 
     override fun isValid(date: Long): Boolean {
-        val calendar = Calendar.getInstance().apply {
-            timeInMillis = date
-            clearTimeComponents()
-        }
 
-        val today = Calendar.getInstance().apply {
-            clearTimeComponents()
-        }
+        val selectedDate = Instant.ofEpochMilli(date)
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate()
 
-        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-        val isSaturday = dayOfWeek == Calendar.SATURDAY
-        val isSunday = dayOfWeek == Calendar.SUNDAY
-        val isFuture = calendar.after(today)
+        val today = LocalDate.now()
+        val isSaturday = selectedDate.dayOfWeek == DayOfWeek.SATURDAY
+        val isSunday = selectedDate.dayOfWeek == DayOfWeek.SUNDAY
+        val isFuture = selectedDate.isAfter(today)
+
+
+
+//        val calendar = Calendar.getInstance().apply {
+//            timeInMillis = date
+//            clearTimeComponents()
+//        }
+//
+//        val today = Calendar.getInstance().apply {
+//            clearTimeComponents()
+//        }
+//
+//        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+//        val isSaturday = dayOfWeek == Calendar.SATURDAY
+//        val isSunday = dayOfWeek == Calendar.SUNDAY
+//        val isFuture = calendar.after(today)
 
         return when {
             isWeekendDisabled -> {

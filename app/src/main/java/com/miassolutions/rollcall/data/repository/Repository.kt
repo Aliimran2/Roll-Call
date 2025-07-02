@@ -112,6 +112,8 @@ class Repository @Inject constructor(
         }
     }
 
+
+
     suspend fun isAttendanceTakenOnce(date: Long): Boolean {
         return attendanceDao.getAttendanceCountForDate(date).first() > 0
     }

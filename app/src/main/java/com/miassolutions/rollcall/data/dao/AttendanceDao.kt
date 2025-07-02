@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.miassolutions.rollcall.common.AttendanceStatus
 import com.miassolutions.rollcall.data.entities.AttendanceEntity
+import com.miassolutions.rollcall.data.entities.StudentEntity
 import kotlinx.coroutines.flow.Flow
 
 
@@ -26,13 +27,24 @@ interface AttendanceDao {
     fun getAttendanceCountForDate(date: Long): Flow<Int>
 
 
-
-
     @Query("SELECT * FROM attendance_table WHERE studentId = :studentId ORDER BY date DESC")
     fun getAttendanceByStudent(studentId: String): Flow<List<AttendanceEntity>>
 
     @Query("SELECT * FROM attendance_table WHERE date = :date ORDER BY studentId ASC")
     suspend fun getAttendanceForDate(date: Long): List<AttendanceEntity>
+
+    @Query("SELECT * FROM attendance_table WHERE :startDate AND :endDate")
+    fun getClassAttendancesBetweenDates(
+        startDate: Long,
+        endDate: Long,
+    ): Flow<List<AttendanceEntity>>
+
+    @Query("SELECT * FROM attendance_table WHERE studentId=:studentId AND :startDate AND :endDate")
+    fun getStudentAttendancesBetweenDates(
+        studentId: String,
+        startDate: Long,
+        endDate: Long,
+    ): Flow<List<AttendanceEntity>>
 
     @Query("SELECT * FROM attendance_table ORDER BY date DESC")
     fun getAllAttendances(): Flow<List<AttendanceEntity>>
@@ -52,7 +64,6 @@ interface AttendanceDao {
     @Update
     suspend fun updateAttendances(attendanceList: List<AttendanceEntity>)
 
-    //     --- Delete Operations ---
 
     @Query("DELETE FROM attendance_table WHERE date =:date")
     suspend fun deleteAttendanceForDate(date: Long)
