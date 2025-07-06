@@ -3,6 +3,8 @@ package com.miassolutions.rollcall.extenstions
 import androidx.fragment.app.Fragment
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
+import java.time.Instant
+import java.time.ZoneId
 import java.util.Calendar
 
 fun Fragment.showMaterialDatePicker(
@@ -19,24 +21,29 @@ fun Fragment.showMaterialDatePicker(
         .setTitleText(title)
         .setInputMode(inputMode)
 
-    selection?.let {
-        builder.setSelection(it)
-    }
-
-//        .setSelection(today)
-
-    constraints?.let {
-        builder.setCalendarConstraints(constraints)
-    }
+    selection?.let { builder.setSelection(it) }
+    constraints?.let { builder.setCalendarConstraints(constraints) }
 
     val datePicker = builder.build()
 
-    datePicker.addOnPositiveButtonClickListener {
-        val calendar = Calendar.getInstance().apply {
-            timeInMillis = it
-            clearTimeComponents()
-        }
-        onDateSelected(calendar.timeInMillis)
+    datePicker.addOnPositiveButtonClickListener { selectedMillis ->
+        // Normalize to start of day using java.time
+        val selectedDate = Instant.ofEpochMilli(selectedMillis)
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate()
+
+        val startOfDayMillis = selectedDate //e.g. 2025-07-02T00:00:00.000 in local time
+            .atStartOfDay(ZoneId.systemDefault())
+            .toInstant()
+            .toEpochMilli()
+        // Convert back to millis at start of day
+        onDateSelected(startOfDayMillis)
+
+//        val calendar = Calendar.getInstance().apply {
+//            timeInMillis = it
+//            clearTimeComponents()
+//        }
+//        onDateSelected(calendar.timeInMillis)
     }
 
     datePicker.show(parentFragmentManager, datePicker.tag)
