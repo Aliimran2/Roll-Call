@@ -13,6 +13,7 @@ import com.miassolutions.rollcall.ui.viewmodels.StatsViewModel
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.showMaterialDatePicker
 import com.miassolutions.rollcall.extenstions.showSnackbar
+import com.miassolutions.rollcall.extenstions.showToast
 import com.miassolutions.rollcall.extenstions.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -28,6 +29,8 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentStatsBinding.bind(view)
+
+
 
         val adapter = StatsListAdapter(::deleteAttendance, ::editAttendance, ::reportAttendance)
 
@@ -51,23 +54,28 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
         binding.toggleGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
             if (isChecked) {
                 when (checkedId) {
+
+                    R.id.btnAllAttendances -> {
+                        viewModel.setDate(0L)
+                        binding.btnSearchAttendance.text = "Select Date"
+                    }
+
                     R.id.btnSearchAttendance -> {
                         showMaterialDatePicker(
                             "Select Attendance Date",
                             onDateSelected = {
                                 binding.btnSearchAttendance.text = it.toFormattedDate()
                                 viewModel.setDate(it)
+                                binding.toggleGroup.clearChecked()
+                                binding.btnSearchAttendance.isChecked = false
+
                             }
                         )
-                    }
-
-                    R.id.btnAllAttendances -> {
-                        viewModel.setDate(0L)
-                        binding.btnSearchAttendance.text = "Select Date"
                     }
                 }
             }
         }
+
 
 
     }

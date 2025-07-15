@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:selectionRequired="true"
+        app:selectionRequired="false"
         app:singleSelection="true">
 
         <com.google.android.material.button.MaterialButton
@@ -27,8 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Select Date"
-
-            app:cornerRadius="4dp"
+            app:cornerRadius="8dp"
             app:strokeWidth="1dp" />
 
 
@@ -40,7 +39,7 @@
             android:layout_weight="1"
             android:textSize="12sp"
             android:text="All Attendances"
-            app:cornerRadius="4dp"
+            app:cornerRadius="8dp"
             app:strokeWidth="1dp" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
