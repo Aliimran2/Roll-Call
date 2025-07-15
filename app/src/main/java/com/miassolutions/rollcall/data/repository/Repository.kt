@@ -124,6 +124,12 @@ class Repository @Inject constructor(
         }
     }
 
+    fun searchAttendanceForDate(date: Long): Flow<Map<Long, List<AttendanceEntity>>> {
+        return attendanceDao.searchAttendanceForDate(date).map { attendList ->
+            attendList.groupBy { it.date }
+        }
+    }
+
 
     fun getPresentCount(date: Long): Flow<Int> {
         return attendanceDao.getAttendanceCountForDateAndStatus(

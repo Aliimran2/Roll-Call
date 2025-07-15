@@ -11,6 +11,7 @@ import com.miassolutions.rollcall.databinding.FragmentStatsBinding
 import com.miassolutions.rollcall.ui.adapters.StatsListAdapter
 import com.miassolutions.rollcall.ui.viewmodels.StatsViewModel
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
+import com.miassolutions.rollcall.extenstions.showMaterialDatePicker
 import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.extenstions.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +32,7 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
         val adapter = StatsListAdapter(::deleteAttendance, ::editAttendance, ::reportAttendance)
 
         collectLatestFlow {
-            viewModel.attendanceSummary.collectLatest {
+            viewModel.filteredSummary.collectLatest {
                 adapter.submitList(it)
             }
         }
@@ -45,6 +46,27 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
                     selectedDate = -1L
                 )
             findNavController().navigate(action)
+        }
+
+        binding.toggleGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.btnSearchAttendance -> {
+                        showMaterialDatePicker(
+                            "Select Attendance Date",
+                            onDateSelected = {
+                                binding.btnSearchAttendance.text = it.toFormattedDate()
+                                viewModel.setDate(it)
+                            }
+                        )
+                    }
+
+                    R.id.btnAllAttendances -> {
+                        viewModel.setDate(0L)
+                        binding.btnSearchAttendance.text = "Select Date"
+                    }
+                }
+            }
         }
 
 
