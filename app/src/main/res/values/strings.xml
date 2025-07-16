@@ -12,5 +12,5 @@
     <string name="profile">Profile</string>
     <string name="students">Students</string>
     <string name="total">Total</string>
-    <string name="date_attendance_for_today_is_not_taken_yet">Date: %1$s Attendance for today is not taken yet</string>
+    <string name="date_attendance_for_today_is_not_taken_yet">Date: %1$s\n\nAttendance for today is not taken yet</string>
 </resources>

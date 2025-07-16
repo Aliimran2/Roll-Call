@@ -1,10 +1,8 @@
 package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -14,19 +12,12 @@ import com.miassolutions.rollcall.databinding.FragmentDashboardBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.hide
 import com.miassolutions.rollcall.extenstions.show
-import com.miassolutions.rollcall.extenstions.showToast
-import com.miassolutions.rollcall.extenstions.toFormattedDate
-import com.miassolutions.rollcall.ui.model.AttendanceUIModel
-import com.miassolutions.rollcall.ui.model.StatsUiModel
 import com.miassolutions.rollcall.ui.viewmodels.DashboardViewModel
 import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
-import com.miassolutions.rollcall.utils.toLocalDate
-import com.miassolutions.rollcall.utils.toMillis
+import com.miassolutions.rollcall.utils.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
-import java.util.Calendar
-import java.util.Date
 
 @AndroidEntryPoint
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
@@ -91,15 +82,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     }
 
-    private fun setToDayDate() : Long{
-        val calendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND,0)
-        }
-        return calendar.time.time
-    }
+    private fun setToDayDate() : LocalDate =LocalDate.now()
+
 
     private fun bindAttendance(item: DashboardViewModel.Counts) {
         binding.infoCard.apply {
@@ -126,7 +110,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                     binding.tvAttendanceWarn.show()
                     binding.tvAttendanceWarn.text = getString(
                         R.string.date_attendance_for_today_is_not_taken_yet,
-                        setToDayDate().toFormattedDate("dd.MM.yyyy EE")
+                        setToDayDate().toFormattedDate("dd-MM-yyyy EE")
                     )
                     binding.infoCard.root.hide()
                 }

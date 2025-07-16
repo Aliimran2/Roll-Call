@@ -54,9 +54,7 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
             }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Counts())
 
-    fun setDate(mDate: LocalDate) {
-        _selectedDate.value = mDate
-    }
+
 
     data class Counts(
         val total: String = "",
