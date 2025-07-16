@@ -28,32 +28,18 @@ class WeekendPastDateValidatorUtil(
         val isSunday = selectedDate.dayOfWeek == DayOfWeek.SUNDAY
         val isFuture = selectedDate.isAfter(today)
 
+return !isFuture
 
-
-//        val calendar = Calendar.getInstance().apply {
-//            timeInMillis = date
-//            clearTimeComponents()
-//        }
+//        return when {
+//            isWeekendDisabled -> {
+//                //sunday is always disable sat will disable only when disableSaturday is true
+//                val shouldDisable = isSunday || (disableSaturday && isSaturday)
+//                //return true for not sunday and (optionally sat) i.e. allow on other days not weekend
+//                !shouldDisable && !isFuture
+//            }
 //
-//        val today = Calendar.getInstance().apply {
-//            clearTimeComponents()
+//            else -> !isFuture
 //        }
-//
-//        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-//        val isSaturday = dayOfWeek == Calendar.SATURDAY
-//        val isSunday = dayOfWeek == Calendar.SUNDAY
-//        val isFuture = calendar.after(today)
-
-        return when {
-            isWeekendDisabled -> {
-                //sunday is always disable sat will disable only when disableSaturday is true
-                val shouldDisable = isSunday || (disableSaturday && isSaturday)
-                //return true for not sunday and (optionally sat) i.e. allow on other days not weekend
-                !shouldDisable && !isFuture
-            }
-
-            else -> !isFuture
-        }
 
     }
 
