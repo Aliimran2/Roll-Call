@@ -8,18 +8,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.miassolutions.rollcall.databinding.ItemStatsBinding
 import com.miassolutions.rollcall.ui.model.StatsUiModel
 import com.miassolutions.rollcall.extenstions.toFormattedDate
+import com.miassolutions.rollcall.utils.toMillis
+import java.time.LocalDate
 
 class StatsListAdapter(
-    private val deleteAction: (Long) -> Unit,
-    private val onEditAttendanceAction: (Long) -> Unit,
-    private val onReportAttendanceAction: (Long) -> Unit,
+    private val deleteAction: (LocalDate) -> Unit,
+    private val onEditAttendanceAction: (LocalDate) -> Unit,
+    private val onReportAttendanceAction: (LocalDate) -> Unit,
 ) : ListAdapter<StatsUiModel, StatsListAdapter.StatsViewHolder>(StatsDiffUtil()) {
 
     inner class StatsViewHolder(private val binding: ItemStatsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: StatsUiModel) {
             binding.apply {
-                tvDate.text = item.date.toFormattedDate()
+                tvDate.text = item.date.toMillis().toFormattedDate()
                 tvPresent.text = "${item.presentCount}/${item.totalCount}"
                 tvPercent.text = "${item.percent}%"
 

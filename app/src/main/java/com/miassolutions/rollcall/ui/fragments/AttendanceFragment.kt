@@ -29,10 +29,12 @@ import com.miassolutions.rollcall.extenstions.showMaterialDatePicker
 import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.extenstions.toFormattedDate
 import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
+import com.miassolutions.rollcall.utils.toLocalDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.util.Calendar
 
 @AndroidEntryPoint
@@ -48,7 +50,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
     private val navArgs by navArgs<AttendanceFragmentArgs>()
     private var attendanceMode = "add"
-    private var selectedDate: Long = -1L
+    private var selectedDate: LocalDate? = null
     private var studentsCount: Int = 0
 
 
@@ -58,31 +60,56 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
 
         attendanceMode = navArgs.attendanceMode
-        selectedDate = navArgs.selectedDate
+        selectedDate = if (navArgs.selectedDate != -1L) navArgs.selectedDate.toLocalDate() else null
 
-        if (attendanceMode == "update" && selectedDate != -1L) {
-            setToolbarTitle("Update Attendance")
-            binding.attendanceToggleGroup.show()
-            // Pre-fill date and disable picker
-            binding.etDatePicker.setText(selectedDate.toFormattedDate())
-            binding.etDatePicker.isEnabled = false
-            binding.saveBtn.text = "Update"
+        when (attendanceMode) {
+            "update" -> {
+                setToolbarTitle("Update Attendance")
+                selectedDate?.let {
+                    binding.etDatePicker.setText(it.toString())
+                    binding.etDatePicker.isEnabled = false
+                    binding.saveBtn.text = "Update"
+                    viewModel.setDate(it)
+                }
+            }
 
-
-            // Load attendance from DB
-            viewModel.setDate(selectedDate)
-
-        } else if (attendanceMode == "report" && selectedDate != -1L) {
-            setToolbarTitle("Report ${selectedDate.toFormattedDate()}")
-            binding.attendanceToggleGroup.show()
-            binding.etDatePicker.setText(selectedDate.toFormattedDate())
-            binding.etDatePicker.isEnabled = false
-            binding.saveBtn.hide()
-            binding.etDatePicker.hide()
-
-            // Load attendance from DB
-            viewModel.setDate(selectedDate)
+            "report" -> {
+                selectedDate?.let {
+                    setToolbarTitle("Report : ${it}")
+                    binding.etDatePicker.setText(it.toString())
+                    binding.etDatePicker.isEnabled = false
+                    binding.saveBtn.hide()
+                    binding.etDatePicker.hide()
+                    viewModel.setDate(it)
+                }
+            }
         }
+
+
+
+//        if (attendanceMode == "update" && selectedDate != -1L) {
+//            setToolbarTitle("Update Attendance")
+//            binding.attendanceToggleGroup.show()
+//            // Pre-fill date and disable picker
+//            binding.etDatePicker.setText(selectedDate.toFormattedDate())
+//            binding.etDatePicker.isEnabled = false
+//            binding.saveBtn.text = "Update"
+//
+//
+//            // Load attendance from DB
+//            viewModel.setDate(selectedDate)
+//
+//        } else if (attendanceMode == "report" && selectedDate != -1L) {
+//            setToolbarTitle("Report ${selectedDate.toFormattedDate()}")
+//            binding.attendanceToggleGroup.show()
+//            binding.etDatePicker.setText(selectedDate.toFormattedDate())
+//            binding.etDatePicker.isEnabled = false
+//            binding.saveBtn.hide()
+//            binding.etDatePicker.hide()
+//
+//            // Load attendance from DB
+//            viewModel.setDate(selectedDate)
+//        }
 
 
         setupRecyclerView()
@@ -91,6 +118,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         filterAttendance()
         searchStudent()
     }
+
     private fun searchStudent() {
         binding.etSearch.addTextChangedListener { searchText ->
             viewModel.updateSearchQuery(searchText.toString())
@@ -102,7 +130,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
         binding.apply {
             etDatePicker.setOnClickListener {
                 showDatePicker {
-                    etDatePicker.setText(it.toFormattedDate())
+                    etDatePicker.setText(it.toString())
                     viewModel.setDate(it)
                 }
 
@@ -192,13 +220,31 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     }
 
 
-    private fun showDatePicker(onDateSelected: (Long) -> Unit) {
-        if (attendanceMode == "update" || attendanceMode == "report") return
+//    private fun showDatePicker(onDateSelected: (Long) -> Unit) {
+//        if (attendanceMode == "update" || attendanceMode == "report") return
+//
+//        settingsViewModel.disableSaturday.observe(viewLifecycleOwner) { isSaturdayDisabled ->
+//
+//
+//            val constraintsBuilder = CalendarConstraints.Builder()
+//                .setFirstDayOfWeek(Calendar.MONDAY)
+//                .setValidator(WeekendPastDateValidatorUtil(disableSaturday = isSaturdayDisabled))
+//
+//            showMaterialDatePicker(
+//                title = "Select Attendance Date",
+//                selection = MaterialDatePicker.todayInUtcMilliseconds(),
+//                constraints = constraintsBuilder.build(),
+//            ) {
+//                onDateSelected(it)
+//                viewModel.setDate(it)
+//            }
+//        }
+//    }
 
-        settingsViewModel.disableSaturday.observe(viewLifecycleOwner){isSaturdayDisabled ->
+    private fun showDatePicker(onDateSelected: (LocalDate) -> Unit) {
+        if (attendanceMode in listOf("update", "report")) return
 
-
-
+        settingsViewModel.disableSaturday.observe(viewLifecycleOwner) { isSaturdayDisabled ->
             val constraintsBuilder = CalendarConstraints.Builder()
                 .setFirstDayOfWeek(Calendar.MONDAY)
                 .setValidator(WeekendPastDateValidatorUtil(disableSaturday = isSaturdayDisabled))
@@ -206,10 +252,11 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
             showMaterialDatePicker(
                 title = "Select Attendance Date",
                 selection = MaterialDatePicker.todayInUtcMilliseconds(),
-                constraints = constraintsBuilder.build(),
+                constraints = constraintsBuilder.build()
             ) {
-                onDateSelected(it)
-                viewModel.setDate(it)
+                val date = it.toLocalDate()
+                onDateSelected(date)
+                viewModel.setDate(date)
             }
         }
     }

@@ -20,6 +20,8 @@ import com.miassolutions.rollcall.ui.model.AttendanceUIModel
 import com.miassolutions.rollcall.ui.model.StatsUiModel
 import com.miassolutions.rollcall.ui.viewmodels.DashboardViewModel
 import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
+import com.miassolutions.rollcall.utils.toLocalDate
+import com.miassolutions.rollcall.utils.toMillis
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
@@ -39,7 +41,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentDashboardBinding.bind(view)
 
-        dashboardViewModel.setDate(setToDayDate())
+//        dashboardViewModel.setDate(setToDayDate())
 
         observeViewModel()
 
@@ -101,7 +103,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private fun bindAttendance(item: DashboardViewModel.Counts) {
         binding.infoCard.apply {
-            tvDate.text = dashboardViewModel.selectedDate.value.toFormattedDate("dd.MM.yyyy EE")
+//            tvDate.text = dashboardViewModel.selectedDate.value.toFormattedDate("dd.MM.yyyy EE")
             dbTotalCard.tvCount.text = item.total
             dbTotalCard.tvCountTitle.text = getString(R.string.total)
             dbPresentCard.tvCount.text = item.present
