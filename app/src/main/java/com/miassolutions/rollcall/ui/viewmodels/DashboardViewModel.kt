@@ -19,17 +19,17 @@ import javax.inject.Inject
 class DashboardViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
 
-    private val _selectedDate = MutableStateFlow(LocalDate.now())
-    val selectedDate: StateFlow<LocalDate> = _selectedDate
+    private val selectedDate = MutableStateFlow(LocalDate.now())
 
 
-    val isAttendanceTaken: StateFlow<Boolean> = _selectedDate
+
+    val isAttendanceTaken: StateFlow<Boolean> = selectedDate
         .flatMapLatest { date ->
             repository.isAttendanceTaken(date)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
 
-    val attendanceCounts: StateFlow<Counts> = _selectedDate
+    val attendanceCounts: StateFlow<Counts> = selectedDate
         .flatMapLatest { date ->
             combine(
                 repository.getPresentCount(date),

@@ -32,15 +32,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentDashboardBinding.bind(view)
 
-//        dashboardViewModel.setDate(setToDayDate())
-
         observeViewModel()
-
-
-
-
         binding.apply {
-
 
             attendanceCard.apply {
                 ivCard.setImageResource(R.drawable.ic_attendances)
@@ -82,12 +75,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     }
 
-    private fun setToDayDate() : LocalDate =LocalDate.now()
-
-
     private fun bindAttendance(item: DashboardViewModel.Counts) {
         binding.infoCard.apply {
-//            tvDate.text = dashboardViewModel.selectedDate.value.toFormattedDate("dd.MM.yyyy EE")
+            tvDate.text = LocalDate.now().toFormattedDate("dd-MM-yyyy EE")
             dbTotalCard.tvCount.text = item.total
             dbTotalCard.tvCountTitle.text = getString(R.string.total)
             dbPresentCard.tvCount.text = item.present
@@ -110,7 +100,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                     binding.tvAttendanceWarn.show()
                     binding.tvAttendanceWarn.text = getString(
                         R.string.date_attendance_for_today_is_not_taken_yet,
-                        setToDayDate().toFormattedDate("dd-MM-yyyy EE")
+                        LocalDate.now().toFormattedDate("dd-MM-yyyy EE")
                     )
                     binding.infoCard.root.hide()
                 }
