@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import java.util.Date
+import java.time.LocalDate
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -106,7 +106,7 @@ class Repository @Inject constructor(
         attendanceDao.insertAttendances(attendanceEntityList)
     }
 
-    fun isAttendanceTaken(date: Long): Flow<Boolean> {
+    fun isAttendanceTaken(date: LocalDate): Flow<Boolean> {
         return attendanceDao.getAttendanceCountForDate(date).map {
             it > 0
         }
@@ -114,24 +114,24 @@ class Repository @Inject constructor(
 
 
 
-    suspend fun isAttendanceTakenOnce(date: Long): Boolean {
+    suspend fun isAttendanceTakenOnce(date: LocalDate): Boolean {
         return attendanceDao.getAttendanceCountForDate(date).first() > 0
     }
 
-    fun getAttendanceGroupedByDate(): Flow<Map<Long, List<AttendanceEntity>>> {
+    fun getAttendanceGroupedByDate(): Flow<Map<LocalDate, List<AttendanceEntity>>> {
         return attendanceDao.getAllAttendances().map { attendList ->
             attendList.groupBy { it.date }
         }
     }
 
-    fun searchAttendanceForDate(date: Long): Flow<Map<Long, List<AttendanceEntity>>> {
+    fun searchAttendanceForDate(date: LocalDate): Flow<Map<LocalDate, List<AttendanceEntity>>> {
         return attendanceDao.searchAttendanceForDate(date).map { attendList ->
             attendList.groupBy { it.date }
         }
     }
 
 
-    fun getPresentCount(date: Long): Flow<Int> {
+    fun getPresentCount(date: LocalDate): Flow<Int> {
         return attendanceDao.getAttendanceCountForDateAndStatus(
             date,
             AttendanceStatus.PRESENT
@@ -150,7 +150,7 @@ class Repository @Inject constructor(
         return attendanceDao.getAttendanceByStudent(studentId)
     }
 
-    suspend fun getAttendanceForDate(date: Long): List<AttendanceEntity> {
+    suspend fun getAttendanceForDate(date: LocalDate): List<AttendanceEntity> {
         return attendanceDao.getAttendanceForDate(date)
     }
 
@@ -167,7 +167,7 @@ class Repository @Inject constructor(
         attendanceDao.deleteAttendanceForStudent(studentId)
     }
 
-    suspend fun deleteAttendanceForDate(date: Long) {
+    suspend fun deleteAttendanceForDate(date: LocalDate) {
         attendanceDao.deleteAttendanceForDate(date)
     }
 
@@ -176,7 +176,7 @@ class Repository @Inject constructor(
     }
 
 
-    suspend fun replaceAttendanceForDate(date: Long, updatedList: List<AttendanceEntity>) {
+    suspend fun replaceAttendanceForDate(date: LocalDate, updatedList: List<AttendanceEntity>) {
         // Step 1: Delete old attendance for that date
         attendanceDao.deleteAttendanceForDate(date)
 

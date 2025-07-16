@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import com.miassolutions.rollcall.common.AttendanceStatus
+import java.time.LocalDate
 
 @Entity(
     tableName = "attendance_table",
@@ -20,6 +21,6 @@ import com.miassolutions.rollcall.common.AttendanceStatus
 )
 data class AttendanceEntity(
     val studentId: String,
-    val date: Long,
+    val date: LocalDate,
     val attendanceStatus: AttendanceStatus
 )

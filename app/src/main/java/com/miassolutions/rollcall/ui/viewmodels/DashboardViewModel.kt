@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,8 +19,8 @@ import javax.inject.Inject
 class DashboardViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
 
-    private val _selectedDate = MutableStateFlow(0L)
-    val selectedDate: StateFlow<Long> = _selectedDate
+    private val _selectedDate = MutableStateFlow(LocalDate.now())
+    val selectedDate: StateFlow<LocalDate> = _selectedDate
 
 
     val isAttendanceTaken: StateFlow<Boolean> = _selectedDate
@@ -54,7 +54,7 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
             }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Counts())
 
-    fun setDate(mDate: Long) {
+    fun setDate(mDate: LocalDate) {
         _selectedDate.value = mDate
     }
 

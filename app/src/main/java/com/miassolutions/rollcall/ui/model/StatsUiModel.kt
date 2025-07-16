@@ -1,8 +1,10 @@
 package com.miassolutions.rollcall.ui.model
 
+import java.time.LocalDate
+
 data class StatsUiModel(
 
-    val date: Long,
+    val date: LocalDate,
     val presentCount: Int,
     val totalCount: Int,
 
