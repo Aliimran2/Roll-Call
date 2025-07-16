@@ -205,6 +205,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
             showMaterialDatePicker(
                 title = "Select Attendance Date",
+                selection = MaterialDatePicker.todayInUtcMilliseconds(),
                 constraints = constraintsBuilder.build(),
             ) {
                 onDateSelected(it)

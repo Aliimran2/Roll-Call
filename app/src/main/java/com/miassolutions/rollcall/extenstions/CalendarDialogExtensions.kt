@@ -19,6 +19,7 @@ fun Fragment.showMaterialDatePicker(
 
     val builder = MaterialDatePicker.Builder.datePicker()
         .setTitleText(title)
+
         .setInputMode(inputMode)
 
     selection?.let { builder.setSelection(it) }
