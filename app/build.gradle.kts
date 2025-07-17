@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.miassolutions.rollcall"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.miassolutions.rollcall"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -33,8 +33,14 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
+//    kotlinOptions {
+//        jvmTarget = "11"
+//    }
+
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+        }
     }
 
     buildFeatures {
@@ -61,56 +67,45 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     //splash screen
-    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation(libs.androidx.core.splashscreen)
 
-    implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation(libs.circleimageview)
 
-
-    implementation("io.coil-kt.coil3:coil:3.0.4")
-
-    implementation("com.leinardi.android:speed-dial:3.2.0")
+    implementation(libs.coil)
+    implementation(libs.speed.dial)
     // Navigation Component
-    implementation("androidx.navigation:navigation-fragment-ktx:2.8.9")
-    implementation("androidx.navigation:navigation-ui-ktx:2.8.9") //
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx) //
     // Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     // Room Database
-    implementation("androidx.room:room-runtime:2.7.1")
-    implementation("androidx.room:room-ktx:2.7.1")
-    ksp("androidx.room:room-compiler:2.7.1")
-    // Networking
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
     // Image Loading
-    implementation("com.github.bumptech.glide:glide:4.16.0") // Assumed latest stable version
-    ksp("com.github.bumptech.glide:compiler:4.16.0")
-    // WorkManager
-    implementation("androidx.work:work-runtime-ktx:2.10.1") // Assumed latest stable version
+    implementation(libs.glide) // Assumed latest stable version
+    ksp(libs.compiler)
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
     //data store
-    implementation("androidx.datastore:datastore-preferences:1.1.7")
+    implementation(libs.androidx.datastore.preferences)
     // fragment for view model code generation
-    implementation("androidx.fragment:fragment-ktx:1.8.6")
+    implementation(libs.androidx.fragment.ktx)
     //hilt
-    implementation("com.google.dagger:hilt-android:2.51.1")
-    ksp("com.google.dagger:hilt-android-compiler:2.51.1")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
 
-    implementation("org.apache.poi:poi:5.2.2")
-    implementation("org.apache.poi:poi-ooxml:5.2.2")
+    implementation(libs.poi)
+    implementation(libs.poi.ooxml)
 
-    implementation("org.apache.xmlbeans:xmlbeans:5.1.1") // Match a recent stable version
-    implementation("com.fasterxml:aalto-xml:1.3.2") // A fast, non-blocking XML processor
-    implementation("javax.xml.stream:stax-api:1.0-2") // Standard Java XML Streaming API
+    implementation(libs.xmlbeans) // Match a recent stable version
+    implementation(libs.aalto.xml) // A fast, non-blocking XML processor
+    implementation(libs.stax.api) // Standard Java XML Streaming API
 
-
-
-
-    implementation("com.github.yalantis:ucrop:2.2.10")
-
+    implementation(libs.ucrop)
 
 
 }
