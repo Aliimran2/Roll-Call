@@ -1,18 +1,14 @@
 package com.miassolutions.rollcall.ui.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil3.load
 import com.bumptech.glide.Glide
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.ItemStudentBinding
-import java.io.File
-import kotlin.reflect.KFunction1
 
 class StudentListAdapter(
 
