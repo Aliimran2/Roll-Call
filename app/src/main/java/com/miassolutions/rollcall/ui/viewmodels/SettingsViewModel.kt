@@ -1,6 +1,5 @@
 package com.miassolutions.rollcall.ui.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -10,9 +9,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,7 +25,6 @@ class SettingsViewModel @Inject constructor(
     val userName = prefs.userName.asLiveData()
     val instituteName = prefs.instituteName.asLiveData()
     val userProfileImage = prefs.userProfileImage.asLiveData()
-    val disableSaturday = prefs.disableSaturday.asLiveData()
 
 
     fun saveImageUriStr(imagePath : String){
@@ -38,22 +33,17 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun saveSaturdayStatus(value : Boolean){
-        viewModelScope.launch {
-            Log.d("SettingsViewModel", "Saving disableSaturday = $value")
-            prefs.setDisableSaturday(value)
-        }
-    }
+
 
 
     private fun saveUserName(userName: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             prefs.saveUserName(userName)
         }
     }
 
     private fun saveInstituteName(instName: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             prefs.saveInstituteName(instName)
 
         }

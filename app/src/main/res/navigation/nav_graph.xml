@@ -54,11 +54,7 @@
         android:id="@+id/settingsFragment"
         android:name="com.miassolutions.rollcall.ui.fragments.SettingsFragment"
         android:label="@string/settings"
-        tools:layout="@layout/fragment_settings">
-        <action
-            android:id="@+id/action_settingsFragment_to_datePickerFragment"
-            app:destination="@id/datePickerFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_settings"/>
 
     <fragment
         android:id="@+id/studentDetailFragment"
@@ -88,10 +84,6 @@
             android:id="@+id/action_dashboardFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
     </fragment>
-    <dialog
-        android:id="@+id/datePickerFragment"
-        android:name="com.miassolutions.rollcall.ui.fragments.DatePickerFragment"
-        android:label="DatePickerFragment" />
     <dialog
         android:id="@+id/userProfileFragment"
         tools:layout="@layout/fragment_user_profile"

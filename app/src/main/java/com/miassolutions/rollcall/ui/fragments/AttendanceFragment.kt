@@ -1,38 +1,30 @@
 package com.miassolutions.rollcall.ui.fragments
 
-import com.miassolutions.rollcall.utils.WeekendPastDateValidatorUtil
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.miassolutions.rollcall.R
-import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
-import com.miassolutions.rollcall.ui.adapters.AttendanceAdapter
-
-import com.miassolutions.rollcall.ui.viewmodels.AttendanceViewModel
 import com.miassolutions.rollcall.common.AttendanceFilter
-import com.miassolutions.rollcall.common.Constants
-import com.miassolutions.rollcall.common.Constants.DATE_REQUEST_KEY
+import com.miassolutions.rollcall.databinding.FragmentAttendanceBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.hide
 import com.miassolutions.rollcall.extenstions.setToolbarTitle
 import com.miassolutions.rollcall.extenstions.show
 import com.miassolutions.rollcall.extenstions.showMaterialDatePicker
 import com.miassolutions.rollcall.extenstions.showSnackbar
-import com.miassolutions.rollcall.extenstions.toFormattedDate
+import com.miassolutions.rollcall.ui.adapters.AttendanceAdapter
+import com.miassolutions.rollcall.ui.viewmodels.AttendanceViewModel
 import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
 import com.miassolutions.rollcall.utils.toLocalDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.Calendar
@@ -83,33 +75,9 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                     viewModel.setDate(it)
                 }
             }
-        }
+      }
 
 
-
-//        if (attendanceMode == "update" && selectedDate != -1L) {
-//            setToolbarTitle("Update Attendance")
-//            binding.attendanceToggleGroup.show()
-//            // Pre-fill date and disable picker
-//            binding.etDatePicker.setText(selectedDate.toFormattedDate())
-//            binding.etDatePicker.isEnabled = false
-//            binding.saveBtn.text = "Update"
-//
-//
-//            // Load attendance from DB
-//            viewModel.setDate(selectedDate)
-//
-//        } else if (attendanceMode == "report" && selectedDate != -1L) {
-//            setToolbarTitle("Report ${selectedDate.toFormattedDate()}")
-//            binding.attendanceToggleGroup.show()
-//            binding.etDatePicker.setText(selectedDate.toFormattedDate())
-//            binding.etDatePicker.isEnabled = false
-//            binding.saveBtn.hide()
-//            binding.etDatePicker.hide()
-//
-//            // Load attendance from DB
-//            viewModel.setDate(selectedDate)
-//        }
 
 
         setupRecyclerView()
@@ -244,10 +212,10 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     private fun showDatePicker(onDateSelected: (LocalDate) -> Unit) {
         if (attendanceMode in listOf("update", "report")) return
 
-        settingsViewModel.disableSaturday.observe(viewLifecycleOwner) { isSaturdayDisabled ->
+
             val constraintsBuilder = CalendarConstraints.Builder()
                 .setFirstDayOfWeek(Calendar.MONDAY)
-                .setValidator(WeekendPastDateValidatorUtil(disableSaturday = isSaturdayDisabled))
+
 
             showMaterialDatePicker(
                 title = "Select Attendance Date",
@@ -258,7 +226,7 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
                 onDateSelected(date)
                 viewModel.setDate(date)
             }
-        }
+
     }
 
     private fun toggleDirectionLayout(showDirection: Boolean) {
