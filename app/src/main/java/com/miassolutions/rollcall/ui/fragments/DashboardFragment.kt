@@ -1,6 +1,7 @@
 package com.miassolutions.rollcall.ui.fragments
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -9,9 +10,11 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentDashboardBinding
+import com.miassolutions.rollcall.extenstions.addMenu
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.hide
 import com.miassolutions.rollcall.extenstions.show
+import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.ui.viewmodels.DashboardViewModel
 import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
 import com.miassolutions.rollcall.utils.toFormattedDate
@@ -52,9 +55,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             }.root.setOnClickListener {
 
 
+            showSnackbar("Generate Attendance report by students")
 
-                val action = DashboardFragmentDirections.actionDashboardFragmentToSettingsFragment()
-                findNavController().navigate(action)
 
             }
 
@@ -73,6 +75,18 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             }.root.setOnClickListener {
                 val action = DashboardFragmentDirections.actionDashboardFragmentToStudentsFragment()
                 findNavController().navigate(action)
+            }
+        }
+
+        addMenu(R.menu.menu_dashboard){item: MenuItem ->
+            when(item.itemId){
+
+                R.id.settingsFragment -> {
+                    val action = DashboardFragmentDirections.actionDashboardFragmentToSettingsFragment()
+                    findNavController().navigate(action)
+                    true
+                }
+                else -> false
             }
         }
 

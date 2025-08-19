@@ -53,7 +53,7 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.miassolutions.rollcall.ui.fragments.SettingsFragment"
-        android:label="@string/report"
+        android:label="@string/settings"
         tools:layout="@layout/fragment_settings">
         <action
             android:id="@+id/action_settingsFragment_to_datePickerFragment"
