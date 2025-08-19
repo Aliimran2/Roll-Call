@@ -59,7 +59,7 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAddStudentBinding.bind(view)
 
-        studentImagePicker = StudentImagePicker(this){uri ->
+        studentImagePicker = StudentImagePicker(this) { uri ->
             binding.ivStudentImage.setImageURI(uri)
             //save in db uri.toString()
             studentImageUriStr = uri.toString()
@@ -77,15 +77,12 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         observeViewModel()
         menuProvider()
 
-        binding.etBForm.addTextChangedListener(BFormTextWatcher(binding.etBForm))
+
 
 
     }
 
-    private fun isValidBForm(bForm: String): Boolean {
-        val pattern = Regex("^\\d{5}-\\d{7}-\\d{1}$")
-        return pattern.matches(bForm)
-    }
+
 
 
     private fun prefillForm(student: StudentEntity) {
@@ -177,13 +174,10 @@ class AddStudentFragment : Fragment(R.layout.fragment_add_student) {
         addMenu(R.menu.menu_add_student) { item ->
             when (item.itemId) {
                 R.id.action_save -> {
-                    val bForm = binding.etBForm.text.toString()
-                    if (isValidBForm(bForm) || bForm.isBlank()) {
-                        saveStudent()
-                    } else {
-                        binding.tilBForm.error = "Invalid B-Form format"
-                    }
+
+                    saveStudent()
                     true
+
                 }
 
                 else -> false
