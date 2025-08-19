@@ -46,10 +46,13 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
             }
 
-            settingsCard.apply {
-                ivCard.setImageResource(R.drawable.ic_settings)
-                tvCard.text = getString(R.string.settings)
+            reportCard.apply {
+                ivCard.setImageResource(R.drawable.ic_bars)
+                tvCard.text = getString(R.string.report)
             }.root.setOnClickListener {
+
+
+
                 val action = DashboardFragmentDirections.actionDashboardFragmentToSettingsFragment()
                 findNavController().navigate(action)
 

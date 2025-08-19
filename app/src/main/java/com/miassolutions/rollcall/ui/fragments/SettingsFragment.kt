@@ -38,17 +38,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     }
 
     private fun setupListeners() {
-        binding.chipToggle.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                buttonView.text = "Saturday Disabled"
-                buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            } else {
-                buttonView.text = "Saturday Enabled"
-                buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue_two))
-            }
-            binding.chipToggle.isChecked = isChecked
-            viewModel.saveSaturdayStatus(isChecked)
-        }
+
 
         binding.btnExcelDownload.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -78,9 +68,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
 
     private fun collectFlow() {
-        viewModel.disableSaturday.observe(viewLifecycleOwner) {
-            binding.chipToggle.isChecked = it
-        }
+
 
         collectLatestFlow {
             launch {

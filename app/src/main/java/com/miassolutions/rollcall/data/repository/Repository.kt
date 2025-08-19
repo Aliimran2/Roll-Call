@@ -113,7 +113,6 @@ class Repository @Inject constructor(
     }
 
 
-
     suspend fun isAttendanceTakenOnce(date: LocalDate): Boolean {
         return attendanceDao.getAttendanceCountForDate(date).first() > 0
     }
@@ -183,6 +182,8 @@ class Repository @Inject constructor(
         // Step 2: Insert updated list
         attendanceDao.insertAttendances(updatedList)
     }
+
+
 
 
 }

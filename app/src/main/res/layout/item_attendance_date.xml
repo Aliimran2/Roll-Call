@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:columnCount="4"
+    android:useDefaultMargins="true"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvRollNo"
+              android:layout_columnWeight="0.5"
+        android:text="1" />
+
+    <TextView
+        android:id="@+id/tvStudentName"
+        android:layout_columnWeight="2"
+        android:text="Name" />
+
+    <TextView
+        android:id="@+id/tv_present_count"
+        android:layout_columnWeight="1"
+        android:text="20" />
+
+    <TextView
+        android:id="@+id/tv_absent_count"
+        android:layout_columnWeight="1"
+        android:text="4" />
+</GridLayout>
