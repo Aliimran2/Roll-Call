@@ -21,7 +21,7 @@ import com.miassolutions.rollcall.extenstions.showMaterialDatePicker
 import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.ui.adapters.AttendanceAdapter
 import com.miassolutions.rollcall.ui.viewmodels.AttendanceViewModel
-import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
+import com.miassolutions.rollcall.ui.settings.SettingsViewModel
 import com.miassolutions.rollcall.utils.toLocalDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -37,7 +37,6 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
 
     private lateinit var adapter: AttendanceAdapter
     private val viewModel by viewModels<AttendanceViewModel>()
-    private val settingsViewModel by viewModels<SettingsViewModel>()
 
 
     private val navArgs by navArgs<AttendanceFragmentArgs>()
@@ -188,26 +187,6 @@ class AttendanceFragment : Fragment(R.layout.fragment_attendance) {
     }
 
 
-//    private fun showDatePicker(onDateSelected: (Long) -> Unit) {
-//        if (attendanceMode == "update" || attendanceMode == "report") return
-//
-//        settingsViewModel.disableSaturday.observe(viewLifecycleOwner) { isSaturdayDisabled ->
-//
-//
-//            val constraintsBuilder = CalendarConstraints.Builder()
-//                .setFirstDayOfWeek(Calendar.MONDAY)
-//                .setValidator(WeekendPastDateValidatorUtil(disableSaturday = isSaturdayDisabled))
-//
-//            showMaterialDatePicker(
-//                title = "Select Attendance Date",
-//                selection = MaterialDatePicker.todayInUtcMilliseconds(),
-//                constraints = constraintsBuilder.build(),
-//            ) {
-//                onDateSelected(it)
-//                viewModel.setDate(it)
-//            }
-//        }
-//    }
 
     private fun showDatePicker(onDateSelected: (LocalDate) -> Unit) {
         if (attendanceMode in listOf("update", "report")) return

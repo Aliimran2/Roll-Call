@@ -6,13 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import coil3.load
-import coil3.request.placeholder
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentUserProfileBinding
-import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
+import com.miassolutions.rollcall.ui.settings.SettingsViewModel
 import com.miassolutions.rollcall.utils.StudentImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -58,27 +56,7 @@ class UserProfileFragment : BottomSheetDialogFragment() {
         }
 
 
-        viewModel.userName.observe(viewLifecycleOwner) { userName ->
-            val name = userName ?: "Set name"
-            binding.etUserName.setText(name)
-        }
 
-        viewModel.instituteName.observe(viewLifecycleOwner) { instName ->
-            instName?.let {
-                binding.etInstitute.setText(it)
-            }
-        }
-
-        viewModel.userProfileImage.observe(viewLifecycleOwner) { imagePath ->
-            imagePath?.let {
-                Glide.with(requireContext())
-                    .load(it)
-                    .placeholder(R.drawable.ic_person)
-                    .error(R.drawable.ic_error_image)
-                    .into(binding.ivUserProfile)
-            }
-
-        }
 
 
 
@@ -119,3 +97,5 @@ class UserProfileFragment : BottomSheetDialogFragment() {
 
 
 }
+
+

@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.miassolutions.rollcall.ui.fragments.SettingsFragment"
+        android:name="com.miassolutions.rollcall.ui.settings.SettingsFragment"
         android:label="@string/settings"
         tools:layout="@layout/fragment_settings"/>
 
@@ -69,7 +69,7 @@
     <fragment
         android:id="@+id/dashboardFragment"
         tools:layout="@layout/fragment_dashboard"
-        android:name="com.miassolutions.rollcall.ui.fragments.DashboardFragment"
+        android:name="com.miassolutions.rollcall.ui.dashboard.DashboardFragment"
         android:label="Dashboard" >
         <action
             android:id="@+id/action_dashboardFragment_to_studentsFragment"

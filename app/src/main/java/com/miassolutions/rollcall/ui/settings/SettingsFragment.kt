@@ -1,9 +1,8 @@
-package com.miassolutions.rollcall.ui.fragments
+package com.miassolutions.rollcall.ui.settings
 
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,7 +12,6 @@ import com.miassolutions.rollcall.databinding.FragmentSettingsBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.showLongToast
 import com.miassolutions.rollcall.extenstions.showSnackbar
-import com.miassolutions.rollcall.ui.viewmodels.SettingsViewModel
 import com.miassolutions.rollcall.utils.copySampleExcelFromAssets
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package com.miassolutions.rollcall.ui.viewmodels
+package com.miassolutions.rollcall.ui.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.miassolutions.rollcall.data.datastore.UserPrefsManager
 import com.miassolutions.rollcall.data.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
@@ -22,9 +21,9 @@ class SettingsViewModel @Inject constructor(
     private val _messageEvent = MutableSharedFlow<String>()
     val messageEvent: SharedFlow<String> = _messageEvent
 
-    val userName = prefs.userName.asLiveData()
-    val instituteName = prefs.instituteName.asLiveData()
-    val userProfileImage = prefs.userProfileImage.asLiveData()
+    val userName = prefs.userName
+    val instituteName = prefs.instituteName
+    val userProfileImage = prefs.userProfileImage
 
 
     fun saveImageUriStr(imagePath : String){
