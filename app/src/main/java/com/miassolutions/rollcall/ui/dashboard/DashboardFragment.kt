@@ -34,6 +34,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         _binding = FragmentDashboardBinding.bind(view)
 
         setupUi()
+        dashboardUi()
         observeState()
         observeEvents()
 
@@ -106,6 +107,21 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         }
     }
 
+    private fun dashboardUi() {
+        binding.apply {
+            attendanceCard.ivCard.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_attendances))
+            attendanceCard.tvCard.text = ContextCompat.getString(requireContext(), R.string.attendance)
+            studentsCard.ivCard.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_students_m))
+            studentsCard.tvCard.text = ContextCompat.getString(requireContext(), R.string.students)
+            userCard.ivCard.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_person))
+            userCard.tvCard.text = ContextCompat.getString(requireContext(), R.string.set_user_name)
+            reportCard.ivCard.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_bars))
+            reportCard.tvCard.text = ContextCompat.getString(requireContext(), R.string.report)
+
+
+        }
+    }
+
     private fun bindAttendance(counts: AttendanceCounts) = binding.infoCard.apply {
         tvDate.text = LocalDate.now().toFormattedDate("dd-MM-yyyy EE")
         dbTotalCard.tvCount.text = counts.total
@@ -122,6 +138,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             ContextCompat.getColor(requireContext(), R.color.red_absent)
         )
         dbAbsentCard.tvCountTitle.text = getString(R.string.absent)
+
+
     }
 
     private fun setupUi() = binding.apply {
