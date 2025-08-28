@@ -66,6 +66,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    implementation("com.google.android.gms:play-services-ads:24.5.0")
+
     //splash screen
     implementation(libs.androidx.core.splashscreen)
 
