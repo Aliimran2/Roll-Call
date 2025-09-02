@@ -74,6 +74,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     }
 
     private fun showNotification() {
+
         val intent = Intent(DownloadManager.ACTION_VIEW_DOWNLOADS).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
@@ -93,7 +94,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         binding.btnExcelDownload.setOnClickListener {
             checkAndShowNotification {
 
-                showNotification()
+                helper.notifyFileFromAssets("sample_students.xlsx")
             }
         }
 

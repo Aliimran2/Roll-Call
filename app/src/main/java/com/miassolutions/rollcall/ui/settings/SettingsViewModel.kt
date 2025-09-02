@@ -60,12 +60,9 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 repository.clearAllStudents()
-                // Emit a success message after deletion
                 _messageEvent.emit("All students deleted successfully!")
             } catch (e: Exception) {
-                // Emit an error message if something goes wrong
                 _messageEvent.emit("Error deleting students: ${e.localizedMessage}")
-                // Log the exception for debugging
                 e.printStackTrace()
             }
         }
