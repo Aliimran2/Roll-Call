@@ -1,30 +1,23 @@
 package com.miassolutions.rollcall.ui.settings
 
-import android.content.pm.PackageManager
+import android.app.DownloadManager
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import coil3.Uri
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentSettingsBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
-import com.miassolutions.rollcall.extenstions.showLongToast
 import com.miassolutions.rollcall.extenstions.showSnackbar
-import com.miassolutions.rollcall.extenstions.showToast
-import com.miassolutions.rollcall.utils.copySampleExcelFromAssets
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import java.util.jar.Manifest
-import androidx.core.net.toUri
 import com.miassolutions.rollcall.notification.NotificationHelper
 import com.permissionx.guolindev.PermissionX
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -34,11 +27,9 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private val binding get() = _binding!!
 
     @Inject
-    private lateinit var helper: NotificationHelper
-
+    lateinit var helper: NotificationHelper
 
     private val viewModel by viewModels<SettingsViewModel>()
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,9 +37,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         setupListeners()
         collectFlow()
-
-
-
     }
 
     private fun checkAndShowNotification(onGranted: () -> Unit) {
@@ -56,7 +44,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             PermissionX.init(this)
                 .permissions(android.Manifest.permission.POST_NOTIFICATIONS)
-                .onExplainRequestReason{scope, deniedList ->
+                .onExplainRequestReason { scope, deniedList ->
                     scope.showRequestReasonDialog(
                         deniedList,
                         "This permission is required to show you important notifications.",
@@ -64,7 +52,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                         "Deny"
                     )
                 }
-                .onForwardToSettings{scope, deniedList ->
+                .onForwardToSettings { scope, deniedList ->
                     scope.showForwardToSettingsDialog(
                         deniedList,
                         "You have denied permissions. Please enable it from the settings.",
@@ -72,8 +60,8 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                         "Cancel"
                     )
                 }
-                .request{granted, _,_ ->
-                    if (granted){
+                .request { granted, _, _ ->
+                    if (granted) {
                         onGranted()
                     } else {
                         showSnackbar("Permission denied permanently")
@@ -85,14 +73,27 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     }
 
-    private fun showNotification(){
+    private fun showNotification() {
+        val intent = Intent(DownloadManager.ACTION_VIEW_DOWNLOADS).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+
+        val pendingIntent = helper.createActivityIntent(intent)
+
+        helper.createNotification(
+            "File Saved",
+            "File saved in Download folder",
+            contentIntent = pendingIntent,
+            notificationId = 10002
+        )
     }
 
     private fun setupListeners() {
 
         binding.btnExcelDownload.setOnClickListener {
             checkAndShowNotification {
-                showSnackbar("Hello")
+
+                showNotification()
             }
         }
 
