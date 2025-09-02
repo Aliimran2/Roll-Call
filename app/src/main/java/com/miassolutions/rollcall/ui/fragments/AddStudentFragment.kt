@@ -17,7 +17,6 @@ import com.miassolutions.rollcall.data.entities.StudentEntity
 import com.miassolutions.rollcall.databinding.FragmentAddStudentBinding
 import com.miassolutions.rollcall.ui.MainActivity
 import com.miassolutions.rollcall.ui.viewmodels.AddStudentViewModel
-import com.miassolutions.rollcall.utils.BFormTextWatcher
 import com.miassolutions.rollcall.common.Constants.DUPLICATE_REG_NUMBER
 import com.miassolutions.rollcall.common.Constants.DUPLICATE_ROLL_NUMBER
 import com.miassolutions.rollcall.utils.StudentInsertResult

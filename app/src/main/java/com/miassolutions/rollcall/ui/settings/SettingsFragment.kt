@@ -18,12 +18,14 @@ import com.miassolutions.rollcall.extenstions.collectLatestFlow
 import com.miassolutions.rollcall.extenstions.showLongToast
 import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.extenstions.showToast
-import com.miassolutions.rollcall.helper.NotificationHelper
 import com.miassolutions.rollcall.utils.copySampleExcelFromAssets
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.jar.Manifest
 import androidx.core.net.toUri
+import com.miassolutions.rollcall.notification.NotificationHelper
+import com.permissionx.guolindev.PermissionX
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
@@ -31,48 +33,8 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
 
-    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()){isGranted ->
-        if (isGranted){
-            showDownloadNotification()
-        } else {
-            showLongToast("Notification permission denied. Enable it in settings to receive.")
-        }
-    }
-
-    private fun checkNotificationPermissionAndShow(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-            when {
-                ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    android.Manifest.permission.POST_NOTIFICATIONS
-                ) == PackageManager.PERMISSION_GRANTED -> {
-                    showDownloadNotification()
-                }
-
-                shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS) -> {
-                    showToast("Notification permission is needed to alert you about downloads")
-                    requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
-                }
-
-                else -> {
-                    requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
-                }
-
-            }
-
-
-        } else {
-            showDownloadNotification()
-        }
-    }
-
-    private fun showDownloadNotification() {
-        val fileName = "SampleStudents.xlsx"
-        val fileUri = "".toUri()//todo
-        val notificationHelper = NotificationHelper(requireContext())
-        notificationHelper.showDownloadCompleteNotification(fileUri, fileName)
-
-    }
+    @Inject
+    private lateinit var helper: NotificationHelper
 
 
     private val viewModel by viewModels<SettingsViewModel>()
@@ -86,22 +48,54 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         collectFlow()
 
 
+
+    }
+
+    private fun checkAndShowNotification(onGranted: () -> Unit) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            PermissionX.init(this)
+                .permissions(android.Manifest.permission.POST_NOTIFICATIONS)
+                .onExplainRequestReason{scope, deniedList ->
+                    scope.showRequestReasonDialog(
+                        deniedList,
+                        "This permission is required to show you important notifications.",
+                        "Allow",
+                        "Deny"
+                    )
+                }
+                .onForwardToSettings{scope, deniedList ->
+                    scope.showForwardToSettingsDialog(
+                        deniedList,
+                        "You have denied permissions. Please enable it from the settings.",
+                        "Go to settings",
+                        "Cancel"
+                    )
+                }
+                .request{granted, _,_ ->
+                    if (granted){
+                        onGranted()
+                    } else {
+                        showSnackbar("Permission denied permanently")
+                    }
+                }
+        } else {
+            onGranted()
+        }
+
+    }
+
+    private fun showNotification(){
     }
 
     private fun setupListeners() {
 
-
         binding.btnExcelDownload.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                checkNotificationPermissionAndShow()
-                copySampleExcelFromAssets(requireContext(), "sample_students.xlsx")
-
-                showSnackbar("Sample Excel exported to Downloads")
-            } else {
-                showSnackbar("Export supported only on Android 10+")
+            checkAndShowNotification {
+                showSnackbar("Hello")
             }
-
         }
+
 
         binding.btnDeleteAllStudents.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())

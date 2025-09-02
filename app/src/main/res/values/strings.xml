@@ -14,9 +14,11 @@
     <string name="total">Total</string>
     <string name="date_attendance_for_today_is_not_taken_yet">Date: %1$s\n\nAttendance for today is not taken yet</string>
     <string name="report">Report</string>
+    <string name="general_notifications">General Notifications</string>
+    <string name="channel_description">Used for general notifications</string>
 <!--    test ids-->
-<!--    <string name="app_id">ca-app-pub-3940256099942544~3347511713</string>-->
-<!--    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/9214589741</string>-->
-    <string name="app_id">ca-app-pub-2399589589931822~3999759992</string>
-    <string name="banner_ad_unit_id">ca-app-pub-2399589589931822/3010914284</string>
+    <string name="app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/9214589741</string>
+<!--    <string name="app_id">ca-app-pub-2399589589931822~3999759992</string>-->
+<!--    <string name="banner_ad_unit_id">ca-app-pub-2399589589931822/3010914284</string>-->
 </resources>

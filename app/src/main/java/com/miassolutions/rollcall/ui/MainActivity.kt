@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
-        MobileAds.initialize(this){}
+
 
         setSupportActionBar(binding.toolbar)
 
@@ -47,6 +47,8 @@ class MainActivity : AppCompatActivity() {
             adUnitId = getString(R.string.banner_ad_unit_id),
 
             )
+
+
 
     }
 }

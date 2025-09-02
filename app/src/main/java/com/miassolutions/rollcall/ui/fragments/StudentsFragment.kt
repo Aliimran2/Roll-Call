@@ -57,6 +57,7 @@ class StudentsFragment : Fragment(R.layout.fragment_students) {
     private lateinit var adapter: StudentListAdapter
     private lateinit var filePickerLauncher: ActivityResultLauncher<Array<String>>
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentStudentsBinding.bind(view)
