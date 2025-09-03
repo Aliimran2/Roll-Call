@@ -1,18 +1,15 @@
 package com.miassolutions.rollcall.ui.settings
 
-import android.app.DownloadManager
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.miassolutions.rollcall.R
 import com.miassolutions.rollcall.databinding.FragmentSettingsBinding
 import com.miassolutions.rollcall.extenstions.collectLatestFlow
+import com.miassolutions.rollcall.extenstions.showSimpleDialog
 import com.miassolutions.rollcall.extenstions.showSnackbar
 import com.miassolutions.rollcall.notification.NotificationHelper
 import com.permissionx.guolindev.PermissionX
@@ -73,21 +70,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     }
 
-    private fun showNotification() {
 
-        val intent = Intent(DownloadManager.ACTION_VIEW_DOWNLOADS).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
-
-        val pendingIntent = helper.createActivityIntent(intent)
-
-        helper.createNotification(
-            "File Saved",
-            "File saved in Download folder",
-            contentIntent = pendingIntent,
-            notificationId = 10002
-        )
-    }
 
     private fun setupListeners() {
 
@@ -100,32 +83,22 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
 
         binding.btnDeleteAllStudents.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Caution!!")
-                .setMessage("Are you sure? It will delete all students.")
-                .setPositiveButton("Yes, Delete") { dialog, _ ->
-                    viewModel.deleteAll()
-                    dialog.dismiss()
-                    findNavController().navigateUp()
-                }
-                .setNegativeButton("Cancel", null)
-                .show()
-
+            showSimpleDialog("Caution!!","Are you sure? It will delete all students record."){
+//                viewModel.deleteAll()
+                showSnackbar("working")
+                findNavController().navigateUp()
+            }
         }
     }
 
 
     private fun collectFlow() {
-
-
         collectLatestFlow {
             launch {
                 viewModel.messageEvent.collect {
                     showSnackbar(it)
                 }
             }
-
-
         }
     }
 

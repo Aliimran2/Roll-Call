@@ -10,10 +10,8 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.miassolutions.rollcall.R
-import com.miassolutions.rollcall.ui.MainActivity
 
 
 fun Fragment.addMenu(
@@ -52,8 +50,19 @@ fun Fragment.showSnackbar(
 }
 
 
-
-
 fun Fragment.setToolbarTitle(title: String) {
     (activity as? AppCompatActivity)?.supportActionBar?.title = title
+}
+
+fun Fragment.showSimpleDialog(title: String, message: String, onPositiveAction: () -> Unit) {
+    MaterialAlertDialogBuilder(requireContext())
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton("Yes, Delete") { dialog, _ ->
+            onPositiveAction()
+            dialog.dismiss()
+
+        }
+        .setNegativeButton("Cancel", null)
+        .show()
 }
